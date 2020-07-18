@@ -974,6 +974,35 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
 
               }
 
+              vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_NRB", -log(1-fcnc_bdt_nrb_hut_score()), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_NRB", -log(1-fcnc_bdt_nrb_hct_score()), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_SMH", -log(1-fcnc_bdt_smh_hut_score()), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_SMH", -log(1-fcnc_bdt_smh_hct_score()), evt_weight, vId);
+
+              vector<double> FCNC_Hut_BDT_NRB_boundaries = { 0.922917, 0.947899, 0.978783, 0.9882 };
+              vector<double> FCNC_Hct_BDT_NRB_boundaries = { 0.868698, 0.968178, 0.984509, 0.9913 };
+              vector<double> FCNC_Hut_BDT_SMH_boundaries = { 0.541095, 0.609071, 0.812856, 0.909529 }; 
+              vector<double> FCNC_Hct_BDT_SMH_boundaries = { 0.632789, 0.774256, 0.819160, 0.895076 }; 
+
+              for (int i = 0; i < FCNC_Hut_BDT_NRB_boundaries.size(); i++) {
+                int j = FCNC_Hut_BDT_NRB_boundaries.size() - (i+1);
+                if (fcnc_bdt_nrb_hut_score() >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score() >= FCNC_Hut_BDT_SMH_boundaries[j]) {
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_NRB_SRs", -log(1-fcnc_bdt_nrb_hut_score()), evt_weight, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_SMH_SRs", -log(1-fcnc_bdt_smh_hut_score()), evt_weight, vId);
+                  break;
+                }
+              }
+
+              for (int i = 0; i < FCNC_Hct_BDT_NRB_boundaries.size(); i++) {
+                int j = FCNC_Hct_BDT_NRB_boundaries.size() - (i+1);
+                if (fcnc_bdt_nrb_hct_score() >= FCNC_Hct_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hct_score() >= FCNC_Hct_BDT_SMH_boundaries[j]) {
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_NRB_SRs", -log(1-fcnc_bdt_nrb_hct_score()), evt_weight, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_SMH_SRs", -log(1-fcnc_bdt_smh_hct_score()), evt_weight, vId);
+                  break;
+                }
+              }
+
+
               /*
               if (lead_photon_type() == 1)
                 vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonIDMVA_prompt", maxID, evt_weight, vId);

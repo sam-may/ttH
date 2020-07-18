@@ -176,6 +176,16 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded", 25, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded_v2", 12, 0, 1);
 
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hut_BDT_NRB", 12, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hct_BDT_NRB", 12, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hut_BDT_SMH", 12, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hct_BDT_SMH", 12, 0, 8);
+
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hut_BDT_NRB_SRs", 12, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hct_BDT_NRB_SRs", 12, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hut_BDT_SMH_SRs", 12, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hct_BDT_SMH_SRs", 12, 0, 8); 
+
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_transf", 15, 0, 10);        
 
         v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag", 50, 0, 1);

@@ -70,7 +70,7 @@ if args.log:
 
 plt.xlabel('False Positive Rate (Background Efficiency)')
 ax1.set_ylabel('True Positive Rate (Signal Efficiency)')
-ax1.legend(loc='lower right')
+legend = ax1.legend(loc='lower right')
 ax1.yaxis.set_ticks_position('both')
 ax1.grid(True)
 plt.savefig('auc_comparison.pdf')

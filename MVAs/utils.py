@@ -76,7 +76,7 @@ def preprocess_array(y, dict_):
 def oversample(array, indices):
   return numpy.array([array[i] for i in indices])
 
-def performance_metrics(y, pred, sample_weight, n_bootstrap, interp = 500):
+def performance_metrics(y, pred, sample_weight, n_bootstrap, interp = 1000):
     fpr, tpr, auc = calc_auc(y, pred, sample_weight)
     fprs = [fpr]
     tprs = [tpr]
@@ -88,7 +88,7 @@ def performance_metrics(y, pred, sample_weight, n_bootstrap, interp = 500):
         bootstrap_label = y[bootstrap_indices]
         bootstrap_pred = pred[bootstrap_indices]
         bootstrap_weights = sample_weight[bootstrap_indices]
-        fpr_b, tpr_b, auc_b = calc_auc(bootstrap_label, bootstrap_pred, bootstrap_weights)
+        fpr_b, tpr_b, auc_b = calc_auc(bootstrap_label, bootstrap_pred, bootstrap_weights, interp)
         fprs.append(fpr_b)
         tprs.append(tpr_b)
         aucs.append(auc_b)
@@ -100,7 +100,7 @@ def performance_metrics(y, pred, sample_weight, n_bootstrap, interp = 500):
 
     return auc, unc, fpr_mean, tpr_mean, tpr_unc
 
-def calc_auc(y, pred, sample_weight, interp = 100):
+def calc_auc(y, pred, sample_weight, interp = 1000):
     fpr, tpr, thresh = metrics.roc_curve(y, pred, pos_label = 1, sample_weight = sample_weight)
 
     fpr_interp = numpy.linspace(0, 1, interp)

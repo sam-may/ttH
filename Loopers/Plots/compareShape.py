@@ -4,7 +4,8 @@ setTDRStyle()
 
 savepath = "/home/users/sjmay/public_html/plot_dump/FCNC/2Jul2019/"
 #filename = "../ttHHadronic_RunII_MVA_Presel_veryLoose_v1.7_24Jun2019_FCNC_SingleBDTBaseline_impute_hct_BDT_histogramsRunII.root"
-filename = "../ttHHadronic_RunII_MVA_Presel_veryLoose_v1.7_16Jul2019_NewMassVars_impute_hct_BDT_histogramsRunII.root"
+#filename = "../ttHHadronic_RunII_MVA_Presel_veryLoose_v1.7_16Jul2019_NewMassVars_impute_hct_BDT_histogramsRunII.root"
+filename = "../ttHHadronic_RunII_MVA_Presel_v5.1_12Jun2020_impute_FCNC_histogramsRunII.root"
 f = TFile.Open(filename)
 
 #names = ["hMassTop1", "hMassTop2", "hMass", "hPhotonLeadPToM", "hPhotonSubleadPToM", "hPhotonLeadEta", "hPhotonSubleadEta", "hDiphotonCosPhi", "hNJets", "hNbTight"]

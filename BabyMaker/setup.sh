@@ -205,6 +205,7 @@ if [ ! -d logs ]; then
   mkdir logs
 fi
 
+#pushd /home/users/sjmay/ttH/MC_Generation/ProjectMetis/
 pushd /home/users/sjmay/Librarian/ProjectMetis # or replace with your metis location
 source setup.sh
 popd

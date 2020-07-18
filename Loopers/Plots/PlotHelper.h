@@ -545,7 +545,7 @@ void Comparison::default_options(TCanvas* c1)
   mRatLabel = "#frac{2017 Data}{2016 Data}";
   mRatUseData = true;
 
-  mDataDrawOpt = "E";
+  mDataDrawOpt = "E1X0";
   mSignalDrawOpt = "HIST";
   mVerbose = false;
   mDoSystBand = true; // do mc stat band by default
@@ -1074,6 +1074,16 @@ void Comparison::draw_main_histograms()
   }
 
   if (mVShade.size() > 0) {
+    TBox *box = new TBox(mVShade[0],1.001*mYLimRange[0],mVShade[1],0.5*mYLimRange[1]);
+    //TBox *box = new TBox(0, 1, 4, 10000);
+    //Int_t ci = TColor::GetColor("#999999");
+    box->SetFillColorAlpha(kGray+1,0.25);
+    box->Draw("SAME");
+  }
+
+
+  /*
+  if (mVShade.size() > 0) {
     TH1D* hShade = new TH1D("hShade", "", 1000, 0, 10);//(TH1D*)mHMC->Clone("shade");
     hShade->SetFillColorAlpha(kGray+1, 0.25);
     hShade->SetMarkerSize(0.);
@@ -1093,6 +1103,7 @@ void Comparison::draw_main_histograms()
     }
     hShade->Draw("E2,SAME");
   }
+  */
 
   //mStack->GetXaxis()->SetRange(mXBinRange[0],mXBinRange[1]);
   //mStack->SetMinimum(mYLimRange[0]);
@@ -1105,6 +1116,7 @@ void Comparison::draw_main_histograms()
     mVHSignal[i]->Draw("SAME, " + mSignalDrawOpt);
 
   gPad->RedrawAxis();
+
 }
 
 inline
@@ -1249,8 +1261,8 @@ void Comparison::annotate_plot()
   else {
     //cms  = new TLatex(0.12, 0.935, "CMS");
     //cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Supplementary}}");
-    //cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Preliminary}}");
-    cms = new TLatex(0.12, 0.935, "CMS");
+    cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Preliminary}}");
+    //cms = new TLatex(0.12, 0.935, "CMS");
     cms->SetTextSize(0.05);
   }
   cms->SetNDC();
@@ -1305,7 +1317,7 @@ void Comparison::annotate_plot()
     else 
       l1 = new TLegend(0.6, 0.75-j, 0.92, 0.89);
     for (int i=0; i<mVHData.size(); i++)
-      l1->AddEntry(mVHData[i], mVLegendLabels[i], "lep");
+      l1->AddEntry(mVHData[i], mVLegendLabels[i], "lex0p");
     if (!mSkipSignal) {
       for (int i=0; i<mVHSignal.size(); i++)
         l1->AddEntry(mVHSignal[i], mVLegendLabels[i+mVHData.size()], "f");
@@ -1469,7 +1481,7 @@ void Comparison::make_rat_histogram(TH1D* hData, TH1D* hMC)
   mVHRat[0]->SetLineColor(dataColors[0]);
   mVHRat[0]->SetFillColor(dataColors[0]);
 
-  mVHRat[0]->Draw("e1");
+  mVHRat[0]->Draw("e1x0");
   //for (int i = 0; i < mVHRat[0]->GetNbinsX(); i++)
   //  cout << "Bin " << i + 1 << ": " << mVHRat[0]->GetBinContent(i+1) << endl; 
   mVHRat[0]->GetXaxis()->SetLabelOffset();
@@ -1484,7 +1496,7 @@ void Comparison::make_rat_histogram(TH1D* hData, TH1D* hMC)
     mVHRat[i]->SetFillColor(dataColors[i]);
     mVHRat[i]->SetLineColor(dataColors[i]);
     mVHRat[i]->SetStats(0);
-    mVHRat[i]->Draw("e1, same");
+    mVHRat[i]->Draw("e1x0, same");
   }
 
   if (mDoSystBand) {
@@ -1531,7 +1543,7 @@ void Comparison::make_rat_histogram(TH1D* hData, TH1D* hMC)
     //legend->AddEntry(hRat_TotalSyst_up, "Syst. Unc.", "f");
     legend->AddEntry(hRat_StatUnc_up, "Stat. Unc.", "f");
     if (mVHMCSyst_up.size() >= 1)
-        legend->AddEntry(hRat_TotalSyst_up, "Stat. + Syst. Unc.", "f");
+        legend->AddEntry(hRat_TotalSyst_up, "Stat. #oplus Syst. Unc.", "f");
     legend->SetNColumns(2);
     legend->SetBorderSize(0);
     legend->Draw("SAME"); 
@@ -1572,7 +1584,7 @@ void Comparison::make_rat_histogram(TH1D* hData, TH1D* hMC)
     for (unsigned int j = 0; j < mVHRat[0]->GetSize(); j++) {
         mVHRat[i]->SetBinError(j, mVHData[i]->GetBinError(j) / hMC->GetBinContent(j));
     } 
-    mVHRat[i]->Draw("e1, same");
+    mVHRat[i]->Draw("e1X0, same");
   }
 
 }
@@ -1586,6 +1598,7 @@ void Comparison::print(int idx)
     mCanvas->Print((mFilename).c_str());
   else if (idx == 2)
     mCanvas->Print((mFilename+")").c_str());
+  mCanvas->SaveAs(mChannel + "_" + to_string(idx) +  ".root");
   mCanvas->Clear("D");
 }
 

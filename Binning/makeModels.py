@@ -71,7 +71,7 @@ class makeModel():
 
         #print("[MAKEMODELS] Info: h_mgg name: %s, var: %s, weightVar: %s, selection: %s" % (h_mgg.GetName(), self.var, self.weightVar, self.selection))
 
-        self.tree.Project(h_mgg.GetName(), self.var, self.weightVar + "*2.0*(" + self.selection + ")")
+        self.tree.Project(h_mgg.GetName(), self.var, self.weightVar + "*(" + self.selection + ")")
         d_mgg = ROOT.RooDataHist("roohist_data_mass_" + self.tag, "", ROOT.RooArgList(w.var(rooVar)), h_mgg, 1)
         #print "bin dataset", h_mgg.Integral(), d_mgg.sumEntries(), d_mgg.numEntries()
         #return 1
@@ -90,7 +90,7 @@ class makeModel():
         self.norm = norm
         # pdf
         #w.factory("Gaussian:gaus_"+self.tag+"(" + rooVar + ", mean_gaus_"+self.tag+"[125,120,130], width_gaus_"+self.tag+"[2, 0.1, 10])")
-        w.factory("DoubleCB:"+self.tag+"(" + rooVar + ", mean_"+self.tag+"[125,120,130], sigma_"+self.tag+"[1,0,5], a1_"+self.tag+"[1,0,10], n1_"+self.tag+"[1,0,10], a2_"+self.tag+"[1,0,10], n2_"+self.tag+"[1,0,10])")
+        w.factory("DoubleCB:"+self.tag+"(" + rooVar + ", mean_"+self.tag+"[125,123,127], sigma_"+self.tag+"[1,0,5], a1_"+self.tag+"[1,0,10], n1_"+self.tag+"[1,0,10], a2_"+self.tag+"[1,0,10], n2_"+self.tag+"[1,0,10])")
         #w.factory("DoubleCB:dcb_"+self.tag+"(" + rooVar + ", mean_"+self.tag+"[125,120,130], sigma_"+self.tag+"[1,0,5], a1_"+self.tag+"[1,0,10], n1_"+self.tag+"[1,0,10], a2_"+self.tag+"[1,0,10], n2_"+self.tag+"[1,0,10])")
         #w.factory("SUM:" + self.tag + "(gaus_" + self.tag + ",dcb_" + self.tag + ")")
         #w.factory("SUM:"+self.tag + "(norm_gaus[1,0,999999]*gaus_" + self.tag + ",norm_dcb[1,0,999999]*dcb_" + self.tag + ")")
@@ -166,7 +166,7 @@ class makeModel():
 
         print("[MAKEMODELS] Info: h_mgg name: %s, var: %s, weightVar: %s, selection: %s" % (h_mgg.GetName(), self.var, self.weightVar, self.selection))
 
-        self.tree.Project(h_mgg.GetName(), self.var, self.weightVar + "*2.0*(" + self.selection + ")") # multiply by 2 because we are only using half of the mc not used in training for optimization
+        self.tree.Project(h_mgg.GetName(), self.var, self.weightVar + "*(" + self.selection + ")") # multiply by 2 because we are only using half of the mc not used in training for optimization
         d_mgg = ROOT.RooDataHist("roohist_data_mass_" + datasetTag, "", ROOT.RooArgList(w.var(rooVar)), h_mgg, 1)
         print "bin dataset", h_mgg.Integral(), d_mgg.sumEntries(), d_mgg.numEntries()
 

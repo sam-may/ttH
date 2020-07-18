@@ -93,7 +93,22 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, float mva_v
     if (minIDMVA_ < min_photon_ID_presel_cut)		return false;
     return true;
   }
- 
+
+  else if (tag == "HHbb_Presel") {
+    if (mass() < 100 || mass() > 180)   return false;
+    if (nb_loose() < 2)                 return false;
+    if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
+    return true;
+  }
+
+  else if (tag == "HHWW_Hadronic_Presel") {
+    if (mass() < 100 || mass() > 180)   return false;
+    if (nb_loose() >= 2)                return false;
+    if (n_jets() < 3)                   return false;
+    if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
+    return true;
+  }
+
   else if (tag == "FCNC_Hadronic_Hut_RunII_SR_Inclusive") {
     if (mass() < 100)                   return false;
     if (n_jets() < 2)                   return false;

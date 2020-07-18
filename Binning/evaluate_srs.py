@@ -66,8 +66,8 @@ for dim in dims:
 # dnn accuracy vs. eff of sampled points
 
 baseline_effs = {
-        "1d" : { "1" : 0.692, "2" : 0.423, "3" : 0.210, "4" : 0.093, "5" : 0.034 },
-        "2d" : { "1" : 0.479, "2" : 0.179, "3" : 0.044, "4" : 0.0087, "5" : 0.0011 },
+        "1d" : { "1" : 0.692, "2" : 0.423, "3" : 0.210, "4" : 0.093, "5" : 0.034 , "6" : 0.0, "7" : 0.0 },
+        "2d" : { "1" : 0.479, "2" : 0.179, "3" : 0.044, "4" : 0.0087, "5" : 0.0011 , "6" : 0.0, "7" : 0.0 },
         }
 
 fig = plt.figure()
@@ -114,10 +114,12 @@ import ROOT
 import tdrStyle
 tdrStyle.setTDRStyle()
 
+ROOT.gStyle.SetPaintTextFormat("4.2f")
+
 coupling = "Hut"
 ylabel = { "Hut" : "BF (t #rightarrow Hu)", "Hct" : "BF (t #rightarrow Hc)" }
 c1 = ROOT.TCanvas("c1", "c1", 800, 800)
-nBins = len(dim) * len(bins)
+nBins = len(bins)
 
 h_exp = ROOT.TH1F("h_exp", "h_exp", nBins, 0, nBins)
 h_plus1sigma = ROOT.TH1F("h_plus1sigma", "h_plus1sigma", nBins, 0, nBins)
@@ -144,7 +146,7 @@ idx = 1
 strat = "guided"
 for dim in dims:
     for bin in bins:
-        best = min(results[dim][bin][strat]["sample_best"])
+        best = min([x for x in results[dim][bin][strat]["sample_best"] if not (x == 1)])
         exp_lim = results[dim][bin][strat]["exp_lim"]
         for entry in exp_lim:
             if entry["exp_lim"][0] == best:
@@ -177,19 +179,19 @@ for hist in [h_plus2sigma, h_minus2sigma, h_plus1sigma, h_minus1sigma]:
     hist.SetMarkerSize(0)
     hist.Draw("E2,SAME")
 
-h_exp.Draw("SAME,E")
+h_exp.Draw("SAME,E,TEXT0")
 h_exp.SetMinimum(0.0)
-h_exp.SetMaximum(4.0)
+h_exp.SetMaximum(3.0)
 
 
-h_exp.GetYaxis().SetTitle(ylabel[coupling])
+h_exp.GetYaxis().SetTitle(ylabel[coupling] + " (arbitrary units)")
 h_exp.GetYaxis().SetTitleOffset(1.23)
 ROOT.gPad.RedrawAxis()
 
 legend = ROOT.TLegend(0.16, 0.77, 0.46, 0.87)
 legend.AddEntry(h_exp, "Median Expected", "l")
-legend.AddEntry(h_plus1sigma, "#pm 1#sigma", "f")
-legend.AddEntry(h_plus2sigma, "#pm 2#sigma", "f")
+legend.AddEntry(h_plus1sigma, "68% C.I.", "f")
+legend.AddEntry(h_plus2sigma, "95% C.I.", "f")
 legend.SetBorderSize(0)
 legend.Draw("SAME")
 
@@ -210,10 +212,3 @@ latex.DrawLatex(0.215, 0.935, "#it{Preliminary}")
 latex.DrawLatex(0.67, 0.935, "137 fb^{-1} (13 TeV)")
 
 c1.SaveAs("limits_%s.pdf" % (coupling))
-
-
-
-
-
-
-

@@ -107,7 +107,7 @@ if [ "$CMSSW_VER" = "106X" ]; then
     cmsenv
 
     INPUTFILENAMES='file:/home/users/sjmay/ttH/FCNC_Workspaces/CMSSW_10_6_1_patch2/src/flashgg/myMicroAODOutputFile.root'
-    cmsRun Taggers/test/ttH_TagAndDump.py ${INPUTFILENAMES} "MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json" "100"
+    cmsRun Taggers/test/ttH_TagAndDump.py ${INPUTFILENAMES} "MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json" "1000"
 fi
 
 # Actually run the test

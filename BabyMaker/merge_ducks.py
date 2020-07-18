@@ -42,7 +42,7 @@ command_list = []
 
 for dir in dirs:
   if args.data_only:
-    if "DoubleEG" not in dir:
+    if not ("DoubleEG" in dir or "EGamma" in dir):
       continue
   if args.no_signal:
     if "ttHJetToGG" in dir or "ttHToGG" in dir:

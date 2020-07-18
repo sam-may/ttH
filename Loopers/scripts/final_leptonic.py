@@ -17,9 +17,9 @@ os.chdir("../")
 #plot_types = ["std", "std_linear", "std_shape", "std_shape_sig_vs_data"]
 plot_types = ["std", "std_linear"]
 
-do_looping = True
+do_looping = False
 if do_looping:
-    parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none"' % (args.baby_version, args.tag))
+    parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --do_systematics' % (args.baby_version, args.tag))
     os.chdir("Plots")
     for plot_type in plot_types:
         parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "ttH" --plot_type "%s" --plot_labels "ttH Leptonic|Loose MVA Presel."' % (args.tag, plot_type))
@@ -35,8 +35,9 @@ if do_ttZ:
     #parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_ttZ_Tight_CR" --bkg_options "none" --bdt "none" --do_systematics' % (args.baby_version, args.tag))
     os.chdir("Plots")
     for plot_type in plot_types:
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_ttZ_Tight_CR_%s_histogramsRunII.root" --backgrounds "DY|Other2|TTZ" --signals "ttH" --plot_type "%s" --plot_labels "Leptonic Channel|t#bar{t}Z Control Region|N_{jets} #geq 3|N_{b-jets} (medium) #geq 2"' % (args.tag, plot_type))
- 
+        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_ttZ_Tight_CR_%s_histogramsRunII.root" --backgrounds "DY|Other2|TTZ" --signals "ttH" --plot_type "%s" --plot_labels "Leptonic Channel|t#bar{t}Z Control Region|N_{jets} #geq 3|N_{b-jets} (medium) #geq 2"' % (args.tag, plot_type))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_ttZ_Tight_CR_%s_histogramsRunII.root" --backgrounds "DY|Other2|TTZ" --signals "ttH" --plot_type "%s" ' % (args.tag, plot_type))
+
     os.chdir("../")
 
 
@@ -98,7 +99,7 @@ if do_l1_prefire:
         parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_SR_%s" --bkg_options "none" --bdt "none" --l1_prefire "down"' % (args.baby_version, args.tag + "_L1PrefireDown", str(sr)))
         parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_SR_%s" --bkg_options "none" --bdt "none" --l1_prefire ""' % (args.baby_version, args.tag + "", str(sr)))
 
-do_paper_plots = False
+do_paper_plots = True
 if do_paper_plots:
     os.chdir("../Loopers/")
     #parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --do_systematics' % (args.baby_version, args.tag))

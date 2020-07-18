@@ -434,19 +434,17 @@ class Guided_Optimizer():
 
         for i in range(n):
             mag = numpy.random.uniform(0.1, 0.9 - (n*0.1))
-            if len(effs_x) == 0:
-                angle = numpy.random.uniform(0.0, 3.14159 / 2.)
-            else:
-                angle = numpy.random.uniform(-3.14159 / 2, 3.14159)
 
-            delta_x = max(0, mag * math.cos(angle))
-            delta_y = max(0, mag * math.sin(angle))
+            angle = numpy.random.uniform(0.0, 3.14159 / 2.) # enforcing that both mvas must get looser in ensuing cuts (i.e. can't form an SR by loosening one mva but tightening another)
+
+            delta_x = max(0.01, mag * math.cos(angle)) # also enforce that both dimensions must loosen by at least 1% in signal eff
+            delta_y = max(0.01, mag * math.sin(angle))
 
             print delta_x, delta_y
 
             if len(effs_x) == 0:
-                effs_x.append(min_eff + delta_x)
-                effs_y.append(min_eff + delta_y)
+                effs_x.append(delta_x)
+                effs_y.append(delta_y)
 
             else:
                 effs_x.append(effs_x[-1] + delta_x)
@@ -530,9 +528,10 @@ class Guided_Optimizer():
                 print("[GUIDED OPTIMIZER] Point: ", X[i], " prediction: %.3f, probability to accept point: %.3f" % (pred[i], prob[i]))
 
         accept_idx = numpy.nonzero(prob > numpy.random.rand(len(X)))[0]
-        if len(accept_idx) == 0:
+        while len(accept_idx) == 0:
             print("[GUIDED OPTIMIZER] No accepted points, doubling all probabilities")
             prob *= 2
+            accept_idx = numpy.nonzero(prob > numpy.random.rand(len(X)))[0]
         print accept_idx
 
         X = numpy.array(X)
@@ -636,6 +635,9 @@ class Guided_Optimizer():
 
     def calculate_expected_limit(self, selection, idx, m_point, temp_results):
         yields = {}
+
+        disqualify_srs = False # disqualify certain binning combinations if they don't have enough non-res bkg events in mgg sidebands (require 10 expected)
+
         for i in range(len(selection)):
             bin = "Bin_%d" % i
             yields[bin] = {}
@@ -671,7 +673,9 @@ class Guided_Optimizer():
             bkg_yield, bkg_yield_raw = model.makeBackgroundModel("wbkg_13TeV", self.channel + "_" + str(i) + "_" + str(idx))
 
             yields[bin]["bkg"] = bkg_yield
-
+            if bkg_yield_raw < 10.:
+                print("[GUIDED OPTIMIZER] Only %.6f expected background events in one bin, disqualifying signal region set." % bkg_yield_raw)
+                disqualify_srs = True
 
         datacard = makeCards(self.scanConfig["modelpath"], "CMS-HGG_mva_13TeV_datacard_" + str(idx) + ".txt",
                 { "sm_higgs_unc" : self.sm_higgs_unc },
@@ -692,13 +696,17 @@ class Guided_Optimizer():
         }
 
         exp_lim, exp_lim_up1sigma, exp_lim_down1sigma, exp_lim_up2sigma, exp_lim_down2sigma = self.scanner.runCombine(combineConfig)
+        if disqualify_srs:
+            exp_lim *= 2 # double the expected limit if the SR combination is disqualified bc too few non-res bkg events
+            # the reason we double the exp_lim, is that we still want the expected limit to be a relatively smooth function of the cut values. this way, the optimization bdt can hopefully learn that cut values resulting in very narrow bins have a penalty applied on them
 
         result = {
            "idx" : idx,
            "x" : [float(x) for x in m_point],
            "exp_lim" : [exp_lim, exp_lim_up1sigma, exp_lim_down1sigma, exp_lim_up2sigma, exp_lim_down2sigma],
            "selection" : selection,
-           "yields" : yields
+           "yields" : yields,
+           "disqualified" : str(disqualify_srs)
         }
 
         temp_results[",".join(selection) + str(idx)] = result

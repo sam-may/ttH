@@ -40,7 +40,8 @@ std::map<TString, TString> mLatex = {
         {"TT_FCNC_hut", "$t\\bar{t}$ FCNC (Hut)"},
         {"TT_FCNC_hct", "$t\\bar{t}$ FCNC (Hct)"},
         {"ST_FCNC_hut", "$t$ FCNC (Hut)"},
-        {"ST_FCNC_hct", "$t$ FCNC (Hct)"}
+        {"ST_FCNC_hct", "$t$ FCNC (Hct)"},
+    {"HHbb", "HH$\\to$bb"}
 };
 
 std::map<int, TString> mLeptons = {
@@ -103,8 +104,9 @@ void make_table_std(TFile* file, TString hist_name, vector<TString> vBkgs, vecto
       hBkg->Add((TH1D*)file->Get(hist_name + "_" + vBkgs[i] + ext));
   }
 
-  for (int i = 0; i < vSigs.size(); i++) 
+  for (int i = 0; i < vSigs.size(); i++) { 
     vHSig.push_back((TH1D*)file->Get(hist_name + "_" + vSigs[i] + ext));
+  }
 
   int n_bins = hData->GetSize()-2;
   double yield_data_unc, yield_signal_unc, yield_bkg_unc;
@@ -126,7 +128,7 @@ void make_table_std(TFile* file, TString hist_name, vector<TString> vBkgs, vecto
   cout.setf(ios::fixed);
   cout << std::setprecision(2) << endl;
 
-  cout << endl << "Standard table: " << label << endl;
+  cout << endl << "Standard table: " << label + ext << endl;
   cout << "\\begin{center} \\Fontvi" << endl;
   cout << "\\begin{tabular}{| r || r | r|} \\hline" << endl;
   cout << "Process & Yield & $\\mathcal F$ of bkg \\\\ \\hline" << endl;

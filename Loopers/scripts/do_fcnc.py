@@ -1,4 +1,3 @@
-# vim: set fdm=marker:
 # imports, parser{{{
 import sys, os
 sys.path.append("../")

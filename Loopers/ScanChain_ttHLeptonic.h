@@ -87,6 +87,21 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_m
     return true;
   }
 
+  else if (tag == "HHWW_Semileptonic_Presel") {
+    if (mass() < 100 || mass() > 180)                   return false;
+    if (n_jets() < 2)                                   return false;
+    if (minIDMVA_ < min_photon_ID_presel_cut)           return false;
+    if (n_lep_medium != 1)                              return false;
+    return true;
+  }
+
+  else if (tag == "HHWW_Dileptonic_Presel") {
+    if (mass() < 100 || mass() > 180)                   return false;
+    if (minIDMVA_ < min_photon_ID_presel_cut)           return false;
+    if (n_lep_medium < 2)                               return false;
+    return true;
+  }
+
   else if (tag == "ttHLeptonic_RunII_MVA_Presel_v2") {
     if (mass() < 100)                                   return false;
     if (n_jets() < 1)                                   return false;

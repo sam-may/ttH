@@ -338,7 +338,7 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
     cout << currentFileTitle << endl;
     TFile file(currentFileTitle);
     TTree *tree;
-    if (currentFileTitle.Contains("v4.") && !currentFileTitle.Contains("FCNC"))
+    if ((ext.Contains("v4.") && !currentFileTitle.Contains("FCNC")) || ext.Contains("v5."))
     {
         cout<< "check: tagsDumper/trees/_13TeV_TTHHadronicTag" <<endl;
         tree = (TTree*)file.Get("tagsDumper/trees/_13TeV_TTHHadronicTag");
@@ -462,7 +462,8 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       if (is_low_stats_process(currentFileTitle))       continue;
 
       if (year.Contains("RunII") && !isData) {
-        double scale1fb = currentFileTitle.Contains("RunIISummer16MiniAOD") ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIAutumn18MiniAOD") ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
+        double scale1fb = (currentFileTitle.Contains("RunIISummer16MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2016_microAOD"))) ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( (currentFileTitle.Contains("RunIIAutumn18MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2018_microAOD"))) ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
+        //double scale1fb = currentFileTitle.Contains("RunIISummer16MiniAOD") ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIAutumn18MiniAOD") ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
         if (mYear == "2016")
           evt_weight_ *= scale1fb * lumi_2016 * weight();
         else if (mYear == "2017")
@@ -502,9 +503,6 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       // Scale bkg weight{{{
       evt_weight_ *= scale_bkg(currentFileTitle, bkg_options, process_id_, "Hadronic", fcnc);
       //}}} 
-      // Scale FCNC by arbitrary scaling (better results with combine) 
-      if (currentFileTitle.Contains("FCNC"))
-        evt_weight_ *= scale_fcnc(currentFileTitle, true);
 
       if (has_std_overlaps(currentFileTitle, lead_Prompt(), sublead_Prompt(), genPhotonId))     continue;
       if (!passes_selection(tag, minIDMVA_, maxIDMVA_)) continue;
@@ -524,8 +522,15 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       signal_mass_label_ = categorize_signal_sample(currentFileTitle);
       signal_mass_category_ = categorize_signal_mass_label(currentFileTitle);
 
+      // Scale FCNC by arbitrary scaling (better results with combine) and factor of 3 for train/validation/final fit sets
+      if (currentFileTitle.Contains("FCNC"))
+        evt_weight_ *= scale_fcnc(currentFileTitle, true); 
+
       if ((signal_mass_category_ == 120 || signal_mass_category_ == 125 || signal_mass_category_ == 130) && signal_mass_label_ == 0)
           evt_weight_ *= 2.; // account for test/validation splits
+
+      if (signal_mass_label_ == -1 && label_ == 0) // non-resonant background
+          evt_weight_ *= 2.;
 
       tth_2017_reference_mva_ = tthMVA();
 

@@ -47,7 +47,7 @@ def load_data(self):
     self.data["data"]["train_id"] = numpy.ones(len(self.data["data"]["label"]))
 
 def scale_pos_weights(self):
-    for set in ["train"]:
+    for set in ["test", "train"]:
         self.n_pos = len(self.data[set]["evt_weight_"][self.data[set]["label"] == 1])
         self.n_neg = len(self.data[set]["evt_weight_"][self.data[set]["label"] == 0])
 
@@ -195,7 +195,7 @@ class MVA_Helper(object):
 
 
 xgb_default_param = {
-    'max_depth': 4,
+    'max_depth': 6,
     'eta': 0.2,
     'objective': 'binary:logistic',
     'subsample': 1.0,
@@ -210,7 +210,7 @@ class BDT_Helper(MVA_Helper):
         super(BDT_Helper, self).__init__(**kwargs)
         
         self.config = kwargs.get('config', xgb_default_param.copy())
-        self.n_round = kwargs.get('n_round', 100)
+        self.n_round = kwargs.get('n_round', 1000)
         
         load_data_xgb(self)
 
@@ -222,7 +222,7 @@ class BDT_Helper(MVA_Helper):
         eval_list = [(self.data["train"]["DMatrix"], "train"), (self.data["test"]["DMatrix"], "test")]
         progress = {}
 
-        self.bdt = xgboost.train(self.config, self.data["train"]["DMatrix"], self.n_round, eval_list, evals_result = progress)
+        self.bdt = xgboost.train(self.config, self.data["train"]["DMatrix"], self.n_round, eval_list, evals_result = progress, early_stopping_rounds = 30)
 
     def predict(self, data = None):
         self.prediction = {}

@@ -65,79 +65,79 @@ if do_mva_prep:
     bdt_training_features_leptonic_toptagger = ",".join(bdt_training_features_leptonic_toptagger)
 
     # Leptonic BDT Baseline
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "baseline_hut"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "baseline_hct"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "baseline_hut"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "baseline_hct"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic))
 
     # Hadronic BDT Baseline
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "baseline_hut"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "baseline_hct"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "baseline_hut"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "baseline_hct"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic))
     
     # Leptonic BDT Top Tagger
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "addTopTagger_hut"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic_toptagger))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "addTopTagger_hct"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "addTopTagger_hut"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "addTopTagger_hct"' % (args.tag, non_resonant_bkg_leptonic + "," + sm_higgs, bdt_training_features_leptonic_toptagger))
 
     # Hadronic BDT Top Tagger
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "addTopTagger_hut"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic_toptagger))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "addTopTagger_hct"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "addTopTagger_hut"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "addTopTagger_hct"' % (args.tag, non_resonant_bkg_hadronic + "," + sm_higgs, bdt_training_features_hadronic_toptagger))
 
     # Leptonic Non-Resonant BDT
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "nonres_hut"' % (args.tag, non_resonant_bkg_leptonic, bdt_training_features_leptonic_toptagger))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "nonres_hct"' % (args.tag, non_resonant_bkg_leptonic, bdt_training_features_leptonic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "nonres_hut"' % (args.tag, non_resonant_bkg_leptonic, bdt_training_features_leptonic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "nonres_hct"' % (args.tag, non_resonant_bkg_leptonic, bdt_training_features_leptonic_toptagger))
 
     # Hadronic Non-Resonant BDT
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "nonres_hut"' % (args.tag, non_resonant_bkg_hadronic, bdt_training_features_hadronic_toptagger))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "nonres_hct"' % (args.tag, non_resonant_bkg_hadronic, bdt_training_features_hadronic_toptagger)) 
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "nonres_hut"' % (args.tag, non_resonant_bkg_hadronic, bdt_training_features_hadronic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "nonres_hct"' % (args.tag, non_resonant_bkg_hadronic, bdt_training_features_hadronic_toptagger)) 
 
     # Leptonic SM Higgs BDT
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "smhiggs_hut"' % (args.tag, sm_higgs, bdt_training_features_leptonic_toptagger))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "smhiggs_hct"' % (args.tag, sm_higgs, bdt_training_features_leptonic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "smhiggs_hut"' % (args.tag, sm_higgs, bdt_training_features_leptonic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "smhiggs_hct"' % (args.tag, sm_higgs, bdt_training_features_leptonic_toptagger))
 
     # Hadronic SM Higgs BDT
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut" --bkg "%s" --features "%s" --tag "smhiggs_hut"' % (args.tag, sm_higgs, bdt_training_features_hadronic_toptagger))
-    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct" --bkg "%s" --features "%s" --tag "smhiggs_hct"' % (args.tag, sm_higgs, bdt_training_features_hadronic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hut" --signal "tt_fcnc_hut,st_fcnc_hut" --bkg "%s" --features "%s" --tag "smhiggs_hut"' % (args.tag, sm_higgs, bdt_training_features_hadronic_toptagger))
+    command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --tag "Hct" --signal "tt_fcnc_hct,st_fcnc_hct" --bkg "%s" --features "%s" --tag "smhiggs_hct"' % (args.tag, sm_higgs, bdt_training_features_hadronic_toptagger))
 
     parallel_utils.submit_jobs(command_list, 4)
 
-do_mvas = True
+do_mvas = False
 if do_mvas:
     os.chdir("../MVAs/")
     
     command_list = []
     # Leptonic Baseline BDT
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_baseline_hut.hdf5" --channel "Leptonic" --tag "baseline_hut_%s"' % (args.tag, args.tag))
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_baseline_hct.hdf5" --channel "Leptonic" --tag "baseline_hct_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_baseline_hut.hdf5" --channel "Leptonic" --tag "baseline_hut_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_baseline_hct.hdf5" --channel "Leptonic" --tag "baseline_hct_%s"' % (args.tag, args.tag))
 
     # Hadronic Baseline BDT
     command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_baseline_hut.hdf5" --channel "Hadronic" --tag "baseline_hut_%s"' % (args.tag, args.tag))
     command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_baseline_hct.hdf5" --channel "Hadronic" --tag "baseline_hct_%s"' % (args.tag, args.tag))
 
     # Leptonic AddTopTagger BDT
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTagger_hut.hdf5" --channel "Leptonic" --tag "addTopTagger_hut_%s"' % (args.tag, args.tag))
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTagger_hct.hdf5" --channel "Leptonic" --tag "addTopTagger_hct_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTagger_hut.hdf5" --channel "Leptonic" --tag "addTopTagger_hut_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTagger_hct.hdf5" --channel "Leptonic" --tag "addTopTagger_hct_%s"' % (args.tag, args.tag))
 
     # Hadronic AddTopTagger BDT
     command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTagger_hut.hdf5" --channel "Hadronic" --tag "addTopTagger_hut_%s"' % (args.tag, args.tag))
     command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTagger_hct.hdf5" --channel "Hadronic" --tag "addTopTagger_hct_%s"' % (args.tag, args.tag))
 
     # Leptonic Non-Resonant BDT 
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_nonres_hut.hdf5" --channel "Leptonic" --tag "nonres_hut_%s"' % (args.tag, args.tag))
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_nonres_hct.hdf5" --channel "Leptonic" --tag "nonres_hct_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_nonres_hut.hdf5" --channel "Leptonic" --tag "nonres_hut_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_nonres_hct.hdf5" --channel "Leptonic" --tag "nonres_hct_%s"' % (args.tag, args.tag))
 
     # Hadronic Non-Resonant BDT 
-    #command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_nonres_hut.hdf5" --channel "Hadronic" --tag "nonres_hut_%s"' % (args.tag, args.tag))
-    #command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_nonres_hct.hdf5" --channel "Hadronic" --tag "nonres_hct_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_nonres_hut.hdf5" --channel "Hadronic" --tag "nonres_hut_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_nonres_hct.hdf5" --channel "Hadronic" --tag "nonres_hct_%s"' % (args.tag, args.tag))
 
     # Leptonic SM Higgs BDT 
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_smhiggs_hut.hdf5" --channel "Leptonic" --tag "smhiggs_hut_%s"' % (args.tag, args.tag))
-    #command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_smhiggs_hct.hdf5" --channel "Leptonic" --tag "smhiggs_hct_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_smhiggs_hut.hdf5" --channel "Leptonic" --tag "smhiggs_hut_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_smhiggs_hct.hdf5" --channel "Leptonic" --tag "smhiggs_hct_%s"' % (args.tag, args.tag))
 
     # Hadronic SM Higgs BDT 
-    #command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_smhiggs_hut.hdf5" --channel "Hadronic" --tag "smhiggs_hut_%s"' % (args.tag, args.tag))
-    #command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_smhiggs_hct.hdf5" --channel "Hadronic" --tag "smhiggs_hct_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_smhiggs_hut.hdf5" --channel "Hadronic" --tag "smhiggs_hut_%s"' % (args.tag, args.tag))
+    command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_smhiggs_hct.hdf5" --channel "Hadronic" --tag "smhiggs_hct_%s"' % (args.tag, args.tag))
 
     parallel_utils.submit_jobs(command_list, 4)
 
-do_trees = True
+do_trees = False
 if do_trees:
     os.chdir("../MVAs/")
     
@@ -147,4 +147,20 @@ if do_trees:
     
     # Hadronic merge
     parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTagger_hut.hdf5" --channel "Hadronic" --tag "hut_merge2d_%s" --mvas "Hadronic_addTopTagger_hut_%s_bdt.xgb,Hadronic_nonres_hut_%s_bdt.xgb,Hadronic_smhiggs_hut_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score"' % (args.tag, args.tag, args.tag, args.tag, args.tag))
-    parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTagger_hct.hdf5" --channel "Hadronic" --tag "hct_merge2d_%s" --mvas "Hadronic_addTopTagger_hct_%s_bdt.xgb,Hadronic_nonres_hct_%s_bdt.xgb,Hadronic_smhiggs_hct_%s_bdt.xgb" --names "mva_nonres,mva_smhiggs"' % (args.tag, args.tag, args.tag, args.tag, args.tag))
+    parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTagger_hct.hdf5" --channel "Hadronic" --tag "hct_merge2d_%s" --mvas "Hadronic_addTopTagger_hct_%s_bdt.xgb,Hadronic_nonres_hct_%s_bdt.xgb,Hadronic_smhiggs_hct_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score"' % (args.tag, args.tag, args.tag, args.tag, args.tag))
+
+
+do_1d_vs_2d = True
+if do_1d_vs_2d:
+    os.chdir("../Binning/")
+
+    nUnc = 10
+    nPoints = 50
+
+    # Leptonic
+    parallel_utils.run('python compare_1d_vs_2d.py --input "%s" --nUnc %d --channel "Leptonic" --coupling "Hut" --nPoints %d' % ("../MVAs/Leptonic_hut_merge2d_%s.root" % args.tag, nUnc, nPoints))
+    parallel_utils.run('python compare_1d_vs_2d.py --input "%s" --nUnc %d --channel "Leptonic" --coupling "Hct" --nPoints %d' % ("../MVAs/Leptonic_hct_merge2d_%s.root" % args.tag, nUnc, nPoints))
+
+    # Hadronic
+    parallel_utils.run('python compare_1d_vs_2d.py --input "%s" --nUnc %d --channel "Hadronic" --coupling "Hut" --nPoints %d' % ("../MVAs/Hadronic_hut_merge2d_%s.root" % args.tag, nUnc, nPoints))
+    parallel_utils.run('python compare_1d_vs_2d.py --input "%s" --nUnc %d --channel "Hadronic" --coupling "Hct" --nPoints %d' % ("../MVAs/Hadronic_hct_merge2d_%s.root" % args.tag, nUnc, nPoints))  

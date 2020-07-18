@@ -17,6 +17,7 @@ parser.add_argument("--bdt", help = "bdt to evaluate", type=str, default="none")
 parser.add_argument("--bkg_options", help = "how to treat bkg", type=str, default="none")
 parser.add_argument("--years", help = "which years to run for", type=str, default="2016,2017,2018")
 parser.add_argument("--fcnc", help = "run babymaker with fcnc as signal, ttH as bkg", action="store_true")
+parser.add_argument("--hh", help = "run babymaker with hh as signal, ttH as bkg", action="store_true")
 parser.add_argument("--do_systematics", help = "loop over independent collections for systematics bands in data/MC plots", action="store_true")
 parser.add_argument("--l1_prefire", help = "undo, vary up or vary down l1 prefire weight", type=str, default="")
 parser.add_argument("--ttH_vs_tH", help = "only loop over tH and ttH samples", action="store_true")
@@ -389,50 +390,54 @@ babies_2018 = [
 
 if args.fcnc:
     babies_2016 = [
-            "FCNC_private_ST_HAD_HCT_2016_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "FCNC_private_ST_HAD_HUT_2016_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "ST_FCNC-TH_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "ST_FCNC-TH_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-T2HJ_aThadronic_HToaa_eta_hct-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-T2HJ_aTleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-TtoHJ_aThadronic_HToaa_eta_hut-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-TtoHJ_aTleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
+            "FCNC_private_ST_HAD_HCT_2016_microAOD_v1.2_29May2020",
+            "FCNC_private_ST_HAD_HUT_2016_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-T2HJ_aThadronic_HToaa_eta_hct-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-T2HJ_aTleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-TtoHJ_aThadronic_HToaa_eta_hut-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-TtoHJ_aTleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_TuneCUETP8M1_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2_MINIAODSIM_microAOD_v1.2_29May2020",
     ] + babies_2016
 
     babies_2017 = [
-            "TT_FCNC-TtoHJ_aTleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3_MINIAODSIM_RunII",
-            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3_MINIAODSIM_RunII",
-            "TT_FCNC-TtoHJ_aThadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3_MINIAODSIM_RunII",
-            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_RunII",
-            "TT_FCNC-TtoHJ_aThadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_RunII",
-            "ST_FCNC-TH_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1_MINIAODSIM_RunII",
-            "TT_FCNC-T2HJ_aTleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3_MINIAODSIM_RunII",
-            "ST_FCNC-TH_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1_MINIAODSIM_RunII",
-            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_RunII",
-            "ST_FCNC-TH_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_MINIAODSIM_RunII",
-            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_RunII",
-            "ST_FCNC-TH_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1_MINIAODSIM_RunII"
+            "ST_FCNC-TH_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-TtoHJ_aTleptonic_HToaa_eta_hut_TuneCP5-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hut_TuneCP5-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-T2HJ_aTleptonic_HToaa_eta_hct_TuneCP5-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hct_TuneCP5-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3_MINIAODSIM_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_tauDecays_94X_mc2017_realistic_v14-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-TtoHJ_aThadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-TtoHJ_aThadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3_MINIAODSIM_microAOD_v1.2_29May2020",
     ] + babies_2017
 
     babies_2018 = [
-            "FCNC_private_TT_T2HJ_HAD_HCT_2018_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "FCNC_private_TT_T2HJ_HAD_HUT_2018_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "FCNC_private_TT_aT2HJ_HAD_HCT_2018_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "FCNC_private_TT_aT2HJ_HAD_HUT_2018_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "ST_FCNC-TH_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "ST_FCNC-TH_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "ST_FCNC-TH_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "ST_FCNC-TH_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-T2HJ_aTleptonic_HToaa_eta_hct_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-TtoHJ_aTleptonic_HToaa_eta_hut_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hct_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII",
-            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hut_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020_ttH_Babies_RunII"
+            "FCNC_private_TT_T2HJ_HAD_HCT_2018_microAOD_v1.2_29May2020",
+            "FCNC_private_TT_T2HJ_HAD_HUT_2018_microAOD_v1.2_29May2020",
+            "FCNC_private_TT_aT2HJ_HAD_HCT_2018_microAOD_v1.2_29May2020",
+            "FCNC_private_TT_aT2HJ_HAD_HUT_2018_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Thadronic_HToaa_eta_hct-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Thadronic_HToaa_eta_hut-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Tleptonic_HToaa_eta_hct-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "ST_FCNC-TH_Tleptonic_HToaa_eta_hut-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-T2HJ_aTleptonic_HToaa_eta_hct_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-TtoHJ_aTleptonic_HToaa_eta_hut_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hct_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020",
+            "TT_FCNC-aTtoHJ_Tleptonic_HToaa_eta_hut_TuneCP5-MadGraph5-pythia8_RunIIAutumn18MiniAOD-tauDecays_102X_upgrade2018_realistic_v15-v1_MINIAODSIM_microAOD_v1.2_29May2020"
     ] + babies_2018
 
+if args.hh:
+    babies_2016 = ["GluGluToHHTo2B2G_node_SM_13TeV-madgraph_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2"] + babies_2016
+    babies_2017 = ["GluGluToHHTo2B2G_node_SM_13TeV-madgraph_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2"] + babies_2017
+    babies_2018 = ["GluGluToHHTo2B2G_node_SM_13TeV-madgraph_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2"] + babies_2018
 
 #}}}
 # tH and ttH samples only{{{

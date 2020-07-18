@@ -23,10 +23,11 @@ else:
 
 do_looping = False
 if do_looping:
-    parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
+    #parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
     os.chdir("Plots")
     for plot_type in plot_types:
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
+        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
     os.chdir("../")
 
 
@@ -100,6 +101,6 @@ if do_limits:
     os.chdir("../Binning/")
 
     for coupling in ["Hut", "Hct"]:
-        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 12 --tag "1d_baseline" --mvas "mva_score"' % (coupling.lower(), args.tag, coupling))
-        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 12 --tag "2d_baseline" --mvas "mva_nonres_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling))
-        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 12 --tag "2d_addTopTaggers" --mvas "mva_smhiggs_score,mva_nonres_score"' % (coupling.lower(), args.tag, coupling))
+        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "1d_baseline_%s" --mvas "mva_score"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_baseline_%s" --mvas "mva_nonres_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_%s" --mvas "mva_smhiggs_score,mva_nonres_score"' % (coupling.lower(), args.tag, coupling, args.tag))

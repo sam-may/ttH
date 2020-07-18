@@ -26,9 +26,9 @@ def choose_production(sample):
     return final_production
 
 def skip_samples(sample):
-    bad_samples = ["DoubleMuon", "M60", "M65", "M70", "M75", "M80", "M85", "M90", "M95", "M100", "M105", "M110", "M115", "WminusH", "WplusH", "ggZH_HToGG", "Up", "Down", "PSWeights", "GluGluToHH"]
+    bad_samples = ["DoubleMuon", "M60", "M65", "M70", "M75", "M80", "M85", "M90", "M95", "M100", "M105", "M110", "M115", "WminusH", "WplusH", "ggZH_HToGG", "Up", "Down", "PSWeights"]
     for bad_sample in bad_samples:
-        if bad_sample in sample:
+        if bad_sample in sample and "GluGluToHHTo2B2G_node_SM_13TeV-madgraph" not in sample:
             #print "Skipping %s" % sample
             return True
     return False
@@ -61,6 +61,8 @@ def identify_old_productions(productions, sample):
         for production in nominal_productions:
             versions += [int(production[-1])]
         versions = numpy.asarray(versions)
+        if len(versions) == 0 or len(nominal_productions) == 0:
+            return []
         arg_selected = versions.argmax()
         old_productions = nominal_productions[:]
         old_productions.pop(arg_selected)
@@ -75,7 +77,8 @@ def get_samples_from_catalogs(catalogs):
     print "Getting samples"
     samples = {}
     for catalog in catalogs:
-        datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/%s/*.json" % catalog)
+        datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
+        #datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/%s/*.json" % catalog)
         for dataset in datasets:
             with open(dataset, "r") as f_in:
                 info = json.load(f_in)
@@ -147,19 +150,19 @@ def get_samples_from_catalogs(catalogs):
     with open("/home/users/sjmay/ttH/Loopers/scale1fb/scale1fb.json", "r") as f_in:
         fcnc_samples = json.load(f_in)
         for sample in fcnc_samples.keys():
-            if "FCNC" not in sample:
-                continue
-            else:
-                print sample
             entry = {}
             entry["xs"] = fcnc_samples[sample]["xs"]
             for year in ["2016", "2017", "2018"]:
                 entry[year] = {}
-                for production in fcnc_samples[sample]["productions"]:
-                    if "RunIIFall17MiniAODv2" not in production:
+                for production in fcnc_samples[sample]["productions"].keys():
+                    if year == "2016" and not ("RunIISummer16MiniAODv3" in production or ("2016" in production and "STEP4" in production)):
+                        continue
+                    if year == "2017" and "RunIIFall17MiniAODv2" not in production:
+                        continue
+                    if year == "2018" and not ("RunIIAutumn18MiniAOD" in production or ("2018" in production and "STEP4" in production)):
                         continue
                     entry[year][production] = { "files" : -1, "nevents" : fcnc_samples[sample]["productions"][production]["n_events_tot"], "weights" : fcnc_samples[sample]["productions"][production]["sum_of_weights"] }
-                    entry[year]["scale1fb"] = fcnc_samples[sample]["scale1fb_%s" % year]
+                entry[year]["scale1fb"] = fcnc_samples[sample]["scale1fb_%s" % year]
             samples[sample] = entry
 
     return samples
@@ -173,6 +176,7 @@ def summarize_samples(samples):
             for production in samples_lite[sample][year].keys():
                 if production == "scale1fb":
                     continue
-                samples_lite[sample][year][production]["files"] = len(samples_lite[sample][year][production]["files"])
+                if isinstance(samples_lite[sample][year][production]["files"], list):
+                    samples_lite[sample][year][production]["files"] = len(samples_lite[sample][year][production]["files"])
     with open("samples.json", "w") as f_out:
         json.dump(samples_lite, f_out, indent=4, sort_keys=True)

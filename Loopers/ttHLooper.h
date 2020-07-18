@@ -34,7 +34,8 @@ vector<Process*> generate_processes(TFile* f) {
   v.push_back(new Process(f, "ST_FCNC_hut"));
   v.push_back(new Process(f, "ST_FCNC_hct"));
   v.push_back(new Process(f, "TTW"));
- //v.push_back(new Process
+  v.push_back(new Process(f, "HHbb"));
+  //v.push_back(new Process
 
   return v;
 }
@@ -200,10 +201,10 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
 
         //v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_coarse_0b", 5, -1, 1);
         //v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_coarse_0b", 5, -1, 1);
-        //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets", 30, -1, 1, 16, -0.5, 15.5); 
-        //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets", 30, -1, 1, 16, -0.5, 15.5);
-        //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets_entries", 30, -1, 1, 16, -0.5, 15.5);
-        //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets_entries", 30, -1, 1, 16, -0.5, 15.5); 
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets", 30, -1, 1, 16, -0.5, 15.5); 
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets", 30, -1, 1, 16, -0.5, 15.5);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets_entries", 30, -1, 1, 16, -0.5, 15.5);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets_entries", 30, -1, 1, 16, -0.5, 15.5); 
         //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NTightLeps", 30, -1, 1, 3, -0.5, 2.5);
         //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NTightLeps", 30, -1, 1, 3, -0.5, 2.5);
         //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NTightLeps_entries", 30, -1, 1, 3, -0.5, 2.5);
@@ -336,38 +337,38 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
 
         v[i]->add_histogram("h" + syst_labels[j] + "Rho", 50, 0, 100);
 
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_mass", 40, 0, 400);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_pt", 40, 0, 400);
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_mass", 25, 0, 500);
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_pt", 25, 0, 200);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_eta", 25, -3, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_deltaR_dipho", 25, 0, 5);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_pt", 40, 0, 400);
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_pt", 25, 0, 200);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_eta", 25, -3, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_btag", 25, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_deltaR_dipho", 25, 0, 5);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_ptOverM", 25, 0, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_eta", 25, -3, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_deltaR_tbw", 25, 0, 5);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tbw_mass", 40, 0, 400);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tbw_pt", 40, 0, 400);
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tbw_mass", 25, 0, 500);
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tbw_pt", 25, 0, 200);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tbw_eta", 25, -3, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tbw_deltaR_dipho", 25, 0, 5);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tqh_ptOverM", 40, 0, 3);
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tqh_ptOverM", 25, 0, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tqh_eta", 25, -3, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tqh_deltaR_tbw", 25, 0, 5);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_3x3_tqh_deltaR_dipho", 25, 0, 5);
 
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_neutrino_pz", 40, 0, 400);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_mass", 40, 0, 400);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_pt", 40, 0, 400);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_eta", 25, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_deltaR_dipho", 25, 0, 5);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_pt", 40, 0, 400);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_eta", 25, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_btag", 25, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_deltaR_dipho", 25, 0, 5);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_ptOverM", 25, 0, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_eta", 25, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_deltaR_tbw", 25, 0, 5);
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_neutrino_pz", 25, 0, 200);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_mass", 40, 0, 400);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_pt", 40, 0, 400);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_eta", 25, -3, 3);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_deltaR_dipho", 25, 0, 5);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_pt", 40, 0, 400);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_eta", 25, -3, 3);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_btag", 25, 0, 1);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_qjet_deltaR_dipho", 25, 0, 5);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_ptOverM", 25, 0, 3);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_eta", 25, -3, 3);
+        //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_deltaR_tbw", 25, 0, 5);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_deltaR_dipho", 25, 0, 5);
 
       }
@@ -443,18 +444,20 @@ int categorize_process(TString currentFileTitle, int genPhotonId = -1) {
     return 20;
   else if (currentFileTitle.Contains("ST_tW") || currentFileTitle.Contains("tZq"))
     return 21;
-  else if (currentFileTitle.Contains("TT_FCNC") && currentFileTitle.Contains("hut") )
+  else if (currentFileTitle.Contains("TT") && (currentFileTitle.Contains("hut") || currentFileTitle.Contains("HUT")))
     return 22;
-  else if (currentFileTitle.Contains("TT_FCNC") && currentFileTitle.Contains("hct") )
+  else if (currentFileTitle.Contains("TT") && (currentFileTitle.Contains("hct") || currentFileTitle.Contains("HCT")))
     return 23;
-  else if (currentFileTitle.Contains("ST_FCNC") && currentFileTitle.Contains("hut") )
+  else if (currentFileTitle.Contains("ST") && (currentFileTitle.Contains("hut") || currentFileTitle.Contains("HUT")))
     return 24;
-  else if (currentFileTitle.Contains("ST_FCNC") && currentFileTitle.Contains("hct") )
+  else if (currentFileTitle.Contains("ST") && (currentFileTitle.Contains("hct") || currentFileTitle.Contains("HCT")))
     return 25;
   else if (currentFileTitle.Contains("TTW"))
     return 26;
+  else if (currentFileTitle.Contains("GluGluToHHTo2B2G"))
+    return 27;
   else {
-    cout << "File does not fit into one of the background categories." << endl;
+    cout << "File: " << currentFileTitle << " does not fit into one of the background categories." << endl;
     return -1;
   }
 }
@@ -724,9 +727,15 @@ const double diphoton_impute_factor_hadronic_runII  = 1.1823424964786557;
 //const double qcd_factor_hadronic_runII      = 2.5892320260734283;
 
 //v3.10
-const double diphoton_factor_hadronic_runII = 1.3362705187667576;//2.2971182909603067;
-const double gjets_factor_hadronic_runII    = 2.0113788480528183;
-const double qcd_factor_hadronic_runII      = 2.2971182909603067; 
+//const double diphoton_factor_hadronic_runII = 1.3362705187667576;//2.2971182909603067;
+//const double gjets_factor_hadronic_runII    = 2.0113788480528183;
+//const double qcd_factor_hadronic_runII      = 2.2971182909603067; 
+
+//v5.1
+const double diphoton_factor_hadronic_runII = 1.3073406894425053; 
+const double gjets_factor_hadronic_runII    = 2.319346285199177; 
+const double qcd_factor_hadronic_runII      = 1.8915467202831975; 
+
 
 //v1.5
 //const double qcd_gjets_impute_factor_hadronic_runII = 0.9433630221924071; 
@@ -736,8 +745,16 @@ const double qcd_factor_hadronic_runII      = 2.2971182909603067;
 //const double diphoton_impute_factor_hadronic_runII  = 1.289449696556433;
 
 //v3.10
-const double qcd_gjets_impute_factor_hadronic_runII = 1.0462238864596276;
-const double diphoton_impute_factor_hadronic_runII  = 1.3852459996672792;
+//const double qcd_gjets_impute_factor_hadronic_runII = 1.0462238864596276;
+//const double diphoton_impute_factor_hadronic_runII  = 1.3852459996672792;
+
+//v4.11
+//const double qcd_gjets_impute_factor_hadronic_runII = 1.0700730283379238;
+//const double diphoton_impute_factor_hadronic_runII = 1.4176237374087783;
+
+//v5.1
+const double qcd_gjets_impute_factor_hadronic_runII = 1.039962906016564;
+const double diphoton_impute_factor_hadronic_runII  = 1.2590383736548094;
 
 const double diphoton_factor_leptonic_runII = 1.919798;
 const double gjets_factor_leptonic_runII    = 1.919798;
@@ -756,9 +773,9 @@ const double br_tToHu_limit = 0.0012; // ""
 
 double scale_fcnc_to_atlas_limit(TString currentFileTitle) {
   double weight = 1.;
-  if (currentFileTitle.Contains("eta_hut"))
+  if (currentFileTitle.Contains("eta_hut") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("HUT")))
     weight *= br_tToHu_limit / br_tToHq_assumed;
-  else if (currentFileTitle.Contains("eta_hct"))
+  else if (currentFileTitle.Contains("eta_hct") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("HCT")))
     weight *= br_tToHc_limit / br_tToHq_assumed;
   //if (currentFileTitle.Contains("eta_hut") || currentFileTitle.Contains("eta_hct"))
   //  weight *= 137.2/41.5; // scale lumi of 2017 samples to run II lumi
@@ -800,11 +817,11 @@ double scale_bkg(TString currentFileTitle, TString bkg_options, int processId, T
 
     else if (bkg_options == "impute") {
       if ((currentFileTitle.Contains("EGamma") || currentFileTitle.Contains("DoubleEG")) && processId == 18)
-	return qcd_gjets_impute_factor_hadronic_runII;
+        return qcd_gjets_impute_factor_hadronic_runII;
       else if (currentFileTitle.Contains("DiPhotonJetsBox"))
-	return diphoton_impute_factor_hadronic_runII;
+        return diphoton_impute_factor_hadronic_runII;
       else
-	return 1.0;
+        return 1.0;
     }
 
     else if (bkg_options == "impute_no_scale") 

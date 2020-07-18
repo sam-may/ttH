@@ -39,12 +39,12 @@ if do_diphoton_fits:
     #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "none" --bdt "none"' % (args.baby_version, args.tag + "_no_scale"))
     os.chdir("Plots")
     for plot_type in plot_types:
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "ttH" --plot_type "%s" --plot_labels "ttH Hadronic|Loose MVA Presel.|Pre-Fit"' % (args.tag + "_impute_no_scale", plot_type))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|TTJets|VG|Other" --signals "ttH" --plot_type "%s" --plot_labels "ttH Hadronic|Loose MVA Presel.|Pre-Fit"' % (args.tag + "_no_scale", plot_type))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "ttH" --plot_type "%s" --plot_labels "|"' % (args.tag + "_impute_no_scale", plot_type))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|TTJets|VG|Other" --signals "ttH" --plot_type "%s" --plot_labels "|"' % (args.tag + "_no_scale", plot_type))
 
     # Do fit
     os.chdir("../tt_template_fit/")
-    #parallel_utils.run('python do_fits_impute.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --jet_bin "2+"' % (args.tag + "_impute_no_scale"))
+    parallel_utils.run('python do_fits_impute.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --jet_bin "2+"' % (args.tag + "_impute_no_scale"))
     #parallel_utils.run('python do_fits_qcd.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --jet_bin "2+"' % (args.tag + "_no_scale"))
 
     os.chdir("../")
@@ -77,7 +77,8 @@ if do_ttZ:
     #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_ttZ_Tight_CR" --bkg_options "impute" --bdt "none" --do_systematics' % (args.baby_version, args.tag + "_impute"))
     os.chdir("Plots")
     for plot_type in plot_types:
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_ttZ_Tight_CR_%s_histogramsRunII.root" --backgrounds "DY|Other2|TTZ" --signals "ttH" --plot_type "%s" --plot_labels "Hadronic Channel|t#bar{t}Z Control Region|N_{jets} #geq 5|N_{b-jets} (tight) #geq 2"' % (args.tag + "_impute", plot_type))
+        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_ttZ_Tight_CR_%s_histogramsRunII.root" --backgrounds "DY|Other2|TTZ" --signals "ttH" --plot_type "%s" --plot_labels "Hadronic Channel|t#bar{t}Z Control Region|N_{jets} #geq 5|N_{b-jets} (tight) #geq 2"' % (args.tag + "_impute", plot_type))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_ttZ_Tight_CR_%s_histogramsRunII.root" --backgrounds "DY|Other2|TTZ" --signals "ttH" --plot_type "%s" ' % (args.tag + "_impute", plot_type))
 
 
 do_mvas = False
@@ -159,6 +160,7 @@ do_paper_plots = False
 if do_paper_plots:
     os.chdir("../Loopers/")
     #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --do_systematics' % (args.baby_version, args.tag + "_impute"))
+    #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" ' % (args.baby_version, args.tag + "_impute"))
     os.chdir("Plots")
     for plot_type in plot_types:
         parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute", plot_type))

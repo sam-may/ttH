@@ -1,8 +1,10 @@
 How to merge individual commits from another branch into your branch ("mybranch"):
 
+`git add remote remote-name`
+`git fetch remote-name`
 `git stash`
-`git checkout other-user-name/other-branch-name`
-`git pull other-user-name other-branch-name`
+`git checkout remote-name/other-branch-name`
+`git pull remote-name other-branch-name`
 `git log --oneline` (this gives you all the recent commits)
 `git checkout mybranch`
 `git cherry-pick commit_1 ... commit_n`

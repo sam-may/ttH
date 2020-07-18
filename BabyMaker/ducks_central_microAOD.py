@@ -22,6 +22,7 @@ parser.add_argument("--use_gridftp", help = "copy the tarball with gfal-copy", a
 parser.add_argument("--use_wget", help = "copy the tarball with wget, utilizing squid caches at sites", action = "store_true")
 parser.add_argument("--get_nevents", help = "write json file with n_events for each sample in catalog (don't submit jobs)", action = "store_true")
 parser.add_argument("--ttH_and_tH_only", help = "only submit jobs for ttH and tH samples", action = "store_true")
+parser.add_argument("--run_2017F_only", help = "only submit jobs for DoubleEG Run2017F", action = "store_true")
 parser.add_argument("--local_only", help = "only submit jobs for local microAOD samples", action = "store_true")
 args = parser.parse_args()
 
@@ -104,16 +105,19 @@ def fpo(sample):
     elif any([x in sample for x in ["DoubleEG", "EGamma"]]):
         return 20
     elif any([x in sample for x in ["DYJetsToLL", "QCD", "GJets_HT", "TTJets", "GJet-Pt"]]):
-        return 20
+        return 10
     else:
         return 10
 
-blacklist = ["SingleElectron", "Box1BJet", "Box2BJets", "GJet_Pt", "ZH_HtoGG", "bbHToGG", "JHU"]
+blacklist = ["SingleElectron", "Box1BJet", "Box2BJets", "GJet_Pt", "ZH_HtoGG", "bbHToGG", "JHU", "ZNuNuGJets", "VBFHiggs", "VBFHH"]
 def skip(sample):
     if any([x in sample for x in blacklist]):
         return True
     if args.ttH_and_tH_only:
         if not ("ttHJetToGG" in sample or "ttHToGG" in sample or "THQ" in sample or "THW" in sample or "EGamma" in sample or "DoubleEG" in sample):
+            return True
+    if args.run_2017F_only:
+        if not "DoubleEG" in sample:
             return True
     return False
 
@@ -125,22 +129,49 @@ class file:
     def get_nevents(self):
         return 1
 
-local_samples = {
-        "tHq_JHUCPEven" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples/JHUSample_tHq_cpeven_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
-        "tHq_JHUCPOdd" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples/JHUSample_tHq_cpodd_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
-        "tHq_JHUCPkm" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples//JHUSample_tHq_cp_k0_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
-        "tHq_JHUCPk0" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples//JHUSample_tHq_cp_km_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
+#local_samples = {
+#        "tHq_JHUCPEven" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples/JHUSample_tHq_cpeven_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
+#        "tHq_JHUCPOdd" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples/JHUSample_tHq_cpodd_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
+#        "tHq_JHUCPkm" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples//JHUSample_tHq_cp_k0_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
+#        "tHq_JHUCPk0" : { "location" : "/hadoop/cms/store/user/smay/ttH/tH_CP_Samples//JHUSample_tHq_cp_km_2017_microAOD_v1.1_20May2020/", "fpo" : 5, "year" : "2017"},
         #"tHq_" : { "location" : "/hadoop/cms/store/user/hmei/miniaod_runII/JHUSample_tHq_km_2017_20200525_STEP4_v1/
-}
+#}
+
+local_samples_list = glob.glob("/hadoop/cms/store/user/smay/FCNC/MicroAOD/*FCNC*v1.2_29May2020/")
+local_samples = {}
+
+def get_year(local_sample):
+    if "RunIISummer16MiniAODv3" in local_sample:
+        return "2016"
+    if "RunIIFall17MiniAODv2" in local_sample:
+        return "2017"
+    if "RunIIAutumn18MiniAOD" in local_sample:
+        return "2018"
+    for year in ["2016", "2017", "2018"]:
+        if year in local_sample:
+            return year
+    return "-1"
+
+for sample in local_samples_list:
+    ds = sample.split("/")[-2]
+    location = sample
+    fpo_ = 10 if "private" in sample else 1
+    year = get_year(sample)
+    local_samples[ds] = { "location" : location, "fpo" : fpo_, "year" : year }
+
 
 total_summary = {}
 first_run = False
 while True:
     allcomplete = True
     for sample, info in local_samples.items():
+        if skip(sample):
+            continue
         dataset = sample
         year = info["year"]
         metis_sample = DirectorySample(dataset = dataset, location = info["location"]) 
+
+        print dataset, info["fpo"]
 
         task = CondorTask(
                 sample = metis_sample,
@@ -171,6 +202,9 @@ while True:
                 for production in samples[sample][year].keys():
                     if production == "scale1fb":
                         continue
+                    if args.run_2017F_only:
+                        if not "2017F" in production:
+                            continue
                     dataset = sample + "_" + production
                     files = samples[sample][year][production]["files"]
                     if files == -1:

@@ -273,7 +273,7 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                 syst_ext = "_" + syst_ext;
             cout << "Grabbing this tree: " << "tagsDumper/trees/_13TeV_TTHHadronicTag" + syst_ext << endl;
             TTree *tree; 
-            if (currentFileTitle.Contains("v4.") && !currentFileTitle.Contains("FCNC"))
+            if ((currentFileTitle.Contains("v4.") && !currentFileTitle.Contains("FCNC")) || currentFileTitle.Contains("v5."))
                 tree = (TTree*)file.Get("tagsDumper/trees/_13TeV_TTHHadronicTag" + syst_ext);
             else
                 tree = (TTree*)file.Get("tthHadronicTagDumper/trees/tth_13TeV_all");
@@ -350,7 +350,7 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               int label = isData ? 2 : (isSignal ? 1 : 0); // 0 = bkg, 1 = signal, 2 = data
 
               if (year.Contains("RunII") && !isData) {
-                double scale1fb = currentFileTitle.Contains("RunIISummer16MiniAOD") ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIAutumn18MiniAOD") ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
+                double scale1fb = (currentFileTitle.Contains("RunIISummer16MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2016_microAOD"))) ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( (currentFileTitle.Contains("RunIIAutumn18MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2018_microAOD"))) ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
                 if (mYear == "2016")
                   evt_weight *= scale1fb * lumi_2016 * weight();
                 else if (mYear == "2017")
@@ -614,8 +614,8 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               //vProcess[processId]->fill_histogram("h" + syst_ext + "TopTagger_topMass", topTag_topMass(), evt_weight, vId);
               //vProcess[processId]->fill_histogram("h" + syst_ext + "TopTagger_WMass", topTag_WMass(), evt_weight, vId);
 
-              vProcess[processId]->fill_histogram("h" + syst_ext + "PixelSeed", leadPixelSeed(), evt_weight, vId);
-              vProcess[processId]->fill_histogram("h" + syst_ext + "PixelSeed", subleadPixelSeed(), evt_weight, vId);
+              //vProcess[processId]->fill_histogram("h" + syst_ext + "PixelSeed", leadPixelSeed(), evt_weight, vId);
+              //vProcess[processId]->fill_histogram("h" + syst_ext + "PixelSeed", subleadPixelSeed(), evt_weight, vId);
 
               /*
               if (abs(leadEta()) < barrel_eta)
@@ -674,8 +674,8 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               if (jet3_pt() != -1)      vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3BTag", btag_scores[2], evt_weight, vId);
               if (jet4_pt() != -1)      vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4BTag", btag_scores[3], evt_weight, vId);
 
-              if (bjet1_pt() != -1)     vProcess[processId]->fill_histogram("h" + syst_ext + "bJet1pT", bjet1_pt(), evt_weight, vId);
-              if (bjet2_pt() != -1)     vProcess[processId]->fill_histogram("h" + syst_ext + "bJet2pT", bjet2_pt(), evt_weight, vId);
+              //if (bjet1_pt() != -1)     vProcess[processId]->fill_histogram("h" + syst_ext + "bJet1pT", bjet1_pt(), evt_weight, vId);
+              //if (bjet2_pt() != -1)     vProcess[processId]->fill_histogram("h" + syst_ext + "bJet2pT", bjet2_pt(), evt_weight, vId);
 
               // Leading Photon
               vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt", leadPt(), evt_weight, vId);
@@ -817,6 +817,11 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                   vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_3x3_tqh_deltaR_dipho", chi2_3x3_tqh_deltaR_dipho_, evt_weight, vId);
               }
 
+              vProcess[processId]->fill_2D_histogram("h" + syst_ext + "PhotonMaxIDMVA_NJets", maxID, n_jets(), evt_weight, vId);
+              vProcess[processId]->fill_2D_histogram("h" + syst_ext + "PhotonMinIDMVA_NJets", minID, n_jets(), evt_weight, vId);
+              vProcess[processId]->fill_2D_histogram("h" + syst_ext + "PhotonMaxIDMVA_NJets_entries", maxID, n_jets(), 1, vId);
+              vProcess[processId]->fill_2D_histogram("h" + syst_ext + "PhotonMinIDMVA_NJets_entries", minID, n_jets(), 1, vId);
+              
               //if (njets_ >= 5)
               //  vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonMinIDMVA_NJets5+", minID, evt_weight, vId);
               //if (njets_ >= 7)

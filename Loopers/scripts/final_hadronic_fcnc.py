@@ -59,17 +59,18 @@ if do_diphoton_fits:
 # Run imputing with fit
 do_imputing = False
 if do_imputing:
-    parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
+    #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
     os.chdir("Plots")
     for plot_type in plot_types:
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
+        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
 
     # Run QCD + X with fit
     os.chdir("../")
-    parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "scale_diphoton" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_scale_diphoton", syst))
+    #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "scale_diphoton" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_scale_diphoton", syst))
     os.chdir("Plots")
-    for plot_type in plot_types:
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_scale_diphoton_FCNC", plot_type))
+    #for plot_type in plot_types:
+    #    parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_scale_diphoton_FCNC", plot_type))
     os.chdir("../")
 
 do_babies = False
@@ -158,7 +159,7 @@ if do_limits:
     os.chdir("../Binning/")
 
     for coupling in ["Hut", "Hct"]:
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 12 --tag "1d_baseline" --mvas "mva_score"' % (coupling.lower(), args.tag, coupling))
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 12 --tag "2d_baseline" --mvas "mva_nonres_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling))
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 12 --tag "2d_impute" --mvas "mva_nonres_impute_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling))
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 12 --tag "2d_addTopTaggers" --mvas "mva_smhiggs_score,mva_nonres_score"' % (coupling.lower(), args.tag, coupling))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "1d_baseline_%s" --mvas "mva_score"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_baseline_%s" --mvas "mva_nonres_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_impute_%s" --mvas "mva_nonres_impute_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_%s" --mvas "mva_smhiggs_score,mva_nonres_score"' % (coupling.lower(), args.tag, coupling, args.tag))

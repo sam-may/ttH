@@ -21,7 +21,11 @@ with open(samples_file) as f_in:
   samples = json.load(f_in)
 
 for sample, info in samples.iteritems():
-  process = str(sample.split("/")[1])
+  s = sample.split("/")
+  if len(s) > 1:
+      process = str(sample.split("/")[1])
+  else:
+      process = sample
   if not process in scale1fb:
     scale1fb[process] = {}
     scale1fb[process]["xs"] = 1
@@ -51,15 +55,22 @@ with open("cross_sections_flashgg.json") as json_file:
 # Now calculate n_events and scale1fb
 for sample, info in samples.iteritems():
   sample_split = sample.split("/")
-  process = str(sample_split[1])
-  production = str(sample_split[2])
+  if len(sample_split) > 1:
+      process = str(sample_split[1])
+      production = str(sample_split[2])
+  else:
+      process = sample
+      if "2016_20200522_v1_STEP4_v1" in process:
+          production = "private_2016"
+      elif "2018_20200522_v1_STEP4_v1" in process:
+          production = "private_2018"
   scale1fb[process]["productions"][production] = info
 
 years = {	
-		"2016" : "RunIISummer16MiniAODv3",
-		"2017" : "RunIIFall17MiniAODv2",
-		"2018" : "RunIIAutumn18MiniAOD",
-	}
+		"2016" : ["RunIISummer16MiniAODv3", "private_2016"],
+		"2017" : ["RunIIFall17MiniAODv2"],
+		"2018" : ["RunIIAutumn18MiniAOD", "private_2018"],
+}
 
 for year, year_info in years.iteritems():
   for sample, sample_info in scale1fb.iteritems():
@@ -67,7 +78,11 @@ for year, year_info in years.iteritems():
     n_events_pos = 0
     n_events_neg = 0
     for production, production_info in sample_info["productions"].iteritems():
-      if year_info not in production:
+      matched = False 
+      for a in year_info:
+        if a in production:
+          matched = True
+      if not matched:
         continue
       if "BSandPUSummer16" in production and "ttHJetToGG" in sample: #skip this one, not sure what it is
 	    production_info["comment"] = "unused in scale1fb calc"

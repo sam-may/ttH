@@ -637,6 +637,34 @@ void make_plot(TCanvas* c1, TFile* file, string output_name, TString hist_name, 
         c->skip_signal();
     }
 
+    else if (hist_name.Contains("FCNC") && hist_name.Contains("BDT")) {
+        vector<double> vlines;
+        if (output.Contains("Leptonic") && hist_name.Contains("Hut_BDT_NRB"))
+            vlines = { 0.772895, 0.810267, 0.9323 };
+        else if (output.Contains("Leptonic") && hist_name.Contains("Hct_BDT_NRB"))
+            vlines = { 0.776727, 0.808134, 0.9054 };
+        if (output.Contains("Leptonic") && hist_name.Contains("Hut_BDT_SMH"))
+            vlines = { 0.437164, 0.619253, 0.766727 };
+        else if (output.Contains("Leptonic") && hist_name.Contains("Hct_BDT_SMH"))
+            vlines = { 0.283887, 0.500838, 0.706084 }; 
+        else if (output.Contains("Hadronic") && hist_name.Contains("Hut_BDT_NRB"))
+            vlines = { 0.922917, 0.947899, 0.978783, 0.9882 }; 
+        else if (output.Contains("Hadronic") && hist_name.Contains("Hct_BDT_NRB"))
+            vlines = { 0.868698, 0.968178, 0.984509, 0.9913 }; 
+        if (output.Contains("Hadronic") && hist_name.Contains("Hut_BDT_SMH"))
+            vlines = { 0.541095, 0.609071, 0.812856, 0.909529 }; 
+        else if (output.Contains("Hadronic") && hist_name.Contains("Hct_BDT_SMH"))
+            vlines = { 0.632789, 0.774256, 0.819160, 0.895076 }; 
+        
+        for (unsigned int i = 0; i < vlines.size(); i++) {
+            vlines[i] = -log(1-vlines[i]);
+        }
+
+        c->give_vlines(vlines);
+        c->give_vshade({0.,vlines[0]});
+
+    }
+
     else if (hist_name.Contains("MVA_transf")) {
         vector<double> vlines;
         if (output.Contains("Leptonic") && output.Contains("hut")) {
@@ -1184,10 +1212,18 @@ int main(int argc, char* argv[])
         make_plot(c3, vFiles[i], vNames[i], "htthMVA_RunII_transf", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, false);
         //make_plot(c3, vFiles[i], vNames[i], "htthMVA_RunII_transf_bounded_v2", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, false);
     }
-    if (file_path.Contains("hct") || file_path.Contains("hut")) 
+    if (file_path.Contains("hct") || file_path.Contains("hut")) { 
         make_plot(c1, vFiles[i], vNames[i], "hMVA_transf", "MVA Score", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
 
-
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_BDT_NRB", "BDT-NRB (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_NRB", "BDT-NRB (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_BDT_SMH", "BDT-SMH (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_SMH", "BDT-SMH (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_BDT_NRB_SRs", "BDT-NRB (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_NRB_SRs", "BDT-NRB (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_BDT_SMH_SRs", "BDT-SMH (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_SMH_SRs", "BDT-SMH (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+    }
     if (tag == "Leptonic") {
         make_plot(c1, vFiles[i], vNames[i], "hchi2_neutrino_pz", "Neutrino p_{z} [GeV]", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);
         make_plot(c1, vFiles[i], vNames[i], "hchi2_tbw_mass", "Leptonic top mass [GeV]", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);

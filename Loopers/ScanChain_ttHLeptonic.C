@@ -372,6 +372,7 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
             continue; //some pu weights are nan/inf and this causes problems for histos 
               }
 
+              /* already taken care of in flashgg now
               if (l1_prefire != "" && !isData && mYear != "2018") {
                 //cout << "Prefire prob: " << prefireProbability() << endl;
                 //cout << "Undoing L1 prefire prob: " << 1. / (1. - prefireProbability()) << endl;
@@ -383,6 +384,7 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                 else if (l1_prefire == "down")
                     evt_weight *= (1. - (prefireProbability()*0.8));
               }
+              */
 
               int label = isData ? 2 : (isSignal ? 1 : 0); // 0 = bkg, 1 = signal, 2 = data
 

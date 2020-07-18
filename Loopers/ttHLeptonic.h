@@ -1,6 +1,6 @@
 // -*- C++ -*-
 // This is a header file generated with the command:
-// makeCMS3ClassFiles("merged_babies/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1_ttH_Babies_RunIIv4.15/merged_ntuple_1.root", "tagsDumper/trees/_13TeV_TTHLeptonicTag", "ttHLeptonic", "tas", "cms3")
+// makeCMS3ClassFiles("/hadoop/cms/store/user/smay/ttH/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1_ttH_Babies_RunIIv5.3/merged_ntuple_11.root", "tagsDumper/trees/_13TeV_TTHLeptonicTag", "ttHLeptonic", "tas", "cms3")
 
 #ifndef ttHLeptonic_H
 #define ttHLeptonic_H
@@ -169,6 +169,9 @@ class ttHLeptonic {
   float    jet_udsgdiscriminant7_;
   TBranch *jet_udsgdiscriminant7_branch;
   bool     jet_udsgdiscriminant7_isLoaded;
+  float    fcnc_bdt_nrb_hut_score_;
+  TBranch *fcnc_bdt_nrb_hut_score_branch;
+  bool     fcnc_bdt_nrb_hut_score_isLoaded;
   float    jet_phi3_;
   TBranch *jet_phi3_branch;
   bool     jet_phi3_isLoaded;
@@ -259,9 +262,9 @@ class ttHLeptonic {
   float    jet_phi11_;
   TBranch *jet_phi11_branch;
   bool     jet_phi11_isLoaded;
-  float    sublead_MomMomID_;
-  TBranch *sublead_MomMomID_branch;
-  bool     sublead_MomMomID_isLoaded;
+  float    sigmaMoM_decorr_;
+  TBranch *sigmaMoM_decorr_branch;
+  bool     sigmaMoM_decorr_isLoaded;
   float    jet_udsgdiscriminant10_;
   TBranch *jet_udsgdiscriminant10_branch;
   bool     jet_udsgdiscriminant10_isLoaded;
@@ -469,6 +472,9 @@ class ttHLeptonic {
   float    Mjj_;
   TBranch *Mjj_branch;
   bool     Mjj_isLoaded;
+  float    sublead_MomMomID_;
+  TBranch *sublead_MomMomID_branch;
+  bool     sublead_MomMomID_isLoaded;
   float    jet_udsgdiscriminant5_;
   TBranch *jet_udsgdiscriminant5_branch;
   bool     jet_udsgdiscriminant5_isLoaded;
@@ -526,6 +532,9 @@ class ttHLeptonic {
   float    muonLeadIso_;
   TBranch *muonLeadIso_branch;
   bool     muonLeadIso_isLoaded;
+  float    fcnc_bdt_smh_hut_score_;
+  TBranch *fcnc_bdt_smh_hut_score_branch;
+  bool     fcnc_bdt_smh_hut_score_isLoaded;
   float    subleadPhi_;
   TBranch *subleadPhi_branch;
   bool     subleadPhi_isLoaded;
@@ -568,6 +577,9 @@ class ttHLeptonic {
   float    sublead_ptoM_;
   TBranch *sublead_ptoM_branch;
   bool     sublead_ptoM_isLoaded;
+  float    fcnc_bdt_nrb_hct_score_;
+  TBranch *fcnc_bdt_nrb_hct_score_branch;
+  bool     fcnc_bdt_nrb_hct_score_isLoaded;
   float    jet_bbdiscriminant6_;
   TBranch *jet_bbdiscriminant6_branch;
   bool     jet_bbdiscriminant6_isLoaded;
@@ -697,6 +709,9 @@ class ttHLeptonic {
   float    ele2_charge_;
   TBranch *ele2_charge_branch;
   bool     ele2_charge_isLoaded;
+  float    fcnc_bdt_smh_hct_score_;
+  TBranch *fcnc_bdt_smh_hct_score_branch;
+  bool     fcnc_bdt_smh_hct_score_isLoaded;
   float    jet_bdiscriminant15_;
   TBranch *jet_bdiscriminant15_branch;
   bool     jet_bdiscriminant15_isLoaded;
@@ -766,9 +781,6 @@ class ttHLeptonic {
   float    tthMVA_RunII_;
   TBranch *tthMVA_RunII_branch;
   bool     tthMVA_RunII_isLoaded;
-  float    prefireProbability_;
-  TBranch *prefireProbability_branch;
-  bool     prefireProbability_isLoaded;
   float    leadPhi_;
   TBranch *leadPhi_branch;
   bool     leadPhi_isLoaded;
@@ -903,6 +915,7 @@ void LoadAllBranches();
   const float &sublead_Prompt();
   const float &leadIDMVA();
   const float &jet_udsgdiscriminant7();
+  const float &fcnc_bdt_nrb_hut_score();
   const float &jet_phi3();
   const float &jet_cdiscriminant9();
   const float &lead_PhoGenPt();
@@ -933,7 +946,7 @@ void LoadAllBranches();
   const float &jet_energy10();
   const float &jet_eta7();
   const float &jet_phi11();
-  const float &sublead_MomMomID();
+  const float &sigmaMoM_decorr();
   const float &jet_udsgdiscriminant10();
   const float &MvaLinearSystDown01sigma();
   const float &jet_phi1();
@@ -1003,6 +1016,7 @@ void LoadAllBranches();
   const float &subleadEt();
   const float &lead_closest_gen_dR();
   const float &Mjj();
+  const float &sublead_MomMomID();
   const float &jet_udsgdiscriminant5();
   const float &subleadIDMVA();
   const float &jet_cdiscriminant11();
@@ -1022,6 +1036,7 @@ void LoadAllBranches();
   const float &jet_pt10();
   const float &jet_udsgdiscriminant1();
   const float &muonLeadIso();
+  const float &fcnc_bdt_smh_hut_score();
   const float &subleadPhi();
   const float &jet_cdiscriminant13();
   const float &subleadPixelSeed();
@@ -1036,6 +1051,7 @@ void LoadAllBranches();
   const float &jet_cdiscriminant10();
   const float &lead_hoe();
   const float &sublead_ptoM();
+  const float &fcnc_bdt_nrb_hct_score();
   const float &jet_bbdiscriminant6();
   const float &jet_energy15();
   const float &leadPixelSeed();
@@ -1079,6 +1095,7 @@ void LoadAllBranches();
   const float &sublead_PassFrix();
   const float &ele1_phi();
   const float &ele2_charge();
+  const float &fcnc_bdt_smh_hct_score();
   const float &jet_bdiscriminant15();
   const float &jet_phi9();
   const float &jet_energy13();
@@ -1102,7 +1119,6 @@ void LoadAllBranches();
   const float &jet_energy5();
   const float &nElecMedium();
   const float &tthMVA_RunII();
-  const float &prefireProbability();
   const float &leadPhi();
   const float &subleadR9();
   const float &jet_udsgdiscriminant11();
@@ -1188,6 +1204,7 @@ namespace tas {
   const float &sublead_Prompt();
   const float &leadIDMVA();
   const float &jet_udsgdiscriminant7();
+  const float &fcnc_bdt_nrb_hut_score();
   const float &jet_phi3();
   const float &jet_cdiscriminant9();
   const float &lead_PhoGenPt();
@@ -1218,7 +1235,7 @@ namespace tas {
   const float &jet_energy10();
   const float &jet_eta7();
   const float &jet_phi11();
-  const float &sublead_MomMomID();
+  const float &sigmaMoM_decorr();
   const float &jet_udsgdiscriminant10();
   const float &MvaLinearSystDown01sigma();
   const float &jet_phi1();
@@ -1288,6 +1305,7 @@ namespace tas {
   const float &subleadEt();
   const float &lead_closest_gen_dR();
   const float &Mjj();
+  const float &sublead_MomMomID();
   const float &jet_udsgdiscriminant5();
   const float &subleadIDMVA();
   const float &jet_cdiscriminant11();
@@ -1307,6 +1325,7 @@ namespace tas {
   const float &jet_pt10();
   const float &jet_udsgdiscriminant1();
   const float &muonLeadIso();
+  const float &fcnc_bdt_smh_hut_score();
   const float &subleadPhi();
   const float &jet_cdiscriminant13();
   const float &subleadPixelSeed();
@@ -1321,6 +1340,7 @@ namespace tas {
   const float &jet_cdiscriminant10();
   const float &lead_hoe();
   const float &sublead_ptoM();
+  const float &fcnc_bdt_nrb_hct_score();
   const float &jet_bbdiscriminant6();
   const float &jet_energy15();
   const float &leadPixelSeed();
@@ -1364,6 +1384,7 @@ namespace tas {
   const float &sublead_PassFrix();
   const float &ele1_phi();
   const float &ele2_charge();
+  const float &fcnc_bdt_smh_hct_score();
   const float &jet_bdiscriminant15();
   const float &jet_phi9();
   const float &jet_energy13();
@@ -1387,7 +1408,6 @@ namespace tas {
   const float &jet_energy5();
   const float &nElecMedium();
   const float &tthMVA_RunII();
-  const float &prefireProbability();
   const float &leadPhi();
   const float &subleadR9();
   const float &jet_udsgdiscriminant11();

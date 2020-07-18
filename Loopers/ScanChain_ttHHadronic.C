@@ -375,6 +375,7 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                 evt_weight *= puweight();
               }
 
+              /* already taken care of in flashgg now
               if (l1_prefire != "" && !isData && mYear != "2018") {
                 //cout << "Prefire prob: " << prefireProbability() << endl;
                 //cout << "Undoing L1 prefire prob: " << 1. / (1. - prefireProbability()) << endl;
@@ -386,6 +387,7 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                 else if (l1_prefire == "down")
                     evt_weight *= (1. - (prefireProbability()*0.8));
               }
+              */
 
               // Impute, if applicable
               maxIDMVA_ = leadIDMVA() > subleadIDMVA() ? leadIDMVA() : subleadIDMVA();

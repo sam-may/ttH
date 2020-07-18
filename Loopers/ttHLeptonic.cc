@@ -103,6 +103,8 @@ void ttHLeptonic::Init(TTree *tree) {
   if (leadIDMVA_branch) leadIDMVA_branch->SetAddress(&leadIDMVA_);
   jet_udsgdiscriminant7_branch = tree->GetBranch("jet_udsgdiscriminant7");
   if (jet_udsgdiscriminant7_branch) jet_udsgdiscriminant7_branch->SetAddress(&jet_udsgdiscriminant7_);
+  fcnc_bdt_nrb_hut_score_branch = tree->GetBranch("fcnc_bdt_nrb_hut_score");
+  if (fcnc_bdt_nrb_hut_score_branch) fcnc_bdt_nrb_hut_score_branch->SetAddress(&fcnc_bdt_nrb_hut_score_);
   jet_phi3_branch = tree->GetBranch("jet_phi3");
   if (jet_phi3_branch) jet_phi3_branch->SetAddress(&jet_phi3_);
   jet_cdiscriminant9_branch = tree->GetBranch("jet_cdiscriminant9");
@@ -163,8 +165,8 @@ void ttHLeptonic::Init(TTree *tree) {
   if (jet_eta7_branch) jet_eta7_branch->SetAddress(&jet_eta7_);
   jet_phi11_branch = tree->GetBranch("jet_phi11");
   if (jet_phi11_branch) jet_phi11_branch->SetAddress(&jet_phi11_);
-  sublead_MomMomID_branch = tree->GetBranch("sublead_MomMomID");
-  if (sublead_MomMomID_branch) sublead_MomMomID_branch->SetAddress(&sublead_MomMomID_);
+  sigmaMoM_decorr_branch = tree->GetBranch("sigmaMoM_decorr");
+  if (sigmaMoM_decorr_branch) sigmaMoM_decorr_branch->SetAddress(&sigmaMoM_decorr_);
   jet_udsgdiscriminant10_branch = tree->GetBranch("jet_udsgdiscriminant10");
   if (jet_udsgdiscriminant10_branch) jet_udsgdiscriminant10_branch->SetAddress(&jet_udsgdiscriminant10_);
   MvaLinearSystDown01sigma_branch = tree->GetBranch("MvaLinearSystDown01sigma");
@@ -303,6 +305,8 @@ void ttHLeptonic::Init(TTree *tree) {
   if (lead_closest_gen_dR_branch) lead_closest_gen_dR_branch->SetAddress(&lead_closest_gen_dR_);
   Mjj_branch = tree->GetBranch("Mjj");
   if (Mjj_branch) Mjj_branch->SetAddress(&Mjj_);
+  sublead_MomMomID_branch = tree->GetBranch("sublead_MomMomID");
+  if (sublead_MomMomID_branch) sublead_MomMomID_branch->SetAddress(&sublead_MomMomID_);
   jet_udsgdiscriminant5_branch = tree->GetBranch("jet_udsgdiscriminant5");
   if (jet_udsgdiscriminant5_branch) jet_udsgdiscriminant5_branch->SetAddress(&jet_udsgdiscriminant5_);
   subleadIDMVA_branch = tree->GetBranch("subleadIDMVA");
@@ -341,6 +345,8 @@ void ttHLeptonic::Init(TTree *tree) {
   if (jet_udsgdiscriminant1_branch) jet_udsgdiscriminant1_branch->SetAddress(&jet_udsgdiscriminant1_);
   muonLeadIso_branch = tree->GetBranch("muonLeadIso");
   if (muonLeadIso_branch) muonLeadIso_branch->SetAddress(&muonLeadIso_);
+  fcnc_bdt_smh_hut_score_branch = tree->GetBranch("fcnc_bdt_smh_hut_score");
+  if (fcnc_bdt_smh_hut_score_branch) fcnc_bdt_smh_hut_score_branch->SetAddress(&fcnc_bdt_smh_hut_score_);
   subleadPhi_branch = tree->GetBranch("subleadPhi");
   if (subleadPhi_branch) subleadPhi_branch->SetAddress(&subleadPhi_);
   jet_cdiscriminant13_branch = tree->GetBranch("jet_cdiscriminant13");
@@ -369,6 +375,8 @@ void ttHLeptonic::Init(TTree *tree) {
   if (lead_hoe_branch) lead_hoe_branch->SetAddress(&lead_hoe_);
   sublead_ptoM_branch = tree->GetBranch("sublead_ptoM");
   if (sublead_ptoM_branch) sublead_ptoM_branch->SetAddress(&sublead_ptoM_);
+  fcnc_bdt_nrb_hct_score_branch = tree->GetBranch("fcnc_bdt_nrb_hct_score");
+  if (fcnc_bdt_nrb_hct_score_branch) fcnc_bdt_nrb_hct_score_branch->SetAddress(&fcnc_bdt_nrb_hct_score_);
   jet_bbdiscriminant6_branch = tree->GetBranch("jet_bbdiscriminant6");
   if (jet_bbdiscriminant6_branch) jet_bbdiscriminant6_branch->SetAddress(&jet_bbdiscriminant6_);
   jet_energy15_branch = tree->GetBranch("jet_energy15");
@@ -455,6 +463,8 @@ void ttHLeptonic::Init(TTree *tree) {
   if (ele1_phi_branch) ele1_phi_branch->SetAddress(&ele1_phi_);
   ele2_charge_branch = tree->GetBranch("ele2_charge");
   if (ele2_charge_branch) ele2_charge_branch->SetAddress(&ele2_charge_);
+  fcnc_bdt_smh_hct_score_branch = tree->GetBranch("fcnc_bdt_smh_hct_score");
+  if (fcnc_bdt_smh_hct_score_branch) fcnc_bdt_smh_hct_score_branch->SetAddress(&fcnc_bdt_smh_hct_score_);
   jet_bdiscriminant15_branch = tree->GetBranch("jet_bdiscriminant15");
   if (jet_bdiscriminant15_branch) jet_bdiscriminant15_branch->SetAddress(&jet_bdiscriminant15_);
   jet_phi9_branch = tree->GetBranch("jet_phi9");
@@ -501,8 +511,6 @@ void ttHLeptonic::Init(TTree *tree) {
   if (nElecMedium_branch) nElecMedium_branch->SetAddress(&nElecMedium_);
   tthMVA_RunII_branch = tree->GetBranch("tthMVA_RunII");
   if (tthMVA_RunII_branch) tthMVA_RunII_branch->SetAddress(&tthMVA_RunII_);
-  prefireProbability_branch = tree->GetBranch("prefireProbability");
-  if (prefireProbability_branch) prefireProbability_branch->SetAddress(&prefireProbability_);
   leadPhi_branch = tree->GetBranch("leadPhi");
   if (leadPhi_branch) leadPhi_branch->SetAddress(&leadPhi_);
   subleadR9_branch = tree->GetBranch("subleadR9");
@@ -613,6 +621,7 @@ void ttHLeptonic::GetEntry(unsigned int idx) {
   sublead_Prompt_isLoaded = false;
   leadIDMVA_isLoaded = false;
   jet_udsgdiscriminant7_isLoaded = false;
+  fcnc_bdt_nrb_hut_score_isLoaded = false;
   jet_phi3_isLoaded = false;
   jet_cdiscriminant9_isLoaded = false;
   lead_PhoGenPt_isLoaded = false;
@@ -643,7 +652,7 @@ void ttHLeptonic::GetEntry(unsigned int idx) {
   jet_energy10_isLoaded = false;
   jet_eta7_isLoaded = false;
   jet_phi11_isLoaded = false;
-  sublead_MomMomID_isLoaded = false;
+  sigmaMoM_decorr_isLoaded = false;
   jet_udsgdiscriminant10_isLoaded = false;
   MvaLinearSystDown01sigma_isLoaded = false;
   jet_phi1_isLoaded = false;
@@ -713,6 +722,7 @@ void ttHLeptonic::GetEntry(unsigned int idx) {
   subleadEt_isLoaded = false;
   lead_closest_gen_dR_isLoaded = false;
   Mjj_isLoaded = false;
+  sublead_MomMomID_isLoaded = false;
   jet_udsgdiscriminant5_isLoaded = false;
   subleadIDMVA_isLoaded = false;
   jet_cdiscriminant11_isLoaded = false;
@@ -732,6 +742,7 @@ void ttHLeptonic::GetEntry(unsigned int idx) {
   jet_pt10_isLoaded = false;
   jet_udsgdiscriminant1_isLoaded = false;
   muonLeadIso_isLoaded = false;
+  fcnc_bdt_smh_hut_score_isLoaded = false;
   subleadPhi_isLoaded = false;
   jet_cdiscriminant13_isLoaded = false;
   subleadPixelSeed_isLoaded = false;
@@ -746,6 +757,7 @@ void ttHLeptonic::GetEntry(unsigned int idx) {
   jet_cdiscriminant10_isLoaded = false;
   lead_hoe_isLoaded = false;
   sublead_ptoM_isLoaded = false;
+  fcnc_bdt_nrb_hct_score_isLoaded = false;
   jet_bbdiscriminant6_isLoaded = false;
   jet_energy15_isLoaded = false;
   leadPixelSeed_isLoaded = false;
@@ -789,6 +801,7 @@ void ttHLeptonic::GetEntry(unsigned int idx) {
   sublead_PassFrix_isLoaded = false;
   ele1_phi_isLoaded = false;
   ele2_charge_isLoaded = false;
+  fcnc_bdt_smh_hct_score_isLoaded = false;
   jet_bdiscriminant15_isLoaded = false;
   jet_phi9_isLoaded = false;
   jet_energy13_isLoaded = false;
@@ -812,7 +825,6 @@ void ttHLeptonic::GetEntry(unsigned int idx) {
   jet_energy5_isLoaded = false;
   nElecMedium_isLoaded = false;
   tthMVA_RunII_isLoaded = false;
-  prefireProbability_isLoaded = false;
   leadPhi_isLoaded = false;
   subleadR9_isLoaded = false;
   jet_udsgdiscriminant11_isLoaded = false;
@@ -893,6 +905,7 @@ void ttHLeptonic::LoadAllBranches() {
   if (sublead_Prompt_branch != 0) sublead_Prompt();
   if (leadIDMVA_branch != 0) leadIDMVA();
   if (jet_udsgdiscriminant7_branch != 0) jet_udsgdiscriminant7();
+  if (fcnc_bdt_nrb_hut_score_branch != 0) fcnc_bdt_nrb_hut_score();
   if (jet_phi3_branch != 0) jet_phi3();
   if (jet_cdiscriminant9_branch != 0) jet_cdiscriminant9();
   if (lead_PhoGenPt_branch != 0) lead_PhoGenPt();
@@ -923,7 +936,7 @@ void ttHLeptonic::LoadAllBranches() {
   if (jet_energy10_branch != 0) jet_energy10();
   if (jet_eta7_branch != 0) jet_eta7();
   if (jet_phi11_branch != 0) jet_phi11();
-  if (sublead_MomMomID_branch != 0) sublead_MomMomID();
+  if (sigmaMoM_decorr_branch != 0) sigmaMoM_decorr();
   if (jet_udsgdiscriminant10_branch != 0) jet_udsgdiscriminant10();
   if (MvaLinearSystDown01sigma_branch != 0) MvaLinearSystDown01sigma();
   if (jet_phi1_branch != 0) jet_phi1();
@@ -993,6 +1006,7 @@ void ttHLeptonic::LoadAllBranches() {
   if (subleadEt_branch != 0) subleadEt();
   if (lead_closest_gen_dR_branch != 0) lead_closest_gen_dR();
   if (Mjj_branch != 0) Mjj();
+  if (sublead_MomMomID_branch != 0) sublead_MomMomID();
   if (jet_udsgdiscriminant5_branch != 0) jet_udsgdiscriminant5();
   if (subleadIDMVA_branch != 0) subleadIDMVA();
   if (jet_cdiscriminant11_branch != 0) jet_cdiscriminant11();
@@ -1012,6 +1026,7 @@ void ttHLeptonic::LoadAllBranches() {
   if (jet_pt10_branch != 0) jet_pt10();
   if (jet_udsgdiscriminant1_branch != 0) jet_udsgdiscriminant1();
   if (muonLeadIso_branch != 0) muonLeadIso();
+  if (fcnc_bdt_smh_hut_score_branch != 0) fcnc_bdt_smh_hut_score();
   if (subleadPhi_branch != 0) subleadPhi();
   if (jet_cdiscriminant13_branch != 0) jet_cdiscriminant13();
   if (subleadPixelSeed_branch != 0) subleadPixelSeed();
@@ -1026,6 +1041,7 @@ void ttHLeptonic::LoadAllBranches() {
   if (jet_cdiscriminant10_branch != 0) jet_cdiscriminant10();
   if (lead_hoe_branch != 0) lead_hoe();
   if (sublead_ptoM_branch != 0) sublead_ptoM();
+  if (fcnc_bdt_nrb_hct_score_branch != 0) fcnc_bdt_nrb_hct_score();
   if (jet_bbdiscriminant6_branch != 0) jet_bbdiscriminant6();
   if (jet_energy15_branch != 0) jet_energy15();
   if (leadPixelSeed_branch != 0) leadPixelSeed();
@@ -1069,6 +1085,7 @@ void ttHLeptonic::LoadAllBranches() {
   if (sublead_PassFrix_branch != 0) sublead_PassFrix();
   if (ele1_phi_branch != 0) ele1_phi();
   if (ele2_charge_branch != 0) ele2_charge();
+  if (fcnc_bdt_smh_hct_score_branch != 0) fcnc_bdt_smh_hct_score();
   if (jet_bdiscriminant15_branch != 0) jet_bdiscriminant15();
   if (jet_phi9_branch != 0) jet_phi9();
   if (jet_energy13_branch != 0) jet_energy13();
@@ -1092,7 +1109,6 @@ void ttHLeptonic::LoadAllBranches() {
   if (jet_energy5_branch != 0) jet_energy5();
   if (nElecMedium_branch != 0) nElecMedium();
   if (tthMVA_RunII_branch != 0) tthMVA_RunII();
-  if (prefireProbability_branch != 0) prefireProbability();
   if (leadPhi_branch != 0) leadPhi();
   if (subleadR9_branch != 0) subleadR9();
   if (jet_udsgdiscriminant11_branch != 0) jet_udsgdiscriminant11();
@@ -1759,6 +1775,19 @@ const float &ttHLeptonic::jet_udsgdiscriminant7() {
   return jet_udsgdiscriminant7_;
 }
 
+const float &ttHLeptonic::fcnc_bdt_nrb_hut_score() {
+  if (not fcnc_bdt_nrb_hut_score_isLoaded) {
+    if (fcnc_bdt_nrb_hut_score_branch != 0) {
+      fcnc_bdt_nrb_hut_score_branch->GetEntry(index);
+    } else {
+      printf("branch fcnc_bdt_nrb_hut_score_branch does not exist!\n");
+      exit(1);
+    }
+    fcnc_bdt_nrb_hut_score_isLoaded = true;
+  }
+  return fcnc_bdt_nrb_hut_score_;
+}
+
 const float &ttHLeptonic::jet_phi3() {
   if (not jet_phi3_isLoaded) {
     if (jet_phi3_branch != 0) {
@@ -2149,17 +2178,17 @@ const float &ttHLeptonic::jet_phi11() {
   return jet_phi11_;
 }
 
-const float &ttHLeptonic::sublead_MomMomID() {
-  if (not sublead_MomMomID_isLoaded) {
-    if (sublead_MomMomID_branch != 0) {
-      sublead_MomMomID_branch->GetEntry(index);
+const float &ttHLeptonic::sigmaMoM_decorr() {
+  if (not sigmaMoM_decorr_isLoaded) {
+    if (sigmaMoM_decorr_branch != 0) {
+      sigmaMoM_decorr_branch->GetEntry(index);
     } else {
-      printf("branch sublead_MomMomID_branch does not exist!\n");
+      printf("branch sigmaMoM_decorr_branch does not exist!\n");
       exit(1);
     }
-    sublead_MomMomID_isLoaded = true;
+    sigmaMoM_decorr_isLoaded = true;
   }
-  return sublead_MomMomID_;
+  return sigmaMoM_decorr_;
 }
 
 const float &ttHLeptonic::jet_udsgdiscriminant10() {
@@ -3059,6 +3088,19 @@ const float &ttHLeptonic::Mjj() {
   return Mjj_;
 }
 
+const float &ttHLeptonic::sublead_MomMomID() {
+  if (not sublead_MomMomID_isLoaded) {
+    if (sublead_MomMomID_branch != 0) {
+      sublead_MomMomID_branch->GetEntry(index);
+    } else {
+      printf("branch sublead_MomMomID_branch does not exist!\n");
+      exit(1);
+    }
+    sublead_MomMomID_isLoaded = true;
+  }
+  return sublead_MomMomID_;
+}
+
 const float &ttHLeptonic::jet_udsgdiscriminant5() {
   if (not jet_udsgdiscriminant5_isLoaded) {
     if (jet_udsgdiscriminant5_branch != 0) {
@@ -3306,6 +3348,19 @@ const float &ttHLeptonic::muonLeadIso() {
   return muonLeadIso_;
 }
 
+const float &ttHLeptonic::fcnc_bdt_smh_hut_score() {
+  if (not fcnc_bdt_smh_hut_score_isLoaded) {
+    if (fcnc_bdt_smh_hut_score_branch != 0) {
+      fcnc_bdt_smh_hut_score_branch->GetEntry(index);
+    } else {
+      printf("branch fcnc_bdt_smh_hut_score_branch does not exist!\n");
+      exit(1);
+    }
+    fcnc_bdt_smh_hut_score_isLoaded = true;
+  }
+  return fcnc_bdt_smh_hut_score_;
+}
+
 const float &ttHLeptonic::subleadPhi() {
   if (not subleadPhi_isLoaded) {
     if (subleadPhi_branch != 0) {
@@ -3486,6 +3541,19 @@ const float &ttHLeptonic::sublead_ptoM() {
     sublead_ptoM_isLoaded = true;
   }
   return sublead_ptoM_;
+}
+
+const float &ttHLeptonic::fcnc_bdt_nrb_hct_score() {
+  if (not fcnc_bdt_nrb_hct_score_isLoaded) {
+    if (fcnc_bdt_nrb_hct_score_branch != 0) {
+      fcnc_bdt_nrb_hct_score_branch->GetEntry(index);
+    } else {
+      printf("branch fcnc_bdt_nrb_hct_score_branch does not exist!\n");
+      exit(1);
+    }
+    fcnc_bdt_nrb_hct_score_isLoaded = true;
+  }
+  return fcnc_bdt_nrb_hct_score_;
 }
 
 const float &ttHLeptonic::jet_bbdiscriminant6() {
@@ -4047,6 +4115,19 @@ const float &ttHLeptonic::ele2_charge() {
   return ele2_charge_;
 }
 
+const float &ttHLeptonic::fcnc_bdt_smh_hct_score() {
+  if (not fcnc_bdt_smh_hct_score_isLoaded) {
+    if (fcnc_bdt_smh_hct_score_branch != 0) {
+      fcnc_bdt_smh_hct_score_branch->GetEntry(index);
+    } else {
+      printf("branch fcnc_bdt_smh_hct_score_branch does not exist!\n");
+      exit(1);
+    }
+    fcnc_bdt_smh_hct_score_isLoaded = true;
+  }
+  return fcnc_bdt_smh_hct_score_;
+}
+
 const float &ttHLeptonic::jet_bdiscriminant15() {
   if (not jet_bdiscriminant15_isLoaded) {
     if (jet_bdiscriminant15_branch != 0) {
@@ -4344,19 +4425,6 @@ const float &ttHLeptonic::tthMVA_RunII() {
     tthMVA_RunII_isLoaded = true;
   }
   return tthMVA_RunII_;
-}
-
-const float &ttHLeptonic::prefireProbability() {
-  if (not prefireProbability_isLoaded) {
-    if (prefireProbability_branch != 0) {
-      prefireProbability_branch->GetEntry(index);
-    } else {
-      printf("branch prefireProbability_branch does not exist!\n");
-      exit(1);
-    }
-    prefireProbability_isLoaded = true;
-  }
-  return prefireProbability_;
 }
 
 const float &ttHLeptonic::leadPhi() {
@@ -4782,6 +4850,7 @@ const float &muon1_eta() { return cms3.muon1_eta(); }
 const float &sublead_Prompt() { return cms3.sublead_Prompt(); }
 const float &leadIDMVA() { return cms3.leadIDMVA(); }
 const float &jet_udsgdiscriminant7() { return cms3.jet_udsgdiscriminant7(); }
+const float &fcnc_bdt_nrb_hut_score() { return cms3.fcnc_bdt_nrb_hut_score(); }
 const float &jet_phi3() { return cms3.jet_phi3(); }
 const float &jet_cdiscriminant9() { return cms3.jet_cdiscriminant9(); }
 const float &lead_PhoGenPt() { return cms3.lead_PhoGenPt(); }
@@ -4812,7 +4881,7 @@ const float &mass() { return cms3.mass(); }
 const float &jet_energy10() { return cms3.jet_energy10(); }
 const float &jet_eta7() { return cms3.jet_eta7(); }
 const float &jet_phi11() { return cms3.jet_phi11(); }
-const float &sublead_MomMomID() { return cms3.sublead_MomMomID(); }
+const float &sigmaMoM_decorr() { return cms3.sigmaMoM_decorr(); }
 const float &jet_udsgdiscriminant10() { return cms3.jet_udsgdiscriminant10(); }
 const float &MvaLinearSystDown01sigma() { return cms3.MvaLinearSystDown01sigma(); }
 const float &jet_phi1() { return cms3.jet_phi1(); }
@@ -4882,6 +4951,7 @@ const float &jet_eta5() { return cms3.jet_eta5(); }
 const float &subleadEt() { return cms3.subleadEt(); }
 const float &lead_closest_gen_dR() { return cms3.lead_closest_gen_dR(); }
 const float &Mjj() { return cms3.Mjj(); }
+const float &sublead_MomMomID() { return cms3.sublead_MomMomID(); }
 const float &jet_udsgdiscriminant5() { return cms3.jet_udsgdiscriminant5(); }
 const float &subleadIDMVA() { return cms3.subleadIDMVA(); }
 const float &jet_cdiscriminant11() { return cms3.jet_cdiscriminant11(); }
@@ -4901,6 +4971,7 @@ const float &jet_pt11() { return cms3.jet_pt11(); }
 const float &jet_pt10() { return cms3.jet_pt10(); }
 const float &jet_udsgdiscriminant1() { return cms3.jet_udsgdiscriminant1(); }
 const float &muonLeadIso() { return cms3.muonLeadIso(); }
+const float &fcnc_bdt_smh_hut_score() { return cms3.fcnc_bdt_smh_hut_score(); }
 const float &subleadPhi() { return cms3.subleadPhi(); }
 const float &jet_cdiscriminant13() { return cms3.jet_cdiscriminant13(); }
 const float &subleadPixelSeed() { return cms3.subleadPixelSeed(); }
@@ -4915,6 +4986,7 @@ const float &jet_phi2() { return cms3.jet_phi2(); }
 const float &jet_cdiscriminant10() { return cms3.jet_cdiscriminant10(); }
 const float &lead_hoe() { return cms3.lead_hoe(); }
 const float &sublead_ptoM() { return cms3.sublead_ptoM(); }
+const float &fcnc_bdt_nrb_hct_score() { return cms3.fcnc_bdt_nrb_hct_score(); }
 const float &jet_bbdiscriminant6() { return cms3.jet_bbdiscriminant6(); }
 const float &jet_energy15() { return cms3.jet_energy15(); }
 const float &leadPixelSeed() { return cms3.leadPixelSeed(); }
@@ -4958,6 +5030,7 @@ const float &jet_energy9() { return cms3.jet_energy9(); }
 const float &sublead_PassFrix() { return cms3.sublead_PassFrix(); }
 const float &ele1_phi() { return cms3.ele1_phi(); }
 const float &ele2_charge() { return cms3.ele2_charge(); }
+const float &fcnc_bdt_smh_hct_score() { return cms3.fcnc_bdt_smh_hct_score(); }
 const float &jet_bdiscriminant15() { return cms3.jet_bdiscriminant15(); }
 const float &jet_phi9() { return cms3.jet_phi9(); }
 const float &jet_energy13() { return cms3.jet_energy13(); }
@@ -4981,7 +5054,6 @@ const float &leadGendeltaR() { return cms3.leadGendeltaR(); }
 const float &jet_energy5() { return cms3.jet_energy5(); }
 const float &nElecMedium() { return cms3.nElecMedium(); }
 const float &tthMVA_RunII() { return cms3.tthMVA_RunII(); }
-const float &prefireProbability() { return cms3.prefireProbability(); }
 const float &leadPhi() { return cms3.leadPhi(); }
 const float &subleadR9() { return cms3.subleadR9(); }
 const float &jet_udsgdiscriminant11() { return cms3.jet_udsgdiscriminant11(); }

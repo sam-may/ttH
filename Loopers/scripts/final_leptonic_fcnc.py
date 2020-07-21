@@ -12,8 +12,9 @@ args = parser.parse_args()
 
 os.chdir("../")
 
-plot_types = ["std", "std_linear", "std_2016", "std_2017", "std_2018"]
+#plot_types = ["std", "std_linear", "std_2016", "std_2017", "std_2018"]
 #plot_types = ["std_linear"]
+plot_types = ["std"]
 
 do_syst = True
 if do_syst:
@@ -21,13 +22,18 @@ if do_syst:
 else:
     syst = ""
 
-do_looping = False
+do_looping = True
 if do_looping:
-    #parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
+    parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
     os.chdir("Plots")
     for plot_type in plot_types:
         #parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
         parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
+        os.system("mv ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd.pdf ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd_allsig.pdf" % (args.tag, args.tag))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut||ST_FCNC_hut|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_FCNC", plot_type))
+        os.system("mv ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd.pdf ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd_Hut.pdf" % (args.tag, args.tag))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hct||ST_FCNC_hct|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_FCNC", plot_type))
+        os.system("mv ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd.pdf ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd_Hct.pdf" % (args.tag, args.tag))
     os.chdir("../")
 
 
@@ -96,7 +102,7 @@ if do_merge:
         parallel_utils.run('python make_optimization_tree.py --input "ttHLeptonic_%s_FCNC_features_baseline_%s.hdf5" --channel "Leptonic" --tag "%s_merge1d_%s" --mvas "Leptonic_baseline_%s_%s_bdt.xgb,Leptonic_nonres_%s_%s_bdt.xgb,Leptonic_smhiggs_%s_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower())) 
         parallel_utils.run('python make_optimization_tree.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_%s.hdf5" --channel "Leptonic" --tag "%s_merge2d_%s" --mvas "Leptonic_addTopTaggers_nonres_%s_%s_bdt.xgb,Leptonic_addTopTaggers_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
 
-do_limits = True
+do_limits = False
 if do_limits:
     os.chdir("../Binning/")
 

@@ -14,7 +14,8 @@ bdt = "none"
 
 os.chdir("../")
 
-plot_types = ["std", "std_linear", "std_2016", "std_2017", "std_2018"]
+#plot_types = ["std", "std_linear", "std_2016", "std_2017", "std_2018"]
+plot_types = ["std"]
 
 do_syst = True
 if do_syst:
@@ -57,13 +58,18 @@ if do_diphoton_fits:
 
 
 # Run imputing with fit
-do_imputing = False
+do_imputing = True
 if do_imputing:
-    #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
+    parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
     os.chdir("Plots")
     for plot_type in plot_types:
         #parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
         parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
+        os.system("mv ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd.pdf ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd_allsig.pdf" % (args.tag, args.tag))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|ST_FCNC_hut|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute_FCNC", plot_type))
+        os.system("mv ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd.pdf ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd_Hut.pdf" % (args.tag, args.tag))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hct|ST_FCNC_hct|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute_FCNC", plot_type))
+        os.system("mv ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd.pdf ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd_Hct.pdf" % (args.tag, args.tag))
 
     # Run QCD + X with fit
     os.chdir("../")
@@ -154,7 +160,7 @@ if do_merge:
         parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_impute_%s.hdf5" --channel "Hadronic" --tag "%s_baseline_merge1d_%s" --mvas "Hadronic_baseline_%s_%s_bdt.xgb,Hadronic_nonres_%s_%s_bdt.xgb,Hadronic_smhiggs_%s_%s_bdt.xgb,Hadronic_impute_nonres_%s_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score,mva_nonres_impute_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower()))
         parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_%s.hdf5" --channel "Hadronic" --tag "%s_merge2d_%s" --mvas "Hadronic_addTopTaggers_nonres_%s_%s_bdt.xgb,Hadronic_addTopTaggers_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
 
-do_limits = True
+do_limits = False
 if do_limits:
     os.chdir("../Binning/")
 

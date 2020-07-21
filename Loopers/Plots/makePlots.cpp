@@ -883,7 +883,7 @@ int main(int argc, char* argv[])
   //TString file_path_ref = argv[4];
   //TString year_ref = file_path_ref.Contains("RunII") ? "2017" : file_path_ref.Contains("2018") ? "2018" : ((file_path_ref.Contains("2017") ? "2017" : "2016"));
 
-  bool doSyst = false;
+  bool doSyst = true;
   bool doRatio = true;
   bool loose_mva_cut = false; //argc > 4;
   TString mva_ext = loose_mva_cut ? "_looseMVACut" : "";
@@ -1212,8 +1212,8 @@ int main(int argc, char* argv[])
         make_plot(c3, vFiles[i], vNames[i], "htthMVA_RunII_transf", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, false);
         //make_plot(c3, vFiles[i], vNames[i], "htthMVA_RunII_transf_bounded_v2", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, false);
     }
-    if (file_path.Contains("hct") || file_path.Contains("hut")) { 
-        make_plot(c1, vFiles[i], vNames[i], "hMVA_transf", "MVA Score", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+    if (file_path.Contains("FCNC")) {
+        //make_plot(c1, vFiles[i], vNames[i], "hMVA_transf", "MVA Score", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
 
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_BDT_NRB", "BDT-NRB (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_NRB", "BDT-NRB (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);

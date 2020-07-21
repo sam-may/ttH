@@ -1073,6 +1073,7 @@ void Comparison::draw_main_histograms()
     hMC_StatUnc_down->Draw("E2, SAME");
   }
 
+  /* HIG-19-015
   if (mVShade.size() > 0) {
     TBox *box = new TBox(mVShade[0],1.001*mYLimRange[0],mVShade[1],0.5*mYLimRange[1]);
     //TBox *box = new TBox(0, 1, 4, 10000);
@@ -1080,9 +1081,9 @@ void Comparison::draw_main_histograms()
     box->SetFillColorAlpha(kGray+1,0.25);
     box->Draw("SAME");
   }
+  */
 
-
-  /*
+  
   if (mVShade.size() > 0) {
     TH1D* hShade = new TH1D("hShade", "", 1000, 0, 10);//(TH1D*)mHMC->Clone("shade");
     hShade->SetFillColorAlpha(kGray+1, 0.25);
@@ -1103,7 +1104,6 @@ void Comparison::draw_main_histograms()
     }
     hShade->Draw("E2,SAME");
   }
-  */
 
   //mStack->GetXaxis()->SetRange(mXBinRange[0],mXBinRange[1]);
   //mStack->SetMinimum(mYLimRange[0]);

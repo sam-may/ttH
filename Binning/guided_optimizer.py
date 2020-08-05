@@ -26,7 +26,8 @@ process_dict = {
     "FCNC_Hct" : [23,25],
     "tH" : [11,12],
     "sm_higgs" : [0,11,12,14,15,16],
-    "bkg" : [1, 2, 3, 5, 6, 7, 9, 13, 18, 19, 20, 21, 26]
+    "bkg" : [1, 2, 3, 5, 6, 7, 9, 13, 18, 19, 20, 21, 26],
+    "data" : [10]
 }
 
 
@@ -41,6 +42,7 @@ class Guided_Optimizer():
         self.input  =   kwargs.get('input')
         self.tag    =   kwargs.get('tag', '')
         self.channel = "FCNC_Hadronic" if "Hadronic" in self.input else "FCNC_Leptonic"
+        self.diagnostic_mode = kwargs.get('diagnostic_mode', False)
 
         self.mvas   =   kwargs.get('mvas', { "1d" : ["mva_score"], "2d" : ["mva_smhiggs_score", "mva_nonres_score"] }) 
         self.n_bins =   kwargs.get('n_bins', [1, 2, 3, 4]) 
@@ -50,6 +52,7 @@ class Guided_Optimizer():
 
         self.verbose = kwargs.get('verbose', True)
 
+        self.nrb_choice = kwargs.get('nrb_choice', 'bkg')
         self.combineOption = kwargs.get('combineOption', 'AsymptoticLimits -m 125 ')
         self.sm_higgs_unc  = kwargs.get('sm_higgs_unc', 0.4)
 
@@ -139,6 +142,9 @@ class Guided_Optimizer():
         self.update_results(dim, n_bin, strategy, initial_results)
 
         self.converged = False
+        if self.diagnostic_mode:
+            return
+
         while not self.converged:
             if strategy == "guided":
                 accuracy = self.train_mva(self.results[dim][n_bin][strategy]["X"], self.results[dim][n_bin][strategy]["y"])
@@ -183,6 +189,9 @@ class Guided_Optimizer():
                 self.converged = False
 
     def update_results(self, dim, n_bin, strategy, results):
+        if not results:
+            return
+        
         for field in ["X", "y", "exp_lim"]:
             if len(self.results[dim][n_bin][strategy][field]) == 0:
                 self.results[dim][n_bin][strategy][field] = numpy.array(results[field])
@@ -208,8 +217,8 @@ class Guided_Optimizer():
 
     def initialize(self, mvas, n_bin): # randomly sample initial_points points to get initial training/testing set
         # Set up scanClass
-        self.scanConfig["modelpath"] = self.modelpath + "_%dd_%dbin/" % (len(mvas), n_bin)
-        self.scanConfig["plotpath"] = self.plotpath + "_%dd_%dbin/" % (len(mvas), n_bin)
+        self.scanConfig["modelpath"] = self.modelpath + "_%dd_%dbin_%s_%s/" % (len(mvas), n_bin, self.channel, self.coupling)
+        self.scanConfig["plotpath"] = self.plotpath + "_%dd_%dbin_%s_%s/" % (len(mvas), n_bin, self.channel, self.coupling)
         self.scanner = scanClass(self.scanConfig)
         self.scanner.cleanDir()
 
@@ -234,6 +243,9 @@ class Guided_Optimizer():
         for lim in exp_limits:
             X_.append(lim["x"])
             y.append(lim["exp_lim"][0])
+
+        if len(y) == 0:
+            return {}
 
         results = {
             "X" : X_,
@@ -630,6 +642,9 @@ class Guided_Optimizer():
                 selection += " || "
         return selection
 
+    #def data_selection(self):
+    #    return "(mass > 100 && mass < 180 && 
+
     def base_selection(self):
         return "(mass > 100 && mass < 180 && train_id == 1) "
 
@@ -665,12 +680,14 @@ class Guided_Optimizer():
                 "filename" : self.input,
                 "savename" : "CMS-HGG_bkg_" + self.channel + "_" + str(i) + "_" + str(idx),
                 "tag" : "CMS_hgg_bkgshape_" + self.channel + "_" + str(i) + "_" + str(idx),
-                "selection" : self.base_selection() + "&&" + self.process_selection("bkg") + " && " + selection[i],
+                "selection" : self.base_selection() + "&&" + self.process_selection(self.nrb_choice) + " && " + selection[i],
             }
 
             model = makeModel(bkgModelConfig)
             model.getTree(self.scanner.getTree())
-            bkg_yield, bkg_yield_raw = model.makeBackgroundModel("wbkg_13TeV", self.channel + "_" + str(i) + "_" + str(idx))
+            bkg_yield, bkg_yield_raw, bkg_yield_sumentries = model.makeBackgroundModel("wbkg_13TeV", self.channel + "_" + str(i) + "_" + str(idx))
+
+            #print("[GUIDED OPTIMIZER] Bkg events from fit: %
 
             yields[bin]["bkg"] = bkg_yield
             if bkg_yield_raw < 10.:
@@ -687,6 +704,11 @@ class Guided_Optimizer():
             bkgList.append(bkg + "_hgg")
 
         datacard.WriteCard(sigList, bkgList, tagList, "_" + str(idx))
+        for tag in tagList:
+            datacard = makeCards(self.scanConfig["modelpath"], "CMS-HGG_mva_13TeV_datacard_" + str(idx) + "_" + tag + ".txt",
+                                 { "sm_higgs_unc" : self.sm_higgs_unc },
+            )
+            datacard.WriteCard(sigList, bkgList, [tag], "_" + str(idx))
 
         combineConfig = {
                 "combineOption" : self.combineOption,
@@ -700,10 +722,21 @@ class Guided_Optimizer():
             exp_lim *= 2 # double the expected limit if the SR combination is disqualified bc too few non-res bkg events
             # the reason we double the exp_lim, is that we still want the expected limit to be a relatively smooth function of the cut values. this way, the optimization bdt can hopefully learn that cut values resulting in very narrow bins have a penalty applied on them
 
+        exp_lim_full = {}
+        exp_lim_full["combined"] = [exp_lim, exp_lim_up1sigma, exp_lim_down1sigma, exp_lim_up2sigma, exp_lim_down2sigma]
+        
+        for tag in tagList:
+            combineConfig["combineOutName"] = "sig_" + str(idx) + "_" + tag
+            combineConfig["cardName"] = "CMS-HGG_mva_13TeV_datacard_" + str(idx) + "_" + tag + ".txt"
+            combineConfig["outtxtName"] = "sig_" + str(idx) + "_" + tag + ".txt"
+            lim, lim_up1, lim_down1, lim_up2, lim_down2 = self.scanner.runCombine(combineConfig)
+            exp_lim_full[tag] = [lim, lim_up1, lim_down1, lim_up2, lim_down2]
+
         result = {
            "idx" : idx,
            "x" : [float(x) for x in m_point],
            "exp_lim" : [exp_lim, exp_lim_up1sigma, exp_lim_down1sigma, exp_lim_up2sigma, exp_lim_down2sigma],
+           "exp_lim_full" : exp_lim_full,
            "selection" : selection,
            "yields" : yields,
            "disqualified" : str(disqualify_srs)

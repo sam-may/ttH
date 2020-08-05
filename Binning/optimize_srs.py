@@ -39,7 +39,7 @@ optimizer = guided_optimizer.Guided_Optimizer(
                
                 initial_points = 48,
                 points_per_epoch = 48,
-                n_epochs = 5,
+                n_epochs = 1,
                 verbose = True
 )
 

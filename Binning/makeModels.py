@@ -55,7 +55,6 @@ class makeModel():
         pathCmd += "cp ~/public_html/tmpFile/index.php " + self.plotpath
 
     def makeSignalModel(self, workspaceName, config):
-
         rooVar = "CMS_hgg_mass"
 
         replaceNorm = config["replaceNorm"]
@@ -166,7 +165,7 @@ class makeModel():
 
         print("[MAKEMODELS] Info: h_mgg name: %s, var: %s, weightVar: %s, selection: %s" % (h_mgg.GetName(), self.var, self.weightVar, self.selection))
 
-        self.tree.Project(h_mgg.GetName(), self.var, self.weightVar + "*(" + self.selection + ")") # multiply by 2 because we are only using half of the mc not used in training for optimization
+        self.tree.Project(h_mgg.GetName(), self.var, self.weightVar + "*(" + self.selection + ")") 
         d_mgg = ROOT.RooDataHist("roohist_data_mass_" + datasetTag, "", ROOT.RooArgList(w.var(rooVar)), h_mgg, 1)
         print "bin dataset", h_mgg.Integral(), d_mgg.sumEntries(), d_mgg.numEntries()
 
@@ -178,11 +177,12 @@ class makeModel():
         w.var(rooVar).setRange("SU", 130, 180)
         w.var(rooVar).setRange("full", 100, 180)
         w.var(rooVar).setRange("blind",120,130)
+        w.var(rooVar).setRange("mass_window",122,128)
 
         # pdf
         #if norm >= 15.:
         #    print "[MAKE_BACKGROUND_MODEL] At least 10 events in sideband (%.2f), fitting exponential" % norm 
-        w.factory("Exponential:"+self.tag+"(" + rooVar + ", tau[-0.027,-0.02,-0.04])")
+        w.factory("Exponential:"+self.tag+"(" + rooVar + ", tau[-0.027,-0.05,-0.01])")
         #else:
         #    print "[MAKE_BACKGROUND_MODEL] Less than 10 events in sideband (%.2f), fixing decay of exponential to -0.027" % norm
         #    w.factory("Exponential:"+self.tag+"(" + rooVar + ", tau[-0.027,-0.027,-0.027])")
@@ -191,6 +191,13 @@ class makeModel():
         # fit
         w.pdf(self.tag+"_ext").fitTo(d_mgg, ROOT.RooFit.Range("SL,SU"), ROOT.RooFit.Extended(True), ROOT.RooFit.PrintLevel(-1))
         #w.pdf(self.tag+"_ext").fitTo(d_mgg, ROOT.RooFit.Range("SL,SU"), ROOT.RooFit.Extended(True), ROOT.RooFit.PrintLevel(-1))
+
+        integral_full = w.pdf(self.tag+"_ext").createIntegral(ROOT.RooArgSet(w.var(rooVar)), ROOT.RooFit.Range("full"))
+        integral_blind = w.pdf(self.tag+"_ext").createIntegral(ROOT.RooArgSet(w.var(rooVar)), ROOT.RooFit.Range("mass_window"))
+
+        #print("[makeModels.py] Normalization from pdf in full range: %.6f" % integral_full.getVal())
+        #print("[makeModels.py] Normalization from pdf in blind range: %.6f" % integral_blind.getVal())
+        #print("[makeModels.py] Raw normalization in full range from sum entries: %.6f" % norm)
 
         frame = w.var(rooVar).frame()
         d_mgg.plotOn(frame, ROOT.RooFit.Binning(80))
@@ -234,6 +241,8 @@ class makeModel():
 
         nEvt = w.var("nevt").getVal()
 
+        nEvt_mass_window = nEvt * (integral_blind.getVal() / integral_full.getVal()) # scale total yield by fraction of pdf in 122-128 range to get yield under mass window
+
         #if nEvt < 0.01:
         #    nEvt = norm
 
@@ -245,4 +254,9 @@ class makeModel():
         from subprocess import call
         call("echo " + str(nEvt) + " > " + self.modelpath + "/" + self.savename + "_nbkg.txt" , shell=True)
 
-        return nEvt * (6./80.), nEvt # nEvt under higgs mass window, total number
+        print("[makeModels.py] Normalization from sum entries: %.6f" % norm)
+        print("[makeModels.py] Normalization from fit: %.6f" % nEvt)
+        print("[makeModels.py] Normalization from fit (mass-window only): %.6f" % nEvt_mass_window)
+        print("[makeModels.py] Normalization from fit (naive scaling to mass-window): %.6f" % (nEvt * (6./80.)))
+
+        return nEvt_mass_window, nEvt, norm # nEvt under higgs mass window, total number, raw number

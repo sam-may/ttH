@@ -22,7 +22,7 @@ if do_syst:
 else:
     syst = ""
 
-do_looping = True
+do_looping = False
 if do_looping:
     parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
     os.chdir("Plots")

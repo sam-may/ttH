@@ -99,7 +99,7 @@ class MVA_Manager():
     def write_tree(self):
         array = []
 
-        all_branches = default_branches + ["label", "train_id"] 
+        all_branches = default_branches + ["label", "train_id", "global"] 
         for aux in all_branches:
             print aux
             a = self.append_arrays(aux)

@@ -764,91 +764,91 @@ vector<TLorentzVector> make_jets(vector<double> &btag_scores, TString year) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet1_pt(), jet1_eta(), jet1_phi(), jet1_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet1_bdiscriminant());
+    btag_scores.push_back(jet1_bdiscriminant() + jet1_bbdiscriminant());
   }
   if (jet2_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet2_pt(), jet2_eta(), jet2_phi(), jet2_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet2_bdiscriminant());
+    btag_scores.push_back(jet2_bdiscriminant() + jet2_bbdiscriminant());
   }
   if (jet3_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet3_pt(), jet3_eta(), jet3_phi(), jet3_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet3_bdiscriminant());
+    btag_scores.push_back(jet3_bdiscriminant() + jet3_bbdiscriminant());
   }
   if (jet4_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet4_pt(), jet4_eta(), jet4_phi(), jet4_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet4_bdiscriminant());
+    btag_scores.push_back(jet4_bdiscriminant() + jet4_bbdiscriminant());
   }
   if (jet5_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet5_pt(), jet5_eta(), jet5_phi(), jet5_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet5_bdiscriminant());
+    btag_scores.push_back(jet5_bdiscriminant() + jet5_bbdiscriminant());
   }
   if (jet6_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet6_pt(), jet6_eta(), jet6_phi(), jet6_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet6_bdiscriminant());
+    btag_scores.push_back(jet6_bdiscriminant() + jet6_bbdiscriminant());
   }
   if (jet7_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet7_pt(), jet7_eta(), jet7_phi(), jet7_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet7_bdiscriminant());
+    btag_scores.push_back(jet7_bdiscriminant() + jet7_bbdiscriminant());
   }
   if (jet8_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet8_pt(), jet8_eta(), jet8_phi(), jet8_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet8_bdiscriminant());
+    btag_scores.push_back(jet8_bdiscriminant() + jet8_bbdiscriminant());
   }
   if (jet9_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet9_pt(), jet9_eta(), jet9_phi(), jet9_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet9_bdiscriminant());
+    btag_scores.push_back(jet9_bdiscriminant() + jet9_bbdiscriminant());
   }
   if (jet10_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet10_pt(), jet10_eta(), jet10_phi(), jet10_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet10_bdiscriminant());
+    btag_scores.push_back(jet10_bdiscriminant() + jet10_bbdiscriminant());
   }
   if (jet11_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet11_pt(), jet11_eta(), jet11_phi(), jet11_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet11_bdiscriminant());
+    btag_scores.push_back(jet11_bdiscriminant() + jet11_bbdiscriminant());
   }
   if (jet12_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet12_pt(), jet12_eta(), jet12_phi(), jet12_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet12_bdiscriminant());
+    btag_scores.push_back(jet12_bdiscriminant() + jet12_bbdiscriminant());
   }
   if (jet13_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet13_pt(), jet13_eta(), jet13_phi(), jet13_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet13_bdiscriminant());
+    btag_scores.push_back(jet13_bdiscriminant() + jet13_bbdiscriminant());
   }
   if (jet14_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet14_pt(), jet14_eta(), jet14_phi(), jet14_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet14_bdiscriminant());
+    btag_scores.push_back(jet14_bdiscriminant() + jet14_bbdiscriminant());
   }
   if (jet15_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet15_pt(), jet15_eta(), jet15_phi(), jet15_energy());
     vJets.push_back(jet);
-    btag_scores.push_back(jet15_bdiscriminant());
+    btag_scores.push_back(jet15_bdiscriminant() + jet15_bbdiscriminant());
   }
   return vJets;
 }

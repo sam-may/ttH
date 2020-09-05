@@ -840,136 +840,91 @@ vector<TLorentzVector> make_jets(vector<double> &btag_scores, TString year) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt1(), jet_eta1(), jet_phi1(), jet_energy1());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant1());
-    else
-      btag_scores.push_back(jet_bdiscriminant1());
+    btag_scores.push_back(jet_bdiscriminant1() + jet_bbdiscriminant1());
   }
   if (jet_pt2() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt2(), jet_eta2(), jet_phi2(), jet_energy2());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant2());
-    else
-      btag_scores.push_back(jet_bdiscriminant2());
+    btag_scores.push_back(jet_bdiscriminant2() + jet_bbdiscriminant2());
   }
   if (jet_pt3() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt3(), jet_eta3(), jet_phi3(), jet_energy3());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant3());
-    else
-      btag_scores.push_back(jet_bdiscriminant3());
+    btag_scores.push_back(jet_bdiscriminant3() + jet_bbdiscriminant3());
   }
   if (jet_pt4() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt4(), jet_eta4(), jet_phi4(), jet_energy4());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant4());
-    else
-      btag_scores.push_back(jet_bdiscriminant4());
+    btag_scores.push_back(jet_bdiscriminant4() + jet_bbdiscriminant4());
   }
   if (jet_pt5() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt5(), jet_eta5(), jet_phi5(), jet_energy5());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant5());
-    else
-      btag_scores.push_back(jet_bdiscriminant5());
+    btag_scores.push_back(jet_bdiscriminant5() + jet_bbdiscriminant5());
   }
   if (jet_pt6() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt6(), jet_eta6(), jet_phi6(), jet_energy6());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant6());
-    else
-      btag_scores.push_back(jet_bdiscriminant6());
+    btag_scores.push_back(jet_bdiscriminant6() + jet_bbdiscriminant6());
   }
   if (jet_pt7() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt7(), jet_eta7(), jet_phi7(), jet_energy7());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant7());
-    else
-      btag_scores.push_back(jet_bdiscriminant7());
+    btag_scores.push_back(jet_bdiscriminant7() + jet_bbdiscriminant7());
   }
   if (jet_pt8() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt8(), jet_eta8(), jet_phi8(), jet_energy8());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant8());
-    else
-      btag_scores.push_back(jet_bdiscriminant8());
+    btag_scores.push_back(jet_bdiscriminant8() + jet_bbdiscriminant8());
   }
   if (jet_pt9() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt9(), jet_eta9(), jet_phi9(), jet_energy9());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant9());
-    else
-      btag_scores.push_back(jet_bdiscriminant9());
+    btag_scores.push_back(jet_bdiscriminant9() + jet_bbdiscriminant9());
   }
   if (jet_pt10() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt10(), jet_eta10(), jet_phi10(), jet_energy10());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant10());
-    else
-      btag_scores.push_back(jet_bdiscriminant10());
+    btag_scores.push_back(jet_bdiscriminant10() + jet_bbdiscriminant10());
   }
   if (jet_pt11() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt11(), jet_eta11(), jet_phi11(), jet_energy11());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant11());
-    else
-      btag_scores.push_back(jet_bdiscriminant11());
+    btag_scores.push_back(jet_bdiscriminant11() + jet_bbdiscriminant11());
   }
   if (jet_pt12() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt12(), jet_eta12(), jet_phi12(), jet_energy12());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant12());
-    else
-      btag_scores.push_back(jet_bdiscriminant12());
+    btag_scores.push_back(jet_bdiscriminant12() + jet_bbdiscriminant12());
   }
   if (jet_pt13() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt13(), jet_eta13(), jet_phi13(), jet_energy13());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant13());
-    else
-      btag_scores.push_back(jet_bdiscriminant13());
+    btag_scores.push_back(jet_bdiscriminant13() + jet_bbdiscriminant13());
   }
   if (jet_pt14() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt14(), jet_eta14(), jet_phi14(), jet_energy14());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant14());
-    else
-      btag_scores.push_back(jet_bdiscriminant14());
+    btag_scores.push_back(jet_bdiscriminant14() + jet_bbdiscriminant14());
   }
   if (jet_pt15() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet_pt15(), jet_eta15(), jet_phi15(), jet_energy15());
     vJets.push_back(jet);
-    if (year == "2016")
-      btag_scores.push_back(jet_bdiscriminant15());
-    else
-      btag_scores.push_back(jet_bdiscriminant15());
+    btag_scores.push_back(jet_bdiscriminant15() + jet_bbdiscriminant15());
   }
   return vJets;
 }

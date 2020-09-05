@@ -947,8 +947,8 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf", -log(1 - mva_value), evt_weight, vId);
 
               // ttH-Hadronic Specific
-              vProcess[processId]->fill_histogram("h" + syst_ext + "MaxBTag", bjet1_csv(), evt_weight, vId);
-              vProcess[processId]->fill_histogram("h" + syst_ext + "SecondMaxBTag", bjet2_csv(), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "MaxBTag", btag_scores_sorted[0].second, evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "SecondMaxBTag", btag_scores_sorted[1].second, evt_weight, vId);
 
               if (!currentFileTitle.Contains("FCNC")) {
                   vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA", tthMVA(), evt_weight, vId);

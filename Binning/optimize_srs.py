@@ -2,6 +2,7 @@ import os, sys
 import json
 import numpy
 
+sys.path.append("~/ttH/Binning/")
 import guided_optimizer
 
 import argparse
@@ -31,10 +32,8 @@ optimizer = guided_optimizer.Guided_Optimizer(
 
                 sm_higgs_unc = args.sm_higgs_unc,
 
-                #n_bins = [1,2,3,4,5],
                 n_bins = bins,
                 mvas = mva_dict,
-                #mvas = { "1d" : ["mva_score"], "2d" : ["mva_smhiggs_score", "mva_nonres_score"] },
                 strategies = ['guided'],
                
                 initial_points = 48,

@@ -16,7 +16,7 @@ os.chdir("../")
 #plot_types = ["std_linear"]
 plot_types = ["std"]
 
-do_syst = True
+do_syst = False
 if do_syst:
     syst = "--do_systematics"
 else:
@@ -42,7 +42,7 @@ if do_babies:
     parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --babymaker --fcnc' % (args.baby_version, args.tag))
 
 
-bdt_training_features_base = ["helicity_angle_", "dipho_pt_over_mass_", "met_", "dipho_rapidity_", "dipho_cosphi_", "subleadPSV_", "leadPSV_", "jet3_btag_", "jet3_eta_", "jet3_pt_", "jet2_btag_", "jet2_eta_", "jet2_pt_", "jet1_btag_", "jet1_eta_", "jet1_pt_", "sublead_eta_", "lead_eta_", "subleadptoM_", "leadptoM_", "ht_", "njets_", "dipho_delta_R", "max1_btag_", "max2_btag_", "minIDMVA_", "maxIDMVA_","lep_pt_", "lep_eta_", "n_lep_tight_"]
+bdt_training_features_base = ["helicity_angle_", "dipho_pt_over_mass_", "met_", "dipho_rapidity_", "dipho_cosphi_", "subleadPSV_", "leadPSV_", "jet3_btag_", "jet3_eta_", "jet3_pt_", "jet2_btag_", "jet2_eta_", "jet2_pt_", "jet1_btag_", "jet1_eta_", "jet1_pt_", "sublead_eta_", "lead_eta_", "subleadptoM_", "leadptoM_", "ht_", "njets_", "dipho_delta_R", "max1_btag_", "max2_btag_", "minIDMVA_", "maxIDMVA_","lep_pt_", "lep_eta_", "n_lep_tight_", "lep1_charge_"]
 top_tagger_bdt = ["top_tag_score_"]
 top_chi2_leptonic = ["chi2_neutrino_pz_", "chi2_tbw_mass_", "chi2_tbw_pt_", "chi2_tbw_eta_", "chi2_tbw_deltaR_dipho_", "chi2_qjet_pt_", "chi2_qjet_eta_", "chi2_qjet_btag_", "chi2_qjet_deltaR_dipho_", "chi2_tqh_ptOverM_", "chi2_tqh_eta_", "chi2_tqh_deltaR_tbw_", "chi2_tqh_deltaR_dipho_"]
 bdt_training_features_all = bdt_training_features_base + top_tagger_bdt + top_chi2_leptonic
@@ -102,7 +102,7 @@ if do_merge:
         parallel_utils.run('python make_optimization_tree.py --input "ttHLeptonic_%s_FCNC_features_baseline_%s.hdf5" --channel "Leptonic" --tag "%s_merge1d_%s" --mvas "Leptonic_baseline_%s_%s_bdt.xgb,Leptonic_nonres_%s_%s_bdt.xgb,Leptonic_smhiggs_%s_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower())) 
         parallel_utils.run('python make_optimization_tree.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_%s.hdf5" --channel "Leptonic" --tag "%s_merge2d_%s" --mvas "Leptonic_addTopTaggers_nonres_%s_%s_bdt.xgb,Leptonic_addTopTaggers_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
 
-do_limits = False
+do_limits = True
 if do_limits:
     os.chdir("../Binning/")
 

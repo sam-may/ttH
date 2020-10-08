@@ -391,10 +391,13 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       n_muons_ = muons.size(); 
 
       vector<float> lepton_charges;
-      if (currentFileTitle.Contains("ttH_vs_tH"))
-          lepton_charges = calculate_lepton_charges();
-      else
-          lepton_charges = {0,0};
+      //if (currentFileTitle.Contains("ttH_vs_tH"))
+      //    lepton_charges = calculate_lepton_charges();
+      //else
+      //    lepton_charges = {0,0};
+
+      lepton_charges = calculate_lepton_charges();
+
       lep1_charge_ = lepton_charges[0];
       lep2_charge_ = lepton_charges[1];
 

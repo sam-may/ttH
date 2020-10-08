@@ -423,3 +423,10 @@ Submitting ttH Babies version v5.2_ttZ using central microAOD and commit 0a21ac8
 Date: 2020-07-14 12:47:20.099119 
 Submitting ttH Babies version v5.3 using central microAOD and commit 7554cc2ae7f78f000c59ae4fa236b79ea259bce5 of tth_dev_runII_v2 branch of flashgg
 
+# Note in v5.4: switch from DeepCSV to DeepJet
+Date: 2020-08-24 12:09:01.605839 
+Submitting ttH Babies version v5.4 using central microAOD and commit e5d1575ac59b37d54489b9a920aff6f4eff8b48e of tth_dev_runII_v2 branch of flashgg
+
+Date: 2020-09-17 12:32:19.024260 
+Submitting ttH Babies version v5.5 using central microAOD and commit dea399fa8bf36321b4a363584d395a2a8d0a5c59 of tth_dev_runII_v2 branch of flashgg
+

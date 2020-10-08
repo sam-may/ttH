@@ -12,10 +12,10 @@ parser.add_argument("--nrb_choice", help = "data or bkg (for MC)", type=str, def
 args = parser.parse_args()
 
 tree_map = {
-        "Hadronic (Hct)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hct_merge2d_v5.1_10Jul2020.root",
-        "Hadronic (Hut)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hut_merge2d_v5.1_10Jul2020.root",
-        "Leptonic (Hct)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hct_merge2d_v5.1_10Jul2020.root",
-        "Leptonic (Hut)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hut_merge2d_v5.1_10Jul2020.root"
+        "Hadronic (Hct)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hct_merge2d_v5.4_5Sep2020.root",
+        "Hadronic (Hut)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hut_merge2d_v5.4_5Sep2020.root",
+        "Leptonic (Hct)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hct_merge2d_v5.4_2Oct2020.root",
+        "Leptonic (Hut)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hut_merge2d_v5.4_2Oct2020.root"
 }
 
 with open(args.input, "r") as f_in:
@@ -26,11 +26,13 @@ full_summary = {}
 for key, info in results.items():
     summary = {}
     os.chdir("/home/users/sjmay/ttH/Binning/")
-    channel, coupling = key.split(" ")
+    #print key.split(" ")
+    channel, coupling = key.strip().split(" ")
+    #print space, channel, coupling, space
     coupling = coupling[1:-1] # strip parentheses
 
     optimizer = guided_optimizer.Guided_Optimizer(
-        input = tree_map[key],
+        input = tree_map[key.strip()],
         tag = args.tag,
         channel = channel,
         coupling = coupling,
@@ -47,7 +49,7 @@ for key, info in results.items():
         points_per_epoch = 0,
         n_epochs = 1,
         diagnostic_mode = True,
-        nrb_choice = "data",
+        nrb_choice = args.nrb_choice,
         verbose = True
     )
 

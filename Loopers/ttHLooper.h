@@ -186,6 +186,9 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hut_BDT_SMH_SRs", 25, 0, 8);
         v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hct_BDT_SMH_SRs", 25, 0, 8); 
 
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hut_SRs", 4, -0.5, 3.5);
+        v[i]->add_histogram("h" + syst_labels[j] + "FCNC_Hct_SRs", 4, -0.5, 3.5);
+
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_transf", 15, 0, 10);        
 
         v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag", 50, 0, 1);

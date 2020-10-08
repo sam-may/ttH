@@ -17,7 +17,7 @@ os.chdir("../")
 #plot_types = ["std", "std_linear", "std_2016", "std_2017", "std_2018"]
 plot_types = ["std"]
 
-do_syst = False
+do_syst = True
 if do_syst:
     syst = "--do_systematics"
 else:
@@ -58,7 +58,7 @@ if do_diphoton_fits:
 
 
 # Run imputing with fit
-do_imputing = False
+do_imputing = True
 if do_imputing:
     parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
     os.chdir("Plots")
@@ -160,7 +160,7 @@ if do_merge:
         parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_impute_%s.hdf5" --channel "Hadronic" --tag "%s_baseline_merge1d_%s" --mvas "Hadronic_baseline_%s_%s_bdt.xgb,Hadronic_nonres_%s_%s_bdt.xgb,Hadronic_smhiggs_%s_%s_bdt.xgb,Hadronic_impute_nonres_%s_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score,mva_nonres_impute_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower()))
         parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_%s.hdf5" --channel "Hadronic" --tag "%s_merge2d_%s" --mvas "Hadronic_addTopTaggers_nonres_%s_%s_bdt.xgb,Hadronic_addTopTaggers_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
 
-do_limits = True
+do_limits = False
 if do_limits:
     os.chdir("../Binning/")
 

@@ -1223,6 +1223,8 @@ int main(int argc, char* argv[])
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_NRB_SRs", "BDT-NRB (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_BDT_SMH_SRs", "BDT-SMH (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_SMH_SRs", "BDT-SMH (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_SRs", "Signal Regions (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_SRs", "Signal Regions (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
     }
     if (tag == "Leptonic") {
         make_plot(c1, vFiles[i], vNames[i], "hchi2_neutrino_pz", "Neutrino p_{z} [GeV]", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);

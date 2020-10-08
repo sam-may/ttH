@@ -997,6 +997,15 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                   vector<double> FCNC_Hut_BDT_SMH_boundaries = { 0.541095, 0.609071, 0.812856, 0.909529 }; 
                   vector<double> FCNC_Hct_BDT_SMH_boundaries = { 0.632789, 0.774256, 0.819160, 0.895076 }; 
 
+
+                  for (int i = 0; i < FCNC_Hut_BDT_NRB_boundaries.size(); i++) {
+                      int j = FCNC_Hut_BDT_NRB_boundaries.size() - (i+1);
+                      if (fcnc_bdt_nrb_hut_score() >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score() >= FCNC_Hut_BDT_SMH_boundaries[j])
+                          vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_SRs", i, evt_weight*test_train_scale, vId);
+                      if (fcnc_bdt_nrb_hct_score() >= FCNC_Hct_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hct_score() >= FCNC_Hct_BDT_SMH_boundaries[j])
+                          vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_SRs", i, evt_weight*test_train_scale, vId);
+                  }
+
                   for (int i = 0; i < FCNC_Hut_BDT_NRB_boundaries.size(); i++) {
                     int j = FCNC_Hut_BDT_NRB_boundaries.size() - (i+1);
                     if (fcnc_bdt_nrb_hut_score() >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score() >= FCNC_Hut_BDT_SMH_boundaries[j]) {

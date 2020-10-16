@@ -384,6 +384,9 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         //v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_deltaR_tbw", 25, 0, 5);
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tqh_deltaR_dipho", 25, 0, 5);
 
+        v[i]->add_histogram("h" + syst_labels[j] + "dnn_score_fcnc_st", 10, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "dnn_score_fcnc_tt", 10, 0, 1);
+
       }
   }
 }

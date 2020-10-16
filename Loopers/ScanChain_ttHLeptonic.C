@@ -392,6 +392,7 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               // Modify weight for systematics affecting weights
               if (j >= 1) {
                 double nominal_weight, up_variation, down_variation;
+                /*
                 if (syst_ext.Contains("UnmatchedPUWeight")) {
                   nominal_weight = (UnmatchedPUWeightUp01sigma() + UnmatchedPUWeightDown01sigma())/2.;
                   up_variation = UnmatchedPUWeightUp01sigma() / nominal_weight;
@@ -401,8 +402,8 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                   nominal_weight = (MvaLinearSystUp01sigma() + MvaLinearSystDown01sigma())/2.;
                   up_variation = MvaLinearSystUp01sigma() / nominal_weight;
                   down_variation = MvaLinearSystDown01sigma() / nominal_weight;
-                }
-                else if (syst_ext.Contains("LooseMvaSF")) {
+                } */
+                if (syst_ext.Contains("LooseMvaSF")) {
                   nominal_weight = (LooseMvaSFUp01sigma() + LooseMvaSFDown01sigma())/2.;
                   up_variation = LooseMvaSFUp01sigma() / nominal_weight;
                   down_variation = LooseMvaSFDown01sigma() / nominal_weight;
@@ -421,12 +422,12 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                   nominal_weight = (TriggerWeightUp01sigma() + TriggerWeightDown01sigma())/2.;
                   up_variation = TriggerWeightUp01sigma() / nominal_weight;
                   down_variation = TriggerWeightDown01sigma() / nominal_weight;
-                }
+                } /*
                 else if (syst_ext.Contains("FracRVWeight")) {
                   nominal_weight = (FracRVWeightUp01sigma() + FracRVWeightDown01sigma())/2.;
                   up_variation = FracRVWeightUp01sigma() / nominal_weight;
                   down_variation = FracRVWeightDown01sigma() / nominal_weight;
-                }
+                } */
                 else if (syst_ext.Contains("ElectronWeight")) {
                   nominal_weight = (ElectronWeightUp01sigma() + ElectronWeightDown01sigma())/2.;
                   up_variation = ElectronWeightUp01sigma() / nominal_weight;
@@ -662,6 +663,9 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               //vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf", -log(1-tthMVA_RunII()), evt_weight, vId);
               vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf", -log(1 - mva_value), evt_weight, vId);
 
+              vProcess[processId]->fill_histogram("h" + syst_ext + "dnn_score_fcnc_st", dnn_score_fcnc_st(), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "dnn_score_fcnc_tt", dnn_score_fcnc_tt(), evt_weight, vId); 
+
               if (!currentFileTitle.Contains("FCNC")) {
                   vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII", tthMVA(), evt_weight, vId);
                   vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf", -log(1-tthMVA()), evt_weight, vId);
@@ -713,9 +717,9 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                   for (int i = 0; i < FCNC_Hut_BDT_NRB_boundaries.size(); i++) {
                       int j = FCNC_Hut_BDT_NRB_boundaries.size() - (i+1);
                       if (fcnc_bdt_nrb_hut_score() >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score() >= FCNC_Hut_BDT_SMH_boundaries[j])
-                          vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_SRs", i, evt_weight*test_train_scale, vId);
+                          vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_SRs", j, evt_weight*test_train_scale, vId);
                       if (fcnc_bdt_nrb_hct_score() >= FCNC_Hct_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hct_score() >= FCNC_Hct_BDT_SMH_boundaries[j])
-                          vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_SRs", i, evt_weight*test_train_scale, vId);
+                          vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_SRs", j, evt_weight*test_train_scale, vId);
                   }
  
 

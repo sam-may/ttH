@@ -883,7 +883,7 @@ int main(int argc, char* argv[])
   //TString file_path_ref = argv[4];
   //TString year_ref = file_path_ref.Contains("RunII") ? "2017" : file_path_ref.Contains("2018") ? "2018" : ((file_path_ref.Contains("2017") ? "2017" : "2016"));
 
-  bool doSyst = false;
+  bool doSyst = true;
   bool doRatio = true;
   bool loose_mva_cut = false; //argc > 4;
   TString mva_ext = loose_mva_cut ? "_looseMVACut" : "";
@@ -1225,6 +1225,8 @@ int main(int argc, char* argv[])
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_BDT_SMH_SRs", "BDT-SMH (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hut_SRs", "Signal Regions (Hut)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
         make_plot(c1, vFiles[i], vNames[i], "hFCNC_Hct_SRs", "Signal Regions (Hct)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hdnn_score_fcnc_st", "Top DNN (ST)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
+        make_plot(c1, vFiles[i], vNames[i], "hdnn_score_fcnc_tt", "Top DNN (TT)", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst);
     }
     if (tag == "Leptonic") {
         make_plot(c1, vFiles[i], vNames[i], "hchi2_neutrino_pz", "Neutrino p_{z} [GeV]", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);

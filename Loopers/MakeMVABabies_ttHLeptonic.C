@@ -501,6 +501,9 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       forward_jet_eta_ = forward_jet[1]; 
       //}}}
 
+      dnn_score_fcnc_st_ = dnn_score_fcnc_st();
+      dnn_score_fcnc_tt_ = dnn_score_fcnc_tt();
+
       //#quadratic equation related
       vector<int> indices_bjet = get_bjet_indices(jets, btag_scores);
       bool is_moreThanTwoJets_and_atLeastOneBjet = jets.size() > 2 && indices_bjet.size() > 0;

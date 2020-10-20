@@ -165,6 +165,9 @@ class BabyMaker {
 
     float	helicity_angle_;
 
+    float       dnn_score_fcnc_st_;
+    float       dnn_score_fcnc_tt_;
+
     //#quadratic equation related
     float chi2_neutrino_pz_;
     float chi2_tbw_mass_;
@@ -313,6 +316,9 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("met_"           , &met_      );
   BabyTree_->Branch("log_met_"           , &log_met_      );
   BabyTree_->Branch("met_phi_"           , &met_phi_      );
+
+  BabyTree_->Branch("dnn_score_fcnc_st_", &dnn_score_fcnc_st_ );
+  BabyTree_->Branch("dnn_score_fcnc_tt_", &dnn_score_fcnc_tt_ );
 
   BabyTree_->Branch("helicity_angle_"           , &helicity_angle_      );
   //#quadratic equation related

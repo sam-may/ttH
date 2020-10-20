@@ -671,6 +671,9 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       m_jjj_ = m_jjj_ > 0 ? log(m_jjj_) : -9;
       //# jets, btag indices
 
+      dnn_score_fcnc_st_ = dnn_score_fcnc_st();
+      dnn_score_fcnc_tt_ = dnn_score_fcnc_tt();
+
       //#chi-2 related
       //printf("[check-ywk] %-3d: jets.size() = %d\n", event, jets.size());
       vector<int> _null_vector_;

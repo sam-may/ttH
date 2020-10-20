@@ -155,6 +155,9 @@ class BabyMaker {
     float	    m_ggj_;
     float	    m_jjj_;
 
+    float       dnn_score_fcnc_st_;
+    float       dnn_score_fcnc_tt_;
+
     float       top_candidates_1_;
     float       top_candidates_2_;
     float       top_candidates_3_;
@@ -316,6 +319,9 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("helicity_angle_"           , &helicity_angle_      );
   BabyTree_->Branch("m_ggj_"           , &m_ggj_      );
   BabyTree_->Branch("m_jjj_"           , &m_jjj_      );
+
+  BabyTree_->Branch("dnn_score_fcnc_st_", &dnn_score_fcnc_st_ );
+  BabyTree_->Branch("dnn_score_fcnc_tt_", &dnn_score_fcnc_tt_ );
 
   BabyTree_->Branch("top_candidates_1_"             , &top_candidates_1_        );
   BabyTree_->Branch("top_candidates_2_"             , &top_candidates_2_       );

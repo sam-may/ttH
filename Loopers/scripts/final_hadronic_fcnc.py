@@ -58,7 +58,7 @@ if do_diphoton_fits:
 
 
 # Run imputing with fit
-do_imputing = True
+do_imputing = False
 if do_imputing:
     parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
     os.chdir("Plots")
@@ -93,12 +93,13 @@ sm_higgs = "tth,thq,thw,ggh,vbf,vh"
 bdt_training_features_base = ["helicity_angle_", "dipho_pt_over_mass_", "met_", "dipho_rapidity_", "dipho_cosphi_", "subleadPSV_", "leadPSV_", "jet3_btag_", "jet3_eta_", "jet3_pt_", "jet2_btag_", "jet2_eta_", "jet2_pt_", "jet1_btag_", "jet1_eta_", "jet1_pt_", "sublead_eta_", "lead_eta_", "subleadptoM_", "leadptoM_", "ht_", "njets_", "dipho_delta_R", "max1_btag_", "max2_btag_", "minIDMVA_", "maxIDMVA_", "jet4_btag_", "jet4_eta_", "jet4_pt_", "m_ggj_", "m_jjj_"]
 top_tagger_bdt = ["top_tag_score_"]
 top_chi2_hadronic = ["chi2_tbw_mass_", "chi2_tbw_pt_", "chi2_tbw_eta_", "chi2_tbw_deltaR_dipho_", "chi2_qjet_pt_", "chi2_qjet_eta_", "chi2_qjet_btag_", "chi2_qjet_deltaR_dipho_", "chi2_tqh_ptOverM_", "chi2_tqh_eta_", "chi2_tqh_deltaR_tbw_", "chi2_tqh_deltaR_dipho_", "chi2_3x3_tbw_mass_", "chi2_3x3_tbw_pt_", "chi2_3x3_tbw_eta_", "chi2_3x3_tbw_deltaR_dipho_", "chi2_3x3_qjet_pt_", "chi2_3x3_qjet_eta_", "chi2_3x3_qjet_btag_", "chi2_3x3_qjet_deltaR_dipho_", "chi2_3x3_tqh_ptOverM_", "chi2_3x3_tqh_eta_", "chi2_3x3_tqh_deltaR_tbw_", "chi2_3x3_tqh_deltaR_dipho_"]
-bdt_training_features_all = bdt_training_features_base + top_tagger_bdt + top_chi2_hadronic
+top_dnn = ["dnn_score_fcnc_st_", "dnn_score_fcnc_tt_"]
+bdt_training_features_all = bdt_training_features_base + top_tagger_bdt + top_chi2_hadronic + top_dnn
 
 training_features_base = ",".join(bdt_training_features_base)
 training_features_all  = ",".join(bdt_training_features_all)
 
-do_prep = False
+do_prep = True
 if do_prep:
     os.chdir("../MVAs/")
     #os.system("source ~/ttH/MVAs/setup.sh")
@@ -127,7 +128,7 @@ if do_prep:
 
     parallel_utils.submit_jobs(command_list, 6)
 
-do_mvas = False
+do_mvas = True
 if do_mvas:
     os.chdir("../MVAs/")
     #os.system("source ~/ttH/MVAs/setup.sh")
@@ -152,7 +153,7 @@ if do_mvas:
 
     parallel_utils.submit_jobs(command_list, 1)
 
-do_merge = False
+do_merge = True
 if do_merge:
     os.chdir("../MVAs/")
     #os.system("source ~/ttH/MVAs/setup.sh")

@@ -122,7 +122,7 @@ def calculate_btag_sf(files, channel):
         hist = r.gPad.GetPrimitive("htemp")
         mean_no_btag = hist.GetMean()
         total_evts = tree.GetEntries()
-        ratio.append(mean/mean_no_btag)
+        ratio.append(mean_no_btag/mean)
         n_evts.append(total_evts)
 
     return ( sum(ratio[i] * n_evts[i] for i in range(len(ratio))) / sum(n_evts) )

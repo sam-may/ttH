@@ -126,7 +126,7 @@ def skip(sample):
     if any([x in sample for x in blacklist]):
         return True
     if args.ttH_and_tH_only:
-        if not ("ttHJetToGG" in sample or "ttHToGG" in sample or "THQ" in sample or "THW" in sample or "EGamma" in sample or "DoubleEG" in sample):
+        if not ("ttHJetToGG" in sample or "ttHToGG" in sample or "THQ" in sample or "THW" in sample):
             return True
     if args.run_2017F_only:
         if not "DoubleEG" in sample:

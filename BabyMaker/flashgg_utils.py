@@ -7,7 +7,7 @@ import numpy
 def choose_year(sample):
     if "RunIISummer16MiniAODv3" in sample or "Run2016" in sample:
         return "2016"
-    elif "RunIIFall17MiniAODv2" in sample or "Run2017" in sample:
+    elif "RunIIFall17MiniAODv2" in sample or "Run2017" in sample or "UL2017" in sample:
         return "2017"
     elif "RunIIAutumn18MiniAOD" in sample or "Run2018" in sample:
         return "2018"

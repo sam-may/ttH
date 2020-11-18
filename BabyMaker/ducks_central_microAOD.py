@@ -24,6 +24,7 @@ parser.add_argument("--get_nevents", help = "write json file with n_events for e
 parser.add_argument("--ttH_and_tH_only", help = "only submit jobs for ttH and tH samples", action = "store_true")
 parser.add_argument("--run_2017F_only", help = "only submit jobs for DoubleEG Run2017F", action = "store_true")
 parser.add_argument("--local_only", help = "only submit jobs for local microAOD samples", action = "store_true")
+parser.add_argument("--legacy", help = "run on UL datasets", action = "store_true")
 args = parser.parse_args()
 
 job_tag = "ttH_Babies_RunII" + args.tag
@@ -32,6 +33,8 @@ tar_path = "package_%s.tar.gz" % job_tag if (args.use_xrdcp or args.use_gridftp 
 hadoop_path = "ttH"
 
 cmssw_ver = "CMSSW_10_6_8"
+if args.legacy:
+    cmssw_ver = "legacy_stxs/CMSSW_10_6_8"
 
 if not args.soft_rerun or (args.update_tarball or args.update_executable) and not args.get_nevents:
   if not (args.update_tarball or args.update_executable):
@@ -78,14 +81,23 @@ if not args.soft_rerun or (args.update_tarball or args.update_executable) and no
         fout.write("Submitting ttH Babies version %s using central microAOD and commit %s of %s branch of flashgg\n" % (args.tag, commit, branch))
         fout.write("\n")
 
-conds_dict = {
-        "2016" : "MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json",
-        "2017" : "MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json",
-        "2018" : "MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"
-}
+if args.legacy:
+    conds_dict = {
+            "2016" : "MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json",
+            "2017" : "MetaData/data/MetaConditions/Era2017_legacy_v1.json",
+            "2018" : "MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"
+    }
+    catalogs = ["Era2016_RR-17Jul2018_v2", "Era2017_legacy_v1", "Era2018_RR-17Sep2018_v2"]
 
-catalogs = ["Era2016_RR-17Jul2018_v2", "Era2017_RR-31Mar2018_v2", "Era2018_RR-17Sep2018_v2"]
-samples = get_samples_from_catalogs(catalogs)
+else:
+    conds_dict = {
+            "2016" : "MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json",
+            "2017" : "MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json",
+            "2018" : "MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"
+    }
+    catalogs = ["Era2016_RR-17Jul2018_v2", "Era2017_RR-31Mar2018_v2", "Era2018_RR-17Sep2018_v2"]
+
+samples = get_samples_from_catalogs(catalogs, args.legacy)
 if args.get_nevents:
     summarize_samples(samples)
     quit()
@@ -109,7 +121,7 @@ def fpo(sample):
     else:
         return 10
 
-blacklist = ["SingleElectron", "Box1BJet", "Box2BJets", "GJet_Pt", "ZH_HtoGG", "bbHToGG", "JHU", "ZNuNuGJets", "VBFHiggs", "VBFHH"]
+blacklist = ["SingleElectron", "Box1BJet", "Box2BJets", "GJet_Pt", "ZH_HtoGG", "bbHToGG", "JHU", "ZNuNuGJets", "VBFHiggs", "VBFHH", "GluGluToHH"]
 def skip(sample):
     if any([x in sample for x in blacklist]):
         return True
@@ -137,7 +149,11 @@ class file:
         #"tHq_" : { "location" : "/hadoop/cms/store/user/hmei/miniaod_runII/JHUSample_tHq_km_2017_20200525_STEP4_v1/
 #}
 
-local_samples_list = glob.glob("/hadoop/cms/store/user/smay/FCNC/MicroAOD/*FCNC*v1.2_29May2020/")
+if args.legacy:
+    local_samples_list = []
+else:
+    local_samples_list = glob.glob("/hadoop/cms/store/user/smay/FCNC/MicroAOD/*FCNC*v1.2_29May2020/")
+
 local_samples = {}
 
 def get_year(local_sample):

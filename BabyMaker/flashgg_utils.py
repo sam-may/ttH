@@ -73,11 +73,14 @@ def identify_old_productions(productions, sample):
         print "\n\n"
         return old_productions
 
-def get_samples_from_catalogs(catalogs):
+def get_samples_from_catalogs(catalogs, legacy=False):
     print "Getting samples"
     samples = {}
     for catalog in catalogs:
-        datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
+        if legacy:
+            datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/legacy_stxs/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
+        else:
+            datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
         #datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/%s/*.json" % catalog)
         for dataset in datasets:
             with open(dataset, "r") as f_in:

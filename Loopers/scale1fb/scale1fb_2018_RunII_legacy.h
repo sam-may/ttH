@@ -59,7 +59,7 @@ double scale1fb_2018_RunII_legacy(TString currentFileTitle) {
         {"TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8", 0.0000037626},
         {"TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hut-MadGraph5-pythia8", 0.0000000000},
         {"WHiggs0Mf05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8", 0.0000000000},
-        {"TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8", 0.0001718705},
+        {"TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8", 0.0000218146},
         {"TT_FCNC-aTtoHJ_Thadronic_HToaa_eta_hct-MadGraph5-pythia8", 0.0000000000},
         {"WGToLNuG_TuneCP5_13TeV-madgraphMLM-pythia8", 0.0663567973},
         {"THQ_ctcvcp_HToGG_M125_TuneCP5_13TeV-madgraph-pythia8", 0.0000000899},

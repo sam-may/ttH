@@ -24,6 +24,9 @@
 Top Mass (GeV)  Central value   Scale uncert.   PDF+alphaS uncert.   Mass uncert.
          172.5         831.76   +19.77 -29.20       +35.06 -35.06  +23.18 -22.45
 
+*** total TT xs unc
+831.76^{+46.45}_{-50.85} pb => relative uncertainty of 1.056/0.939
+
 ** TT FCNC xs
 *** Units are in pb/coupling^2 (i.e. they are in pb if we assume a coupling strength of 1, which we do)
 xs = xs_TT * 2 * BR(t->Hq) * BR(top decay) * BR(H->gg)

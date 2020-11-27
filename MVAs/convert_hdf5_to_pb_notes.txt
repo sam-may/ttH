@@ -1,0 +1,20 @@
+To solve error of:
+Traceback (most recent call last):
+  File "convert_hdf5_to_pb.py", line 57, in <module>
+    output_names=[out.op.name for out in model.outputs])
+  File "convert_hdf5_to_pb.py", line 41, in freeze_session
+    output_names, freeze_var_names)
+  File "/home/users/sjmay/.local/lib/python2.7/site-packages/tensorflow/python/util/deprecation.py", line 324, in new_func
+    return func(*args, **kwargs)
+  File "/home/users/sjmay/.local/lib/python2.7/site-packages/tensorflow/python/framework/graph_util_impl.py", line 302, in convert_variables_to_constants
+    raise ValueError("Cannot find the variable that is an input "
+ValueError: Cannot find the variable that is an input to the ReadVariableOp.
+
+Following discussion here:
+https://github.com/tensorflow/tensorflow/issues/25721
+
+Moved this file:
+mv /home/users/sjmay/.local/lib/python2.7/site-packages/tensorflow/python/framework/graph_util_impl.py /home/users/sjmay/.local/lib/python2.7/site-packages/tensorflow/python/framework/graph_util_impl_original.py
+
+And replaced it with this file:
+https://github.com/intel-analytics/analytics-zoo/blob/master/pyzoo/zoo/util/tf_graph_util.py

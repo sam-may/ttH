@@ -1,0 +1,268 @@
+{
+    "Hadronic_pt_0_to_60": {
+        "selection": [
+            "mva_score >= 0.9935", 
+            "mva_score >= 0.966468  && !(mva_score >= 0.9935) "
+        ], 
+        "significance": 1.02149, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 1.8821435677936516, 
+                "sm_higgs_nottH": 0.026241811810905347, 
+                "ttH": 1.4464397687697783
+            }, 
+            "Bin_1": {
+                "bkg": 29.681757413503814, 
+                "sm_higgs_nottH": 0.13758213371693273, 
+                "ttH": 3.27360683112056
+            }
+        }
+    }, 
+    "Hadronic_pt_120_to_200": {
+        "selection": [
+            "mva_score >= 0.9972", 
+            "mva_score >= 0.992048  && !(mva_score >= 0.9972) "
+        ], 
+        "significance": 1.71513, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 1.9926795141422085, 
+                "sm_higgs_nottH": 0.14134014107185067, 
+                "ttH": 2.2795454563456587
+            }, 
+            "Bin_1": {
+                "bkg": 4.787496866414558, 
+                "sm_higgs_nottH": 0.20595719479752006, 
+                "ttH": 3.070331098366296
+            }
+        }
+    }, 
+    "Hadronic_pt_200_to_300": {
+        "selection": [
+            "mva_score >= 0.9972", 
+            "mva_score >= 0.993891  && !(mva_score >= 0.9972) "
+        ], 
+        "significance": 1.74497, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 0.5208338848282817, 
+                "sm_higgs_nottH": 0.13747982041240903, 
+                "ttH": 1.8382287130807526
+            }, 
+            "Bin_1": {
+                "bkg": 1.3744698229850651, 
+                "sm_higgs_nottH": 0.02655919944299967, 
+                "ttH": 1.1620178251469042
+            }
+        }
+    }, 
+    "Hadronic_pt_200_to_inf": {
+        "selection": [
+            "mva_score >= 0.9973", 
+            "mva_score >= 0.984482  && !(mva_score >= 0.9973) "
+        ], 
+        "significance": 2.29933, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 0.7791290514635937, 
+                "sm_higgs_nottH": 0.297152947387076, 
+                "ttH": 3.0429344302392565
+            }, 
+            "Bin_1": {
+                "bkg": 10.01573986069225, 
+                "sm_higgs_nottH": 1.4689164860610617, 
+                "ttH": 3.4888566266163252
+            }
+        }
+    }, 
+    "Hadronic_pt_300_to_inf": {
+        "selection": [
+            "mva_score >= 0.9972", 
+            "mva_score >= 0.992450  && !(mva_score >= 0.9972) "
+        ], 
+        "significance": 1.31468, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 0.6414770769150284, 
+                "sm_higgs_nottH": 0.17102423887263285, 
+                "ttH": 1.3016336907749064
+            }, 
+            "Bin_1": {
+                "bkg": 1.2341725047493108, 
+                "sm_higgs_nottH": 0.492982957555796, 
+                "ttH": 0.8449471557978541
+            }
+        }
+    }, 
+    "Hadronic_pt_60_to_120": {
+        "selection": [
+            "mva_score >= 0.9960", 
+            "mva_score >= 0.976969  && !(mva_score >= 0.9960) "
+        ], 
+        "significance": 1.60646, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 1.0280194241314802, 
+                "sm_higgs_nottH": 0.006297365827776957, 
+                "ttH": 1.8442910396843217
+            }, 
+            "Bin_1": {
+                "bkg": 28.8413317255083, 
+                "sm_higgs_nottH": 0.401804211018316, 
+                "ttH": 5.40131945014582
+            }
+        }
+    }, 
+    "Hadronic_pt_inclusive": {
+        "selection": [
+            "mva_score >= 0.9972", 
+            "mva_score >= 0.991811  && !(mva_score >= 0.9972) "
+        ], 
+        "significance": 3.05197, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 4.207394047380478, 
+                "sm_higgs_nottH": 0.4561916767124785, 
+                "ttH": 6.576370741298888
+            }, 
+            "Bin_1": {
+                "bkg": 22.37355927798306, 
+                "sm_higgs_nottH": 0.7623430428793654, 
+                "ttH": 10.322959145880304
+            }
+        }
+    }, 
+    "Leptonic_pt_0_to_60": {
+        "selection": [
+            "mva_score >= 0.9272", 
+            "mva_score >= 0.733085  && !(mva_score >= 0.9272) "
+        ], 
+        "significance": 0.9136670000000001, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 2.632070593736676, 
+                "sm_higgs_nottH": 0.004228723271808121, 
+                "ttH": 1.6673874511034228
+            }, 
+            "Bin_1": {
+                "bkg": 10.198699169699555, 
+                "sm_higgs_nottH": 0.1540547225959017, 
+                "ttH": 1.5514580756716896
+            }
+        }
+    }, 
+    "Leptonic_pt_120_to_200": {
+        "selection": [
+            "mva_score >= 0.9440", 
+            "mva_score >= 0.913016  && !(mva_score >= 0.9440) "
+        ], 
+        "significance": 1.70258, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 1.8859373073822958, 
+                "sm_higgs_nottH": 0.053701440316217486, 
+                "ttH": 3.104893194453325
+            }, 
+            "Bin_1": {
+                "bkg": 0.7306356144572929, 
+                "sm_higgs_nottH": 0.14284508210403146, 
+                "ttH": 0.6118402726133354
+            }
+        }
+    }, 
+    "Leptonic_pt_200_to_300": {
+        "selection": [
+            "mva_score >= 0.9811", 
+            "mva_score >= 0.950645  && !(mva_score >= 0.9811) "
+        ], 
+        "significance": 1.32463, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 0.7269741010275383, 
+                "sm_higgs_nottH": 0.0528553651747643, 
+                "ttH": 1.1921229192521423
+            }, 
+            "Bin_1": {
+                "bkg": 0.6488875954744017, 
+                "sm_higgs_nottH": 0.01573211237700889, 
+                "ttH": 0.757617131632287
+            }
+        }
+    }, 
+    "Leptonic_pt_200_to_inf": {
+        "selection": [
+            "mva_score >= 0.9857", 
+            "mva_score >= 0.958385  && !(mva_score >= 0.9857) "
+        ], 
+        "significance": 1.82089, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 0.5878888669770942, 
+                "sm_higgs_nottH": 0.0332780478784116, 
+                "ttH": 1.736707035859581
+            }, 
+            "Bin_1": {
+                "bkg": 1.126035785684547, 
+                "sm_higgs_nottH": 0.10791059747134568, 
+                "ttH": 1.2991763509926386
+            }
+        }
+    }, 
+    "Leptonic_pt_300_to_inf": {
+        "selection": [
+            "mva_score >= 0.9920", 
+            "mva_score >= 0.968909  && !(mva_score >= 0.9920) "
+        ], 
+        "significance": 0.71874, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 0.029314013961004214, 
+                "sm_higgs_nottH": 0.005876918985450175, 
+                "ttH": 0.47249012044630945
+            }, 
+            "Bin_1": {
+                "bkg": 0.3505930939436362, 
+                "sm_higgs_nottH": 0.03686468378145946, 
+                "ttH": 0.6265521449968219
+            }
+        }
+    }, 
+    "Leptonic_pt_60_to_120": {
+        "selection": [
+            "mva_score >= 0.9553", 
+            "mva_score >= 0.818945  && !(mva_score >= 0.9553) "
+        ], 
+        "significance": 1.32772, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 2.3070611816534754, 
+                "sm_higgs_nottH": 0.01965424173977226, 
+                "ttH": 1.9882655998808332
+            }, 
+            "Bin_1": {
+                "bkg": 10.89674736649228, 
+                "sm_higgs_nottH": 0.2786233111801266, 
+                "ttH": 3.075007483799709
+            }
+        }
+    }, 
+    "Leptonic_pt_inclusive": {
+        "selection": [
+            "mva_score >= 0.9777", 
+            "mva_score >= 0.915751  && !(mva_score >= 0.9777) "
+        ], 
+        "significance": 2.81802, 
+        "yields": {
+            "Bin_0": {
+                "bkg": 2.0779086349087468, 
+                "sm_higgs_nottH": 0.04896669708250556, 
+                "ttH": 4.200636310619302
+            }, 
+            "Bin_1": {
+                "bkg": 13.363581109388596, 
+                "sm_higgs_nottH": 0.5693963577832619, 
+                "ttH": 8.476982694730395
+            }
+        }
+    }
+}

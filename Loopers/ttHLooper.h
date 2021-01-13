@@ -164,10 +164,12 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA", 50, -1, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII", 50, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf", 25, 0, 8);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_low_pT", 25, 0, 8);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_med_pT", 25, 0, 8);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_high_pT", 25, 0, 8);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_Vhigh_pT", 25, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_low_pT", 15, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_med_pT", 15, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_high_pT", 15, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_Vhigh_pT", 15, 0, 8);
+        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_VVhigh_pT", 15, 0, 8);
+
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ", 25, 0, 12);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v2", 18, 0, 10);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v3", 12, 0, 10);
@@ -407,7 +409,7 @@ int categorize_process(TString currentFileTitle, int genPhotonId = -1) {
     return 1;
   else if (currentFileTitle.Contains("DiPhoton"))
     return 2;
-  else if (currentFileTitle.Contains("GJet_Pt"))
+  else if (currentFileTitle.Contains("GJet_Pt") || currentFileTitle.Contains("GJets_DoubleEMEnriched"))
     return 3;
   //else if (currentFileTitle.Contains("GGJet") && !currentFileTitle.Contains("TTG"))
   //  return 4;
@@ -765,12 +767,12 @@ const double qcd_factor_hadronic_runII      = 1.8915467202831975;
 //const double diphoton_impute_factor_hadronic_runII  = 1.3852459996672792;
 
 //v4.11
-//const double qcd_gjets_impute_factor_hadronic_runII = 1.0700730283379238;
-//const double diphoton_impute_factor_hadronic_runII = 1.4176237374087783;
+const double qcd_gjets_impute_factor_hadronic_runII = 1.0700730283379238;
+const double diphoton_impute_factor_hadronic_runII = 1.4176237374087783;
 
 //v5.1
-const double qcd_gjets_impute_factor_hadronic_runII = 1.039962906016564;
-const double diphoton_impute_factor_hadronic_runII  = 1.2590383736548094;
+//const double qcd_gjets_impute_factor_hadronic_runII = 1.039962906016564;
+//const double diphoton_impute_factor_hadronic_runII  = 1.2590383736548094;
 
 const double diphoton_factor_leptonic_runII = 1.919798;
 const double gjets_factor_leptonic_runII    = 1.919798;
@@ -874,6 +876,37 @@ double scale_bkg(TString currentFileTitle, TString bkg_options, int processId, T
     cout << "Did not recognize background scaling option" << endl;
   return 0.0;
 
+}
+
+const vector<double> deepjet_wp_2016 = {0.0614, 0.3093, 0.7221};
+const vector<double> deepjet_wp_2017_legacy = {0.0532, 0.3040, 0.7476};
+const vector<double> deepjet_wp_2017 = {0.0521, 0.3033, 0.7489};
+const vector<double> deepjet_wp_2018 = {0.0494, 0.2770, 0.7264};
+
+void calculate_nbjets(vector<double> btag_scores, TString mYear, bool legacy, int &nb_loose, int &nb_medium, int &nb_tight) {
+    vector<double> wp;
+    if (mYear == "2016")
+        wp = deepjet_wp_2016;
+    else if (mYear == "2017") {
+        if (legacy)
+            wp = deepjet_wp_2017_legacy;
+        else
+            wp = deepjet_wp_2017;
+    }
+    else if (mYear == "2018") {
+        wp = deepjet_wp_2018;
+    }
+
+    nb_loose = 0;
+    nb_medium = 0;
+    nb_tight = 0;
+
+    for (unsigned int i = 0; i < btag_scores.size(); i++) {
+        if (btag_scores[i] > wp[0]) nb_loose++;
+        if (btag_scores[i] > wp[1]) nb_medium++;
+        if (btag_scores[i] > wp[2]) nb_tight++;
+    }
+    return;
 }
 
 void impute_photon_id(double minID_cut, float maxIDMVA, TF1* photon_fakeID_shape, float &minIDMVA, float &evt_weight, int &process_id) {
@@ -1122,6 +1155,7 @@ double impute_from_fakePDF(double minID_cut, float maxIDMVA, int event, TF1* pho
   
 }
 
+/*
 double impute_photon_id(double minID_cut, float &maxIDMVA, int event, TF1* photon_minID_shape, TF1* photon_maxID_shape, float &evt_weight, TF2* photon_ID_shape = nullptr) {
   evt_weight *= impute_transfer_factor;
 
@@ -1142,6 +1176,7 @@ double impute_photon_id(double minID_cut, float &maxIDMVA, int event, TF1* photo
   }
   
 }
+*/
 
 void impute_lead_sublead_photon_id(double minID_cut, float &leadIDMVA, float &subleadIDMVA, int event, TF1* photon_leadID_shape, TF1* photon_subleadID_shape, float &evt_weight) {
   evt_weight *= impute_transfer_factor;

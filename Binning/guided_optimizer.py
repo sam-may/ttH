@@ -26,6 +26,8 @@ process_dict = {
     "FCNC_Hct" : [23,25],
     "tH" : [11,12],
     "sm_higgs" : [0,11,12,14,15,16],
+    "sm_higgs_nottH" : [11,12,14,15,16],
+    "sm_higgs_nottHnoggH" : [11,12],
     "bkg" : [1, 2, 3, 5, 6, 7, 9, 13, 18, 19, 20, 21, 26],
     "data" : [10]
 }
@@ -57,12 +59,21 @@ class Guided_Optimizer():
         self.sm_higgs_unc  = kwargs.get('sm_higgs_unc', 0.4)
 
         self.coupling = kwargs.get('coupling')
-        self.signal =   kwargs.get('signal', ['FCNC_%s' % self.coupling])
+        if self.coupling == "ttH":
+            self.signal = ["ttH"]
+        else:
+            self.signal =   kwargs.get('signal', ['FCNC_%s' % self.coupling])
         self.resonant_bkgs = kwargs.get('resonant_bkgs', ['sm_higgs'])
+        if self.coupling == "ttH":
+            self.resonant_bkgs = ['sm_higgs_nottH']
+            #if "Leptonic" in kwargs.get('channel'):
+            #    self.resonant_bkgs = ['sm_higgs_nottHnoggH']
 
         self.points_per_epoch = kwargs.get('points_per_epoch', 200)
         self.initial_points = kwargs.get('initial_points', 48)
         self.n_epochs = kwargs.get('n_epochs', -1) # how many epochs of optimization to run (-1 means run until convergence)
+
+        self.pt_selection = kwargs.get('pt_selection', '')
 
         self.mva = kwargs.get('mva', 'bdt')
         self.dnn_config = kwargs.get('dnn_config', {
@@ -421,8 +432,8 @@ class Guided_Optimizer():
     def reasonable_effs(self, effs):
         if effs[0] < 0.1:
             return False # don't accept SRs with signal eff less than 5%
-        if effs[-1] > 0.9: # don't accept SRs with the lowest signal eff defined by a cut that has more than 80% efficiency on signal
-            return False
+        #if effs[-1] > 0.9: # don't accept SRs with the lowest signal eff defined by a cut that has more than 80% efficiency on signal
+        #    return False
         if len(effs) > 1:
             for i in range(len(effs)-1):
                 if (effs[i+1] - effs[i]) < 0.1:
@@ -433,9 +444,9 @@ class Guided_Optimizer():
         effs = []
         for i in range(n):
             if len(effs) == 0:
-                effs.append(numpy.random.uniform(0.1, 0.9 - (n*0.1)))
+                effs.append(numpy.random.uniform(0.1, 1.0 - (i*0.1)))
             else:
-                effs.append(numpy.random.uniform(effs[-1] + 0.1, 0.9 - ((n-i) * 0.1)))
+                effs.append(numpy.random.uniform(effs[-1] + 0.1, 1.0 - ((n-i) * 0.1)))
         return effs
 
     def generate_effs_2d(self, n):
@@ -471,7 +482,10 @@ class Guided_Optimizer():
         X = []
 
         for i in range(N_combos):
-            if len(mvas) == 1:
+            if i < 3 and len(mvas) == 1 and n_bin == 1:
+                effs_list = list(numpy.random.uniform(0.98,1.0) * numpy.ones(n_bin))
+                cuts_list = self.convert_eff_to_cut(mvas[0], effs_list)
+            elif len(mvas) == 1:
                 effs_list = self.generate_effs(n_bin)
                 cuts_list = self.convert_eff_to_cut(mvas[0], effs_list)
             elif len(mvas) == 2:
@@ -646,7 +660,10 @@ class Guided_Optimizer():
     #    return "(mass > 100 && mass < 180 && 
 
     def base_selection(self):
-        return "(mass > 100 && mass < 180 && train_id == 1) "
+        if self.pt_selection == "":
+            return "(mass > 100 && mass < 180 && train_id == 1) "
+        else:
+            return "(mass > 100 && mass < 180 && train_id == 1 && %s) " % self.pt_selection
 
     def calculate_expected_limit(self, selection, idx, m_point, temp_results):
         yields = {}
@@ -666,10 +683,14 @@ class Guided_Optimizer():
                     "tag" : "hggpdfsmrel_" + process + "_hgg_" + self.channel + "_" + str(i) + "_" + str(idx),
                     "selection" : self.base_selection() + "&&" + self.process_selection(process) + " && " + selection[i],
                 }
+                if "nottH" in self.resonant_bkgs[0]:
+                    simple = True # just fit a single gaussian
+                else:
+                    simple = False
                 model = makeModel(signalModelConfig)
                 model.getTree(self.scanner.getTree())
                 sig_yield = model.makeSignalModel("wsig_13TeV",
-                        { "replaceNorm" : False, "norm_in" : -1, "fixParameters" : True },
+                        { "replaceNorm" : False, "norm_in" : -1, "fixParameters" : True , "simple" : simple},
                 )
                 yields[bin][process] = sig_yield                
 
@@ -685,12 +706,18 @@ class Guided_Optimizer():
 
             model = makeModel(bkgModelConfig)
             model.getTree(self.scanner.getTree())
-            bkg_yield, bkg_yield_raw, bkg_yield_sumentries = model.makeBackgroundModel("wbkg_13TeV", self.channel + "_" + str(i) + "_" + str(idx))
+            bkg_yield, bkg_yield_full, bkg_yield_raw = model.makeBackgroundModel("wbkg_13TeV", self.channel + "_" + str(i) + "_" + str(idx))
+
+            bkgModelConfig["selection"] = self.base_selection() + "&&" + self.process_selection("data") + " && " + selection[i]
+            bkgModelConfig["savename"] = "dummy"
+            model2 = makeModel(bkgModelConfig)
+            model2.getTree(self.scanner.getTree())
+            bkg_yield_data, bkg_yield_data_full, bkg_yield_raw_data = model2.makeBackgroundModel("wdata_13TeV", self.channel + "_" + str(i) + "_" + str(idx) + "dummy")
 
             #print("[GUIDED OPTIMIZER] Bkg events from fit: %
 
             yields[bin]["bkg"] = bkg_yield
-            if bkg_yield_raw < 10.:
+            if bkg_yield_raw < 8. or bkg_yield_raw_data < 8.:
                 print("[GUIDED OPTIMIZER] Only %.6f expected background events in one bin, disqualifying signal region set." % bkg_yield_raw)
                 disqualify_srs = True
 
@@ -718,8 +745,10 @@ class Guided_Optimizer():
         }
 
         exp_lim, exp_lim_up1sigma, exp_lim_down1sigma, exp_lim_up2sigma, exp_lim_down2sigma = self.scanner.runCombine(combineConfig)
+        if "Significance" in self.combineOption:
+            exp_lim = 1./exp_lim # make inverted so that we can still minimize the POI
         if disqualify_srs:
-            exp_lim *= 2 # double the expected limit if the SR combination is disqualified bc too few non-res bkg events
+            exp_lim *= 3 # double the expected limit if the SR combination is disqualified bc too few non-res bkg events
             # the reason we double the exp_lim, is that we still want the expected limit to be a relatively smooth function of the cut values. this way, the optimization bdt can hopefully learn that cut values resulting in very narrow bins have a penalty applied on them
 
         exp_lim_full = {}

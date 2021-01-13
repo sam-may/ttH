@@ -24,6 +24,7 @@ parser.add_argument("--fcnc", help = "use fcnc as signal, sm as bkg", action="st
 parser.add_argument("--ggH_treatment", help = "how to deal with large ggH weights in fcnc vs SM higgs training", type=str, default="none")
 parser.add_argument("--add_mass_constraints", help = "add mjjj and mggj as global features", action = "store_true")
 parser.add_argument("--add_ext_mass_constraints", help = "add full extended set of mass constraints", action = "store_true")
+parser.add_argument("--data_label", type=int, default=2)
 args = parser.parse_args()
 
 baby_file = args.input.replace(".root", "") + ".root"
@@ -40,6 +41,7 @@ feature_names = ["objects_", "lead_eta_", "sublead_eta_", "lead_phi_", "sublead_
 if args.channel == "Hadronic":
   feature_names += ["objects_boosted_"]
 elif args.channel == "Leptonic":
+  #feature_names += ["n_lep_tight_"]
   feature_names += ["n_lep_tight_", "leptons_", "jets_"]
 
 if args.signal == "ttH" and args.backgrounds == "tH":
@@ -65,7 +67,7 @@ branches = numpy.unique(branches)
 
 
 rand_branch = "rand_"
-data_label = 2
+data_label = args.data_label
 train_frac = args.train_frac
 
 if args.backgrounds == "all":

@@ -687,6 +687,7 @@ void Comparison::set_rat_pad(TPad* ratPad)
   ratPad->Draw();
   ratPad->cd();
   ratPad->SetGridy();
+  ratPad->SetGridx();
   if (mLogX) ratPad->SetLogx();
   if (mLogRat) ratPad->SetLogy();
 }
@@ -1046,13 +1047,13 @@ void Comparison::draw_main_histograms()
   if (mDoSystBand) {
     if (mVHMCSyst_up.size() >= 1) {
         hMC_TotalSyst_up->SetFillStyle(3144);
-        hMC_TotalSyst_up->SetFillColorAlpha(mSystColor, 0.5);
+        hMC_TotalSyst_up->SetFillColorAlpha(mSystColor, 0.75);
         hMC_TotalSyst_up->SetMarkerColor(mSystColor);
         hMC_TotalSyst_up->SetMarkerSize(0.);
         hMC_TotalSyst_up->SetLineColor(mSystColor);
         hMC_TotalSyst_up->Draw("E2, SAME");
         hMC_TotalSyst_down->SetFillStyle(3144);
-        hMC_TotalSyst_down->SetFillColorAlpha(mSystColor, 0.5);
+        hMC_TotalSyst_down->SetFillColorAlpha(mSystColor, 0.75);
         hMC_TotalSyst_down->SetMarkerColor(mSystColor);
         hMC_TotalSyst_down->SetMarkerSize(0.);
         hMC_TotalSyst_down->SetLineColor(mSystColor);
@@ -1073,7 +1074,6 @@ void Comparison::draw_main_histograms()
     hMC_StatUnc_down->Draw("E2, SAME");
   }
 
-  /* HIG-19-015
   if (mVShade.size() > 0) {
     TBox *box = new TBox(mVShade[0],1.001*mYLimRange[0],mVShade[1],0.5*mYLimRange[1]);
     //TBox *box = new TBox(0, 1, 4, 10000);
@@ -1081,9 +1081,8 @@ void Comparison::draw_main_histograms()
     box->SetFillColorAlpha(kGray+1,0.25);
     box->Draw("SAME");
   }
-  */
 
-  
+  /* 
   if (mVShade.size() > 0) {
     TH1D* hShade = new TH1D("hShade", "", 1000, 0, 10);//(TH1D*)mHMC->Clone("shade");
     hShade->SetFillColorAlpha(kGray+1, 0.25);
@@ -1104,6 +1103,7 @@ void Comparison::draw_main_histograms()
     }
     hShade->Draw("E2,SAME");
   }
+  */
 
   //mStack->GetXaxis()->SetRange(mXBinRange[0],mXBinRange[1]);
   //mStack->SetMinimum(mYLimRange[0]);
@@ -1153,7 +1153,7 @@ void Comparison::draw_2D_histograms(int idx)
   TLatex* lumi;
   TString lumiText = Form("%.2f",mLumi);
   lumiText += " fb^{-1} (13 TeV)";
-  lumi = new TLatex(0.70, 0.91, lumiText.Data());
+  lumi = new TLatex(0.67, 0.91, lumiText.Data());
   lumi->SetTextSize(fs*0.75);
   lumi->SetNDC(kTRUE);
   lumi->Draw("SAME");
@@ -1252,16 +1252,16 @@ void Comparison::annotate_plot()
   TLatex* cms;
   if (mPaperStyle) {
     cms  = new TLatex(0.12, 0.935, "CMS");
-    cms->SetTextSize(0.075);
+    cms->SetTextSize(0.07);
   }
   else if (mIndentCms) {
     cms = new TLatex(0.2, 0.935, "CMS #bf{#it{Preliminary}}");
     cms->SetTextSize(0.05);
   }
   else {
-    //cms  = new TLatex(0.12, 0.935, "CMS");
+    cms  = new TLatex(0.12, 0.935, "CMS");
     //cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Supplementary}}");
-    cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Preliminary}}");
+    //cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Preliminary}}");
     //cms = new TLatex(0.12, 0.935, "CMS");
     cms->SetTextSize(0.05);
   }
@@ -1271,13 +1271,13 @@ void Comparison::annotate_plot()
 
   TLatex* lumi;
   if (mLumi != -1) {
-    TString lumiText = Form("#bf{%.0f fb^{-1} (13#scale[0.75]{ }TeV)}", mLumi);
-    double xlumi = mPaperStyle ? 0.61 : 0.63;
+    TString lumiText = Form("#bf{%.0f fb^{-1} (13 TeV)}", mLumi);
+    double xlumi = mPaperStyle ? 0.61 : 0.61;
     lumi = new TLatex(xlumi, 0.935, lumiText.Data());
     if (mPaperStyle)
-        lumi->SetTextSize(0.0725);
+        lumi->SetTextSize(0.06);
     else
-        lumi->SetTextSize(0.05);
+        lumi->SetTextSize(0.06);
     lumi->SetNDC();
     if (!mSuppressTop)
         lumi->Draw("SAME");

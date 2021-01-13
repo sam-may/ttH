@@ -39,6 +39,11 @@ class DNN_Features:
     self.label = numpy.array(kwargs.get('label', []))
     self.weights = numpy.array(kwargs.get('weights', []))
 
+    self.lumi = numpy.array(kwargs.get('lumi', []))
+    self.run = numpy.array(kwargs.get('run', []))
+    self.evt = numpy.array(kwargs.get('evt', []))
+    
+
     self.references = kwargs.get('references', {}) # dictionary of reference BDT/DNN values for comparisons
 
 class DNN_Helper:
@@ -137,6 +142,19 @@ class DNN_Helper:
     self.predictions["train"] = self.model.predict(self.features_train.features, self.batch_size).flatten()
     self.predictions["validation"] = self.model.predict(self.features_validation.features, self.batch_size).flatten()
     self.predictions["data"] = self.model.predict(self.features_data.features, self.batch_size).flatten()
+
+    if debug:
+        for i in range(len(self.predictions["validation"])):
+            print "Evt: %d, run: %d, lumi: %d" % (self.features_validation.evt[i], self.features_validation.run[i], self.features_validation.lumi[i])
+            print "DNN score %d: %.6f" % (i, self.predictions["validation"][i])
+            print "DNN features: "
+            for j in range(len(self.features_validation.global_features[i])):
+                print self.features_validation.global_features[i][j]
+            print "DNN objects: "
+            for j in range(len(self.features_validation.objects[i])):
+                print self.features_validation.objects[i][j]
+            print "\n\n"
+    
     if self.features_final_fit == "none":
       self.predictions["final_fit"] = []
     else:
@@ -252,6 +270,8 @@ class DNN_Helper:
     self.model.save_weights("dnn_weights/" + self.tag + "_weights.hdf5")
     with open("dnn_weights/" + self.tag + "_model_architecture.json", "w") as f_out:
       f_out.write(self.model.to_json())
+
+    self.model.save("dnn_weights/" + self.tag)
 
     return
 

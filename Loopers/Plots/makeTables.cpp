@@ -34,6 +34,8 @@ std::map<TString, TString> mLatex = {
 	{"VH", "VH"},
 	{"TGamma", "$t + \\gamma$"},
 	{"TTV", "$t\\bar{t}+V$"},
+	{"TTZ", "$t\\bar{t}+Z$"},
+	{"TTW", "$t\\bar{t}+W$"},
 	{"VV", "$VV$"},
 	{"tV", "$tV$"},
 	{"ttH", "$t\\bar{t}H$"},

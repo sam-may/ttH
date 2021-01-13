@@ -568,29 +568,34 @@ void make_plot(TCanvas* c1, TFile* file, string output_name, TString hist_name, 
         vector<double> vlines;
         vector<double> cp_lines;
         if (output.Contains("Leptonic")) {
-            c->set_x_bin_range({1,16});
-            vlines = { 0.8997816, 0.95635754, 0.9725133, 0.9870608 }; // hig-19-013 
-            //vlines = { 0.822 }; // hig-19-015 lowest boundary
+            //c->set_x_bin_range({1,16});
+            //vlines = { 0.8997816, 0.95635754, 0.9725133, 0.9870608 }; // hig-19-013 
+            vlines = { 0.768557 }; // hig-19-015 lowest boundary
             if (hist_name.Contains("low_pT"))
                 vlines = { 0.8972818, 0.9608462, 0.9770001, 0.9826471 };
             else if (hist_name.Contains("med_pT"))
                 vlines = { 0.872559, 0.94131196 };
+            else if (hist_name.Contains("VVhigh_pT"))
+                vlines = { 0.854, 0.949 };
             else if (hist_name.Contains("Vhigh_pT"))
                 vlines = { 0.854, 0.949 };
             else if (hist_name.Contains("high_pT"))
                 vlines = { 0.8220656, 0.94593006 }; 
             cp_lines = { 0.9597816 };
+            c->set_x_bin_range({1,13});
             c->set_y_lim_range({0.333, 2*pow(10,5)});
         }
         else if (output.Contains("Hadronic")) {
-            vlines = { 0.986025, 0.9948537, 0.9983046, 0.9990729 }; // hig-19-013 
-            //vlines = { 0.97087705 }; // hig-19-015
+            //vlines = { 0.986025, 0.9948537, 0.9983046, 0.9990729 }; // hig-19-013 
+            vlines = { 0.953620 }; // hig-19-015
             if (hist_name.Contains("low_pT"))
                 vlines = { 0.709, 0.878, 0.900, 0.943 };
                 //vlines = { 0.97087705, 0.9878033, 0.9900327, 0.99430627 }; 
             else if (hist_name.Contains("med_pT"))
                 vlines = { 0.796, 0.922, 0.958, 0.980 };
                 //vlines = { 0.97961617, 0.9922437, 0.99585503, 0.9980591 }; 
+            else if (hist_name.Contains("VVhigh_pT"))
+                vlines = { 0.939, 0.961, 0.980, 0.989 };
             else if (hist_name.Contains("Vhigh_pT"))
                 vlines = { 0.939, 0.961, 0.980, 0.989 };
             else if (hist_name.Contains("high_pT"))
@@ -613,48 +618,48 @@ void make_plot(TCanvas* c1, TFile* file, string output_name, TString hist_name, 
         c->add_paper_info(output.Contains("Hadronic") ? "Had" : "Lep");
         //if (hist_name.Contains("pT"))
 
-        c->set_y_label("Events");
-        //c->set_y_label("Events / 0.32"); // hig-19-015
-        //c->skipCatLabels();
+        //c->set_y_label("Events");
+        c->set_y_label("Events / 0.32"); // hig-19-015
+        c->skipCatLabels();
         c->skip_cp(); // uncomment to remove cp lines
     }
 
     else if (hist_name.Contains("htthMVA_RunII_transf") && hist_name.Contains("ttZ")) {
         vector<double> vlines;
         if (output.Contains("Leptonic")) {
-            vlines = { 0.8997816, 0.95635754, 0.9725133, 0.9870608 }; // hig-19-013
-            //vlines = { 0.822 }; // hig-19-015
+            //vlines = { 0.8997816, 0.95635754, 0.9725133, 0.9870608 }; // hig-19-013
+            vlines = { 0.822 }; // hig-19-015
         }
         else if (output.Contains("Hadronic")) {
-            vlines = { 0.986025, 0.9948537, 0.9983046, 0.9990729 }; // hig-19-013
-            //vlines = { 0.97087705 }; // hig-19-015
+            //vlines = { 0.986025, 0.9948537, 0.9983046, 0.9990729 }; // hig-19-013
+            vlines = { 0.97087705 }; // hig-19-015
         }
         for (unsigned int i = 0; i < vlines.size(); i++) {
             vlines[i] = -log(1-vlines[i]);
         }
         c->give_vshade({0.,vlines[0]});
-        //c->set_y_label(output.Contains("Hadronic") ? "Events / 0.67" : "Events / 1"); //hig-19-015
+        c->set_y_label(output.Contains("Hadronic") ? "Events / 0.67" : "Events / 1"); //hig-19-015
         c->skip_signal();
     }
 
     else if (hist_name.Contains("FCNC") && hist_name.Contains("BDT")) {
         vector<double> vlines;
         if (output.Contains("Leptonic") && hist_name.Contains("Hut_BDT_NRB"))
-            vlines = { 0.772895, 0.810267, 0.9323 };
+            vlines = { 0.003422, 0.855967, 0.9321 }; 
         else if (output.Contains("Leptonic") && hist_name.Contains("Hct_BDT_NRB"))
-            vlines = { 0.776727, 0.808134, 0.9054 };
+            vlines = { 0.857175, 0.895939, 0.9383 }; 
         if (output.Contains("Leptonic") && hist_name.Contains("Hut_BDT_SMH"))
-            vlines = { 0.437164, 0.619253, 0.766727 };
+            vlines = { 0.001017, 0.495376, 0.791062 }; 
         else if (output.Contains("Leptonic") && hist_name.Contains("Hct_BDT_SMH"))
-            vlines = { 0.283887, 0.500838, 0.706084 }; 
+            vlines = { 0.001145, 0.607858, 0.834917 }; 
         else if (output.Contains("Hadronic") && hist_name.Contains("Hut_BDT_NRB"))
-            vlines = { 0.922917, 0.947899, 0.978783, 0.9882 }; 
+            vlines = { 0.883346, 0.898658, 0.953972, 0.9862 }; 
         else if (output.Contains("Hadronic") && hist_name.Contains("Hct_BDT_NRB"))
-            vlines = { 0.868698, 0.968178, 0.984509, 0.9913 }; 
+            vlines = { 0.781122, 0.889369, 0.953621, 0.9817 }; 
         if (output.Contains("Hadronic") && hist_name.Contains("Hut_BDT_SMH"))
-            vlines = { 0.541095, 0.609071, 0.812856, 0.909529 }; 
+            vlines = { 0.486310, 0.631559, 0.698616, 0.797328 }; 
         else if (output.Contains("Hadronic") && hist_name.Contains("Hct_BDT_SMH"))
-            vlines = { 0.632789, 0.774256, 0.819160, 0.895076 }; 
+            vlines = { 0.283623, 0.551443, 0.733333, 0.835061 }; 
         
         for (unsigned int i = 0; i < vlines.size(); i++) {
             vlines[i] = -log(1-vlines[i]);
@@ -883,7 +888,7 @@ int main(int argc, char* argv[])
   //TString file_path_ref = argv[4];
   //TString year_ref = file_path_ref.Contains("RunII") ? "2017" : file_path_ref.Contains("2018") ? "2018" : ((file_path_ref.Contains("2017") ? "2017" : "2016"));
 
-  bool doSyst = true;
+  bool doSyst = false;
   bool doRatio = true;
   bool loose_mva_cut = false; //argc > 4;
   TString mva_ext = loose_mva_cut ? "_looseMVACut" : "";
@@ -971,7 +976,8 @@ int main(int argc, char* argv[])
   gStyle->SetTitleFontSize(0.03); 
   //gStyle->SetErrorX(0);
 
-  TCanvas* c1 = new TCanvas("c1", "histos", 600, 800);
+  //TCanvas* c1 = new TCanvas("c1", "histos", 600, 800);
+  TCanvas* c1 = new TCanvas("c1", "histos", 600, 700); // STXS analysis
   TCanvas* c2 = new TCanvas("c2", "histos2", 800, 800);
   TCanvas* c3 = new TCanvas("c3", "histos3", 1000, 800);
 
@@ -1195,8 +1201,10 @@ int main(int argc, char* argv[])
         make_plot(c1, vFiles[i], vNames[i], "htthMVA_RunII_transf_med_pT", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);
         vInfo[vInfo.size()-1] = "120 < p_{T}^{#gamma#gamma} < 200 GeV";
         make_plot(c1, vFiles[i], vNames[i], "htthMVA_RunII_transf_high_pT", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);
-        vInfo[vInfo.size()-1] = "p_{T}^{#gamma#gamma} > 200 GeV";
+        vInfo[vInfo.size()-1] = "200 < p_{T}^{#gamma#gamma} < 300 GeV";
         make_plot(c1, vFiles[i], vNames[i], "htthMVA_RunII_transf_Vhigh_pT", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);
+        vInfo[vInfo.size()-1] = "p_{T}^{#gamma#gamma} > 300 GeV";
+        make_plot(c1, vFiles[i], vNames[i], "htthMVA_RunII_transf_VVhigh_pT", "BDT-bkg", vBkgs, vSigs, 1, type, year, loose_mva_cut, f_ref, vInfo, yearIdx, doSyst, doRatio);
 
         vInfo[vInfo.size()-1] = "";
 

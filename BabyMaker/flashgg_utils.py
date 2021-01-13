@@ -110,16 +110,21 @@ def get_samples_from_catalogs(catalogs, legacy=False):
                         if "weights" in file.keys(): 
                             samples[sample_name][year][production]["weights"] += file["weights"]
     # Get XS's
-    for file in ["/home/users/sjmay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/cross_sections.json", "/home/users/sjmay/ttH/Loopers/scale1fb/cross_sections_flashgg.json"]:
+    if legacy:
+        xs_files = ["/home/users/sjmay/ttH/BabyMaker/legacy_stxs/CMSSW_10_6_8/src/flashgg/MetaData/data/cross_sections.json", "/home/users/sjmay/ttH/Loopers/scale1fb/cross_sections_flashgg.json"]
+    else:
+        xs_files = ["/home/users/sjmay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/cross_sections.json", "/home/users/sjmay/ttH/Loopers/scale1fb/cross_sections_flashgg.json"]
+    for file in xs_files:
         with open(file, "r") as f_in:
             cross_sections = json.load(f_in)
             for sample in samples.keys():
-                if sample in cross_sections.keys() and "xs" not in samples[sample].keys():
-                    samples[sample]["xs"] = cross_sections[sample]["xs"]
+                if (sample in cross_sections.keys() or sample.replace("_TuneCP5", "") in cross_sections.keys()) and "xs" not in samples[sample].keys():
+                    sample_choice = sample if sample in cross_sections.keys() else sample.replace("_TuneCP5", "")
+                    samples[sample]["xs"] = cross_sections[sample_choice]["xs"]
                     if "br" in cross_sections[sample].keys():
-                        samples[sample]["xs"] *= cross_sections[sample]["br"]
+                        samples[sample]["xs"] *= cross_sections[sample_choice]["br"]
                     if "filter_eff" in cross_sections[sample].keys():
-                        samples[sample]["xs"] *= cross_sections[sample]["filter_eff"]
+                        samples[sample]["xs"] *= cross_sections[sample_choice]["filter_eff"]
                 #else:
                     #print "%s unmatched to a cross section" % sample
                     #samples[sample]["xs"] = 0.0

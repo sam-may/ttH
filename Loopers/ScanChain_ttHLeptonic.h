@@ -21,6 +21,9 @@
 #include "scale1fb/scale1fb_2016_RunII.h"
 #include "scale1fb/scale1fb_2017_RunII.h"
 #include "scale1fb/scale1fb_2018_RunII.h"
+#include "scale1fb/scale1fb_2016_RunII_legacy.h"
+#include "scale1fb/scale1fb_2017_RunII_legacy.h"
+#include "scale1fb/scale1fb_2018_RunII_legacy.h"
 #include "MakeMVAOptimizationBabies.h"
 #include "Utils/RandomMap.h"
 
@@ -56,7 +59,7 @@ bool passes_btag_rescale_selection() {
     return true;
 }
 
-bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_medium, int n_lep_tight, float mva_value = -1, float m_gl_lead = 999, float m_gl_sublead = 999) {
+bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_medium, int n_lep_tight, int nb_loose, int nb_medium, int nb_tight, float mva_value = -1, float m_gl_lead = 999, float m_gl_sublead = 999) {
 
   if (tag == "ttHLeptonic_RunII_ttZ_CR") {
     if (abs(mass() - m_Z) > 10.)         return false;
@@ -67,9 +70,11 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_m
   }  
 
   else if (tag == "ttHLeptonic_RunII_ttZ_Tight_CR") {
+    cout << abs(mass() - m_Z) << " " << n_jets() << " " << nb_medium << " " << minIDMVA_ << " " << n_lep_medium << endl;
+  
     if (abs(mass() - m_Z) > 10.)         return false;
     if (n_jets() < 3)                   return false;
-    if (nb_medium() < 2)                return false;
+    if (nb_medium < 2)                return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)           return false;
     if (n_lep_medium < 1)                               return false;
     return true;
@@ -234,7 +239,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_m
   else if (tag == "ttHLeptonic_RunII_ttbar_region") {
     if (mass() < 100)                                   return false;
     if (n_lep_tight < 1)				return false;
-    if (nb_medium() < 1)				return false;
+    if (nb_medium < 1)				return false;
     if (leadPixelSeed() || subleadPixelSeed())      	return false;
     return true;
   }
@@ -243,7 +248,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_m
     if (mass() < 100 || mass() > 180)                   return false;
     if (lead_ptoM() < 0.33 || sublead_ptoM() < 0.25)    return false;
     if (n_jets() < 1)                                   return false;
-    if (nb_medium() < 1)                                return false;
+    if (nb_medium < 1)                                return false;
     if (minIDMVA_ < -0.2)           			return false;
     if (n_lep_medium < 1)                               return false;
     if (tthMVA() < 0.3)                                 return false;
@@ -254,7 +259,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_m
     if (mass() < 100 || mass() > 180)                   return false;
     if (lead_ptoM() < 0.33 || sublead_ptoM() < 0.25)    return false;
     if (n_jets() < 1)                                   return false;
-    if (nb_medium() < 1)				return false;
+    if (nb_medium < 1)				return false;
     if (minIDMVA_ < -0.2)                               return false;
     if (n_lep_medium < 1)                               return false;
     if (tthMVA() < 0.6)                                 return false;
@@ -265,7 +270,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_m
     if (mass() < 100 || mass() > 180)                   return false;
     if (lead_ptoM() < 0.33 || sublead_ptoM() < 0.25)    return false;
     if (n_jets() < 1)                                   return false;
-    if (nb_medium() < 1)				return false;
+    if (nb_medium < 1)				return false;
     if (minIDMVA_ < -0.2)                               return false;
     if (n_lep_medium < 1)                               return false;
     if (tthMVA() > 0.6 || tthMVA() < 0.3)               return false;
@@ -464,14 +469,15 @@ vector<TLorentzVector> make_els() {
   return vEls;
 }
 
+const double muon_pt_cut = 5.;
 vector<TLorentzVector> make_mus() {
   vector<TLorentzVector> vMus;
-  if (muon1_pt() > 0) {
+  if (muon1_pt() > muon_pt_cut) {
     TLorentzVector mu;
     mu.SetPtEtaPhiE(muon1_pt(), muon1_eta(), muon1_phi(), muon1_energy());
     vMus.push_back(mu);
   }
-  if (muon2_pt() > 0) {
+  if (muon2_pt() > muon_pt_cut) {
     TLorentzVector mu;
     mu.SetPtEtaPhiE(muon2_pt(), muon2_eta(), muon2_phi(), muon2_energy());
     vMus.push_back(mu);

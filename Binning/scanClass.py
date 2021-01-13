@@ -104,7 +104,7 @@ class scanClass():
         cmdCombine = "#!/bin/sh\n\ncd " + self.combineEnv + "; pwd; eval `scramv1 runtime -sh`; cd -;"
         cmdCombine += "cd " + self.modelpath + ";"
         #cmdCombine += "ls;"
-        cmdCombine += "combine -M " + combineOption + " -n " + combineOutName + " " + cardName + " -t -1 --expectSignal=0 > " + self.modelpath + outtxtName + ";"
+        cmdCombine += "combine -M " + combineOption + " -n " + combineOutName + " " + cardName + " -t -1 > " + self.modelpath + outtxtName + ";"
 
         print cmdCombine
         #os.system(cmdCombine)
@@ -124,6 +124,17 @@ class scanClass():
             significance = os.popen('grep "Significance:" %s | awk "{print $2}"' % (self.modelpath + outtxtName)).read().split(" ")[-1]
             sig_up1sigma = 0
             sig_down1sigma = 0
+            sig_up2sigma = 0
+            sig_down2sigma = 0
+
+        elif "MultiDimFit" in combineOption:
+            cl = os.popen('grep "r :" %s | awk "{print $2}"' % (self.modelpath + outtxtName)).read().split(" ")[-2]
+            cl = cl.split("/")
+            cl_up = cl[1][1:]
+            cl_down = cl[0][1:]
+            significance = max(float(cl_up),float(cl_down))
+            sig_up1sigma = cl_up
+            sig_down1sigma = cl_down
             sig_up2sigma = 0
             sig_down2sigma = 0
 

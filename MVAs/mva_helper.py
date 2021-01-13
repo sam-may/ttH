@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 ### Data loading util functions ###
 
-default_branches = ["evt_weight_", "process_id_", "mass_", "evt_", "run_", "lumi_", "year_", "tth_runII_mva_", "signal_mass_category_", "rand_", "signal_mass_label_"]
+default_branches = ["evt_weight_", "process_id_", "mass_", "evt_", "dipho_pt_", "run_", "lumi_", "year_", "tth_runII_mva_", "signal_mass_category_", "rand_", "signal_mass_label_"]
 
 def load_data(self):
     self.file = h5py.File(self.input, "r")
@@ -28,14 +28,14 @@ def load_data(self):
     self.data["feature_names"] = utils.load_array(self.file, "feature_names")
     for set in ["train", "test", "data"]:
         self.data[set] = {}
-        for aux in default_branches:
+        for aux in default_branches + self.additional_branches:
             self.data[set][aux]   = utils.load_array(self.file, "%s_%s" % (aux, set))
         self.data[set]["label"]   = utils.load_array(self.file, "%s_%s" % ("label", set))
         self.data[set]["global"]  = utils.load_array(self.file, "%s_%s" % ("global", set))
         self.data[set]["objects"] = utils.load_array(self.file, "%s_%s" % ("objects", set))
 
         self.data[set]["n_events_raw"] = len(self.data[set]["label"])
-        for check in default_branches + ["global"]:
+        for check in default_branches + ["global"] + self.additional_branches:
             if not len(self.data[set][check]) == self.data[set]["n_events_raw"]:
                 print("[MVA_HELPER] WARNING -- %s set: entry %s does not have the same number of events as the label (%d vs. %d)" % (set, check, len(self.data[set][check]), self.data[set]["n_events_raw"]))
         self.data[set]["n_events"]     = numpy.sum(self.data[set]["evt_weight_"])
@@ -75,6 +75,7 @@ def load_data_xgb(self):
 class MVA_Manager():
     def __init__(self, **kwargs):
         self.input = kwargs.get('input')
+        self.additional_branches = kwargs.get('additional_branches', [])
         self.output = kwargs.get('output')
 
         self.mvas = {}
@@ -99,11 +100,11 @@ class MVA_Manager():
     def write_tree(self):
         array = []
 
-        all_branches = default_branches + ["label", "train_id"] 
+        all_branches = default_branches + ["label", "train_id"] + self.additional_branches
         for aux in all_branches:
             print aux
             a = self.append_arrays(aux)
-            if aux == "label" or aux == "train_id":
+            if aux == "label" or aux == "train_id" or "dnn_score" in aux:
                 tree_name = aux
             elif "evt_weight" in aux:
                 tree_name = "weight"
@@ -129,6 +130,7 @@ class MVA_Manager():
 class MVA_Helper(object):
     def __init__(self, **kwargs):
         self.input = kwargs.get('input')
+        self.additional_branches = kwargs.get('additional_branches', [])
         self.output = kwargs.get('output', 'default')
 
         self.config = kwargs.get('config', {})

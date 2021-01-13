@@ -31,7 +31,7 @@ process_dict = {
 
 process_dict_inverse = {v : k for k, v in process_dict.items()}
 
-def selection(signal, bkg, type):
+def selection(signal, bkg, type, fcnc=True):
     sel_string = "("
     for proc in (signal + bkg):
         if proc.lower() in process_dict.keys():
@@ -40,18 +40,31 @@ def selection(signal, bkg, type):
     sel_string = sel_string[:-3]
     sel_string += ")"
 
-    if type == 0: # train
-        set = "Training"
-        sel_string += " && ((label_ == 1 && evt_ % 3 == 0) || (label_ == 0 && (signal_mass_label_ == 1 || signal_mass_label_ == 2)) || (label_ == 0 && signal_mass_label_ == -1 && evt_ % 2 == 0)) "
-    elif type == 1: # validation
-        set = "Testing"
-        sel_string += " && ((label_ == 1 && evt_ % 3 == 1) || (label_ == 0 && (signal_mass_category_ == 125) && evt_ % 2 == 0) || (label_ == 0 && signal_mass_label_ == -1 && evt_ % 2 == 1)) " 
-    elif type == 2: # data
-        set = "Data"
-        sel_string = " label_ == 2"
-    elif type == 3: # final fit
-        set = "Final Fit"
-        sel_string += " && ((label_ == 1 && evt_ % 3 == 2) || (label_ == 0 && (signal_mass_category_ == 120 || signal_mass_category_ == 125 || signal_mass_category_ == 130) && evt_ % 2 == 1)) " 
+    if fcnc:
+        if type == 0: # train
+            set = "Training"
+            sel_string += " && ((label_ == 1 && evt_ % 3 == 0) || (label_ == 0 && (signal_mass_label_ == 1 || signal_mass_label_ == 2)) || (label_ == 0 && signal_mass_label_ == -1 && evt_ % 2 == 0)) "
+        elif type == 1: # validation
+            set = "Testing"
+            sel_string += " && ((label_ == 1 && evt_ % 3 == 1) || (label_ == 0 && (signal_mass_category_ == 125) && evt_ % 2 == 1) || (label_ == 0 && signal_mass_label_ == -1 && evt_ % 2 == 1)) " 
+        elif type == 2: # data
+            set = "Data"
+            sel_string = " label_ == 2"
+        elif type == 3: # final fit
+            set = "Final Fit"
+            sel_string += " && ((label_ == 1 && evt_ % 3 == 2) || (label_ == 0 && (signal_mass_category_ == 120 || signal_mass_category_ == 125 || signal_mass_category_ == 130) && evt_ % 2 == 1)) " 
+
+    else:
+        if type == 0:
+            set = "Training"
+            sel_string += " && ((label_ == 1 && evt_ % 2 == 0) || (label_ == 0 && (signal_mass_label_ == 1 || signal_mass_label_ == 2)) || (label_ == 0 && signal_mass_label_ == -1 && evt_ % 2 == 0)) "
+        elif type == 1: # validation
+            set = "Testing"
+            sel_string += " && ((label_ == 1 && evt_ % 2 == 1 && signal_mass_category_ == 127) || (label_ == 0 && (signal_mass_category_ == 127) && evt_ % 2 == 1) || (label_ == 0 && signal_mass_label_ == -1 && evt_ % 2 == 1)) "
+            #sel_string += " && ((label_ == 1 && evt_ % 2 == 1 && signal_mass_category_ == 125) || (label_ == 0 && (signal_mass_category_ == 125) && evt_ % 2 == 1) || (label_ == 0 && signal_mass_label_ == -1 && evt_ % 2 == 1)) " # FIXME temporarily set to M125 for debugging purposes
+        elif type == 2: # data
+            set = "Data"
+            sel_string = " label_ == 2"
 
     print "[prep_utils.py] selection for %s set: %s" % (set, sel_string)
 
@@ -63,7 +76,7 @@ def z_score(array, mean, std, pad_value = -9):
     preprocessed_array[array != pad_value] *= 1./std
     return preprocessed_array
 
-def create_features_and_label(features, feature_names, signal, bkg, preprocess_dict = None, z_score = True):
+def create_features_and_label(features, feature_names, signal, bkg, preprocess_dict = None, z_score = True, dnn_info = {"do_dnn" : False}):
     label = []
     features_array = []
 
@@ -72,6 +85,10 @@ def create_features_and_label(features, feature_names, signal, bkg, preprocess_d
         if preprocess_dict and z_score:
             feat = z_score(feat, preprocess_dict[name]["mean"], preprocess_dict[name]["std_dev"])
         features_array.append(feat)
+
+    if dnn_info["do_dnn"]:
+        for i in range(len(dnn_info["dnn_predictions"])):
+            features_array.append(dnn_info["dnn_predictions"][i][dnn_info["idx"]])
 
     for evt in features["process_id_"]:
         proc = process_dict_inverse[evt]

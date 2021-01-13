@@ -21,6 +21,8 @@ parser.add_argument("--hh", help = "run babymaker with hh as signal, ttH as bkg"
 parser.add_argument("--do_systematics", help = "loop over independent collections for systematics bands in data/MC plots", action="store_true")
 parser.add_argument("--l1_prefire", help = "undo, vary up or vary down l1 prefire weight", type=str, default="")
 parser.add_argument("--ttH_vs_tH", help = "only loop over tH and ttH samples", action="store_true")
+parser.add_argument("--legacy", help = "use UL samples", action="store_true")
+parser.add_argument("--ttGG_only", action="store_true")
 args = parser.parse_args()
 
 if args.fcnc:
@@ -42,6 +44,7 @@ print "args.fcnc           : %s" % args.fcnc
 print "args.do_systematics : %s" % args.do_systematics
 print "args.l1_prefire     : %s" % args.l1_prefire
 print "args.ttH_vs_tH      : %s" % args.ttH_vs_tH
+print "args.legacy         : %s" % args.legacy
 print "------------------------------------------------------------"
 #}}}
 # set up sys tag for Loopers{{{
@@ -167,113 +170,209 @@ babies_2016 = [
 ]
 #}}}
 #babies_2017{{{
-babies_2017 = [
-    # Data
-    "DoubleEG_Run2017B-31Mar2018-v1",
-    "DoubleEG_Run2017C-31Mar2018-v1",
-    "DoubleEG_Run2017D-31Mar2018-v1",
-    "DoubleEG_Run2017E-31Mar2018-v1",
-    "DoubleEG_Run2017F-31Mar2018-v1",
 
-    # ttH
-    "ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+if args.legacy:
+    babies_2017 = [
+        # Data
+        "DoubleEG_09Aug2019_UL2017-v1",
 
-    # Other Higgs production modes
-    "GluGluHToGG_M-120_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M-125_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M-130_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M123_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M124_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "GluGluHToGG_M126_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M127_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        # ttH
+        "ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "ttHJetToGG_M123_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "ttHJetToGG_M124_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "ttHJetToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v2",
+        "ttHJetToGG_M126_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "ttHJetToGG_M127_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
 
-    "VBFHToGG_M-120_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M-125_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M-130_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M120_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M123_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M124_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M125_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M126_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M127_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VBFHToGG_M130_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        # Other Higgs production modes
+        "GluGluHToGG_M-120_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "GluGluHToGG_M-130_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "GluGluHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v1",
+        "GluGluHToGG_M123_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v1",
+        "GluGluHToGG_M124_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v1",
+        "GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v2",
+        "GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights_106X_mc2017_realistic_v6-v1",
+        "GluGluHToGG_M126_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v1",
+        "GluGluHToGG_M127_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v1",
+        "GluGluHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v1",
 
-    "VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M-120_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "VBFHToGG_M-125_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "VBFHToGG_M-130_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "VBFHToGG_M120_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v1",
+        "VBFHToGG_M123_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v1",
+        "VBFHToGG_M124_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v1",
+        "VBFHToGG_M125_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v2",
+        "VBFHToGG_M126_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v1",
+        "VBFHToGG_M127_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v1",
+        "VBFHToGG_M130_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v1",
 
-    #"bbHToGG_M-120_4FS_yb2_13TeV_amcatnlo_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    #"bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    #"bbHToGG_M-125_4FS_ybyt_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    #"bbHToGG_M-130_4FS_yb2_13TeV_amcatnlo_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    #"bbHToGG_M-130_4FS_ybyt_TuneCP5_13TeV-amcatnlo-pythia8_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1",
+        "VHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "VHToGG_M123_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "VHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "VHToGG_M126_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "VHToGG_M127_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "VHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
 
-    "THQ_ctcvcp_HToGG_M120_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THQ_ctcvcp_HToGG_M123_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THQ_ctcvcp_HToGG_M124_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3",
-    "THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THQ_ctcvcp_HToGG_M126_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "THQ_ctcvcp_HToGG_M127_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THQ_ctcvcp_HToGG_M130_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THW_ctcvcp_HToGG_M120_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THW_ctcvcp_HToGG_M123_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THW_ctcvcp_HToGG_M124_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THW_ctcvcp_HToGG_M126_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THW_ctcvcp_HToGG_M127_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "THW_ctcvcp_HToGG_M130_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THQ_ctcvcp_HToGG_M120_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THQ_ctcvcp_HToGG_M123_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THQ_ctcvcp_HToGG_M124_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THQ_ctcvcp_HToGG_M125_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THQ_ctcvcp_HToGG_M126_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THQ_ctcvcp_HToGG_M127_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THQ_ctcvcp_HToGG_M130_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THW_ctcvcp_HToGG_M120_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THW_ctcvcp_HToGG_M125_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
+        "THW_ctcvcp_HToGG_M130_TuneCP5_13TeV-madgraph-pythia8_106X_mc2017_realistic_v6-v1",
 
-    # Background MC
-    # QCD + X
-    "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GJets_HT-40To100_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "GJets_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2",
-    #"GJets_HT-200To400_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1",
-    "GJets_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "GJets_HT-600ToInf_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "DiPhotonJetsBox_M40_80-Sherpa_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1",
+        # Background MC
+        # QCD + X
+        "QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8_106X_mc2017_realistic_v6-v2",
+        "QCD_Pt-15to20_EMEnriched_TuneCP5_13TeV_pythia8_106X_mc2017_realistic_v6-v2",
+        "QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8_106X_mc2017_realistic_v6-v2",
+        "QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8_106X_mc2017_realistic_v6-v2",
+        "QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8_106X_mc2017_realistic_v6-v2",
+        "QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8_106X_mc2017_realistic_v6-v2",
 
-    # tt + X
-    "TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1",
-    "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1",
-    "TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1",
+        "GJets_DoubleEMEnriched_PtG-20MGG-40To80_TuneCP5_13TeV-madgraphMLM-pythia8_106X_mc2017_realistic_v6-v2",
+        "GJets_DoubleEMEnriched_PtG-40MGG-80_TuneCP5_13TeV-madgraphMLM-pythia8_106X_mc2017_realistic_v6-v2",
+        "DiPhotonJetsBox_M40_80-sherpa_106X_mc2017_realistic_v6-v3",
+        "DiPhotonJetsBox_MGG-80toInf_13TeV-sherpa_106X_mc2017_realistic_v6-v3",
 
-    # V + X
-    "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1",    "WGToLNuG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3",
-    "ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3",
+        # tt + X
+        "TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v2",
+        "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v2",
+        "TTGG_0Jets_TuneCP5_13TeV-amcatnlo-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
 
-    # Rare
-    "ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "TGJets_TuneCP5_13TeV_amcatnlo_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
-    "WW_TuneCP5_13TeV-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "WZ_TuneCP5_13TeV-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
-    "ZZ_TuneCP5_13TeV-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2",
-    "tZq_ll_4f_ckm_NLO_TuneCP5_13TeV-madgraph-pythia8_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2",
+        # V + X
+        "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v2",
+        "WGToLNuG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v1",
+        "ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8_106X_mc2017_realistic_v6-v2",
 
-]
+        # Rare
+        "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5CR1_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v1",
+        "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5CR1_13TeV-powheg-pythia8_106X_mc2017_realistic_v6-v1",
+        "TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_106X_mc2017_realistic_v6-v1",
+        "TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v2",
+        "WW_TuneCP5_13TeV-pythia8_106X_mc2017_realistic_v6-v2",
+        "WZ_TuneCP5_13TeV-pythia8_106X_mc2017_realistic_v6-v2",
+        "ZZ_TuneCP5_13TeV-pythia8_106X_mc2017_realistic_v6-v2",
+        "tZq_ll_4f_ckm_NLO_TuneCP5_13TeV-amcatnlo-pythia8_106X_mc2017_realistic_v6-v1",
+
+    ]
+
+else:
+    babies_2017 = [
+        # Data
+        "DoubleEG_Run2017B-31Mar2018-v1",
+        "DoubleEG_Run2017C-31Mar2018-v1",
+        "DoubleEG_Run2017D-31Mar2018-v1",
+        "DoubleEG_Run2017E-31Mar2018-v1",
+        "DoubleEG_Run2017F-31Mar2018-v1",
+
+        # ttH
+        "ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+
+        # Other Higgs production modes
+        "GluGluHToGG_M-120_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M-125_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M-130_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M123_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M124_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "GluGluHToGG_M126_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M127_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+
+        "VBFHToGG_M-120_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M-125_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M-130_13TeV_powheg_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M120_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M123_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M124_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M125_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M126_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M127_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VBFHToGG_M130_13TeV_amcatnlo_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+
+        "VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+
+        #"bbHToGG_M-120_4FS_yb2_13TeV_amcatnlo_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        #"bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        #"bbHToGG_M-125_4FS_ybyt_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        #"bbHToGG_M-130_4FS_yb2_13TeV_amcatnlo_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        #"bbHToGG_M-130_4FS_ybyt_TuneCP5_13TeV-amcatnlo-pythia8_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1",
+
+        "THQ_ctcvcp_HToGG_M120_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THQ_ctcvcp_HToGG_M123_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THQ_ctcvcp_HToGG_M124_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3",
+        "THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THQ_ctcvcp_HToGG_M126_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "THQ_ctcvcp_HToGG_M127_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THQ_ctcvcp_HToGG_M130_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THW_ctcvcp_HToGG_M120_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THW_ctcvcp_HToGG_M123_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THW_ctcvcp_HToGG_M124_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THW_ctcvcp_HToGG_M126_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THW_ctcvcp_HToGG_M127_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "THW_ctcvcp_HToGG_M130_13TeV-madgraph-pythia8_TuneCP5_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+
+        # Background MC
+        # QCD + X
+        "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GJets_HT-40To100_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "GJets_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2",
+        #"GJets_HT-200To400_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1",
+        "GJets_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "GJets_HT-600ToInf_TuneCP5_13TeV-madgraphMLM-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "DiPhotonJetsBox_M40_80-Sherpa_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1",
+
+        # tt + X
+        "TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1",
+        "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1",
+        "TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1",
+
+        # V + X
+        "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1",    "WGToLNuG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3",
+        "ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3",
+
+        # Rare
+        "ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "TGJets_TuneCP5_13TeV_amcatnlo_madspin_pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2",
+        "WW_TuneCP5_13TeV-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "WZ_TuneCP5_13TeV-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1",
+        "ZZ_TuneCP5_13TeV-pythia8_RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2",
+        "tZq_ll_4f_ckm_NLO_TuneCP5_13TeV-madgraph-pythia8_RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2",
+
+    ]
 
 #}}}
 #babies_2018{{{
@@ -448,6 +547,11 @@ if args.ttH_vs_tH:
 #}}}
 # path of merged_ntuple.root{{{
 
+if args.ttGG_only:
+    babies_2016 = [baby for baby in babies_2016 if "TTGG" in baby]
+    babies_2017 = [baby for baby in babies_2017 if "TTGG" in baby]
+    babies_2018 = [baby for baby in babies_2018 if "TTGG" in baby]
+
 def full_path(baby):
   full_path_baby = "/home/users/sjmay/ttH/Loopers/merged_babies/" + baby + "_ttH_Babies_RunII" + args.baby_version + "/merged_ntuple.root"
   #full_path_baby = "/wk_cms/ykao/public/samuel/" + baby + "_ttH_Babies_RunII" + args.baby_version + "/merged_ntuple.root"
@@ -467,17 +571,17 @@ if args.babymaker:
   if "2016" in args.years:
     for baby in babies_2016:
       for little_baby in little_babies(baby):
-        command_list.append('./ttH%sMVABabyMaker "%s" "RunII" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, args.tag, args.bkg_options, little_baby, "2016", "_" + str(idx), "FCNC" if args.fcnc else ""))
+        command_list.append('./ttH%sMVABabyMaker "%s" "RunII%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, "_legacy" if args.legacy else "", args.tag, args.bkg_options, little_baby, "2016", "_" + str(idx), "FCNC" if args.fcnc else ""))
         idx += 1
   if "2017" in args.years:
     for baby in babies_2017:
       for little_baby in little_babies(baby):
-        command_list.append('./ttH%sMVABabyMaker "%s" "RunII" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, args.tag, args.bkg_options, little_baby, "2017", "_" + str(idx), "FCNC" if args.fcnc else ""))
+        command_list.append('./ttH%sMVABabyMaker "%s" "RunII%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, "_legacy" if args.legacy else "", args.tag, args.bkg_options, little_baby, "2017", "_" + str(idx), "FCNC" if args.fcnc else ""))
         idx += 1
   if "2018" in args.years:
     for baby in babies_2018:
       for little_baby in little_babies(baby):
-        command_list.append('./ttH%sMVABabyMaker "%s" "RunII" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, args.tag, args.bkg_options, little_baby, "2018", "_" + str(idx), "FCNC" if args.fcnc else ""))
+        command_list.append('./ttH%sMVABabyMaker "%s" "RunII%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, "_legacy" if args.legacy else "", args.tag, args.bkg_options, little_baby, "2018", "_" + str(idx), "FCNC" if args.fcnc else ""))
         idx += 1
 #}}}
 # Loopers{{{
@@ -486,7 +590,7 @@ else:
   if "2016" in args.years:
     for baby in babies_2016:
       for little_baby in little_babies(baby):
-        command_list.append('./ttH%sLooper "%s" "RunII" "%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, args.tag, args.bdt, args.bkg_options, little_baby, "2016", "_" + str(idx), syst, args.l1_prefire)) 
+        command_list.append('./ttH%sLooper "%s" "RunII%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, "_legacy" if args.legacy else "", args.tag, args.bdt, args.bkg_options, little_baby, "2016", "_" + str(idx), syst, args.l1_prefire)) 
         idx += 1
   #}}}
 # 2017{{{
@@ -495,7 +599,7 @@ else:
       for little_baby in little_babies(baby):
         #print "little_baby: (%d) %s" % (idx, little_baby)
         #idx += 1
-        command_list.append('./ttH%sLooper "%s" "RunII" "%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, args.tag, args.bdt, args.bkg_options, little_baby, "2017", "_" + str(idx), syst, args.l1_prefire))    
+        command_list.append('./ttH%sLooper "%s" "RunII%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, "_legacy" if args.legacy else "", args.tag, args.bdt, args.bkg_options, little_baby, "2017", "_" + str(idx), syst, args.l1_prefire))    
         print command_list[idx]
         idx += 1
 #}}}
@@ -503,12 +607,12 @@ else:
   if "2018" in args.years:
     for baby in babies_2018:
       for little_baby in little_babies(baby):
-        command_list.append('./ttH%sLooper "%s" "RunII" "%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, args.tag, args.bdt, args.bkg_options, little_baby, "2018", "_" + str(idx), syst, args.l1_prefire))    
+        command_list.append('./ttH%sLooper "%s" "RunII%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (args.channel, args.selection, "_legacy" if args.legacy else "", args.tag, args.bdt, args.bkg_options, little_baby, "2018", "_" + str(idx), syst, args.l1_prefire))    
         idx += 1
   #}}}
 #}}}
 print "------------------------------------------------------------"
-nPar = 12
+nPar = 36
 parallel_utils.submit_jobs(command_list, nPar)
 print "------------------------------------------------------------"
 # histograms, hadd, cleanup{{{
@@ -531,10 +635,12 @@ for hist in good_histos:
   target += "%s " % hist
 
 if args.babymaker:
-  master = "MVABaby_ttH%s_%s.root" % (args.channel, args.tag)
+  master = "MVABaby_ttH%s_%s%s.root" % (args.channel, args.tag, "_legacy" if args.legacy else "")
 else:
-  master = "%s_%s_histogramsRunII.root" % (args.selection, args.tag)
-os.system('/usr/bin/ionice -c2 -n7 hadd -f -k -j 4 %s %s' % (master, target))
+  master = "%s_%s_histogramsRunII%s.root" % (args.selection, args.tag, "_legacy" if args.legacy else "")
+
+#while not os.path.exists(master):
+os.system('/usr/bin/ionice -c2 -n7 hadd -f -k -j 8 %s %s' % (master, target))
 
 # Cleanup
 for hist in histos:

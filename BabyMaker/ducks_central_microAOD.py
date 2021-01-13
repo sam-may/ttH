@@ -23,6 +23,7 @@ parser.add_argument("--use_wget", help = "copy the tarball with wget, utilizing 
 parser.add_argument("--get_nevents", help = "write json file with n_events for each sample in catalog (don't submit jobs)", action = "store_true")
 parser.add_argument("--ttH_and_tH_only", help = "only submit jobs for ttH and tH samples", action = "store_true")
 parser.add_argument("--run_2017F_only", help = "only submit jobs for DoubleEG Run2017F", action = "store_true")
+parser.add_argument("--data_only", help = "only submit jobs for data", action = "store_true")
 parser.add_argument("--local_only", help = "only submit jobs for local microAOD samples", action = "store_true")
 parser.add_argument("--legacy", help = "run on UL datasets", action = "store_true")
 args = parser.parse_args()
@@ -122,7 +123,14 @@ def fpo(sample):
         return 10
 
 blacklist = ["SingleElectron", "Box1BJet", "Box2BJets", "GJet_Pt", "ZH_HtoGG", "bbHToGG", "JHU", "ZNuNuGJets", "VBFHiggs", "VBFHH", "GluGluToHH"]
+choose_ttZ = ["DoubleEG", "EGamma", "TTGG", "TTGJets", "TTJets", "TTToSemi", "TTTo2L2Nu", "TTW", "TTZ", "WW", "WZ", "ZZ", "DYJetsToLL", "ST_tW", "tZq"]
 def skip(sample):
+    if "ttZ" in args.tag:
+        if any([x in sample for x in choose_ttZ]):
+            return False
+        else:
+            return True
+    
     if any([x in sample for x in blacklist]):
         return True
     if args.ttH_and_tH_only:
@@ -130,6 +138,9 @@ def skip(sample):
             return True
     if args.run_2017F_only:
         if not "DoubleEG" in sample:
+            return True
+    if args.data_only:
+        if not ("DoubleEG" in sample or "EGamma" in sample):
             return True
     return False
 
@@ -203,7 +214,7 @@ while True:
                 special_dir = hadoop_path,
                 arguments = conds_dict[year]
         )
-        task.process()
+        #task.process()
         if not task.complete():
             allcomplete = False
         total_summary[dataset] = task.get_task_summary()
@@ -242,7 +253,7 @@ while True:
                             cmssw_version = cmssw_ver,
                             executable = "condor_exe_%s.sh" % job_tag if (args.use_xrdcp or args.use_gridftp or args.use_wget) else "condor_exe.sh",
                             tarfile = "empty" if (args.use_xrdcp or args.use_gridftp or args.use_wget) else tar_path,
-                            condor_submit_params = {"sites" : "T2_US_UCSD"} if (args.use_wget) else {"sites" : "T2_US_UCSD,T2_US_CALTECH,T2_US_MIT,T2_US_WISCONSIN,T2_US_Nebraska,T2_US_Purdue,T2_US_Vanderbilt,T2_US_Florida"},
+                            condor_submit_params = {"sites" : "T2_US_UCSD"} if (args.use_wget) else {"sites" : "T2_US_UCSD,T2_US_CALTECH,T2_US_MIT,T2_US_WISCONSIN,T2_US_Nebraska,T2_US_Vanderbilt,T2_US_Florida,T3_US_UCR,T3_US_OSG,T3_US_Baylor,T3_US_Colorado,T3_US_Rice,T3_US_PuertoRico,T3_US_Cornell,T3_US_FIT,T3_US_FIU,T3_US_OSU,T3_US_Rutgers,T3_US_TAMU,T3_US_TAMU,T3_US_TTU,T3_US_UCD,T3_US_UMD,T3_US_UMiss"},
                             special_dir = hadoop_path,
                             arguments = conds_dict[year]
                     )

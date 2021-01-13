@@ -338,7 +338,7 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
     cout << currentFileTitle << endl;
     TFile file(currentFileTitle);
     TTree *tree;
-    if ((ext.Contains("v4.") && !currentFileTitle.Contains("FCNC")) || ext.Contains("v5."))
+    if ((ext.Contains("v4.") && !currentFileTitle.Contains("FCNC")) || ext.Contains("v5.") || currentFileTitle.Contains("legacy_v1"))
     {
         cout<< "check: tagsDumper/trees/_13TeV_TTHHadronicTag" <<endl;
         tree = (TTree*)file.Get("tagsDumper/trees/_13TeV_TTHHadronicTag");
@@ -462,8 +462,11 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       if (is_low_stats_process(currentFileTitle))       continue;
 
       if (year.Contains("RunII") && !isData) {
-        double scale1fb = (currentFileTitle.Contains("RunIISummer16MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2016_microAOD"))) ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( (currentFileTitle.Contains("RunIIAutumn18MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2018_microAOD"))) ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
-        //double scale1fb = currentFileTitle.Contains("RunIISummer16MiniAOD") ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIAutumn18MiniAOD") ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
+        double scale1fb;
+        if (year.Contains("legacy"))
+           scale1fb = (currentFileTitle.Contains("RunIISummer16MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2016_microAOD"))) ? scale1fb_2016_RunII_legacy(currentFileTitle) : ( (currentFileTitle.Contains("RunIIFall17MiniAOD") || currentFileTitle.Contains("106X_mc2017")) ? scale1fb_2017_RunII_legacy(currentFileTitle) : ( (currentFileTitle.Contains("RunIIAutumn18MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2018_microAOD"))) ? scale1fb_2018_RunII_legacy(currentFileTitle) : 0 ));
+        else
+            scale1fb = (currentFileTitle.Contains("RunIISummer16MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2016_microAOD"))) ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( (currentFileTitle.Contains("RunIIAutumn18MiniAOD") || (currentFileTitle.Contains("private") && currentFileTitle.Contains("2018_microAOD"))) ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
         if (mYear == "2016")
           evt_weight_ *= scale1fb * lumi_2016 * weight();
         else if (mYear == "2017")
@@ -504,8 +507,22 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       evt_weight_ *= scale_bkg(currentFileTitle, bkg_options, process_id_, "Hadronic", fcnc);
       //}}} 
 
+      vector<TLorentzVector> jets;
+      vector<double> btag_scores;
+      vector<std::pair<int, double>> btag_scores_sorted;
+      TLorentzVector lead_photon;
+      TLorentzVector sublead_photon;
+      jets = make_jets(btag_scores, year);
+      btag_scores_sorted = sortVector(btag_scores);
+      lead_photon = make_lead_photon();
+      sublead_photon = make_sublead_photon(); 
+      TLorentzVector diphoton = lead_photon + sublead_photon; 
+
+      int nb_loose(0), nb_medium(0), nb_tight(0);
+      calculate_nbjets(btag_scores, mYear, year.Contains("legacy"), nb_loose, nb_medium, nb_tight);
+
       if (has_std_overlaps(currentFileTitle, lead_Prompt(), sublead_Prompt(), genPhotonId))     continue;
-      if (!passes_selection(tag, minIDMVA_, maxIDMVA_)) continue;
+      if (!passes_selection(tag, minIDMVA_, maxIDMVA_, nb_loose, nb_medium, nb_tight)) continue;
 
       if (isnan(evt_weight_) || isinf(evt_weight_) || evt_weight_ == 0) {
         continue; //some pu weights are nan/inf and this causes problems for histos 
@@ -526,18 +543,18 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       if (currentFileTitle.Contains("FCNC"))
         evt_weight_ *= scale_fcnc(currentFileTitle, true); 
 
-      if ((signal_mass_category_ == 120 || signal_mass_category_ == 125 || signal_mass_category_ == 130) && signal_mass_label_ == 0)
-          evt_weight_ *= 2.; // account for test/validation splits
+      if (signal_mass_category_ != -1 && (label_ == 0 || label_ == 1))
+         evt_weight_ *= 2.; // multiply sm higgs by 2 to account for test/validation splits
 
-      if (signal_mass_label_ == -1 && label_ == 0) // non-resonant background
-          evt_weight_ *= 2.;
+      if (signal_mass_category_ == -1 && (label_ == 0)) // non-resonant background
+         evt_weight_ *= 2.; //  
 
       tth_2017_reference_mva_ = tthMVA();
 
       if (tag == "ttHHadronic_data_sideband_0b") {
-	if (nb_medium() == 0)
+	if (nb_medium == 0)
 	  data_sideband_label_ = 1;
-	else if (nb_medium() > 0)
+	else if (nb_medium > 0)
 	  data_sideband_label_ = 0; 
       }
 
@@ -549,18 +566,6 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       }
       //}}}
       // ***Variable definitions{{{
-      vector<TLorentzVector> jets;
-      vector<double> btag_scores;
-      vector<std::pair<int, double>> btag_scores_sorted;
-      TLorentzVector lead_photon;
-      TLorentzVector sublead_photon;
-      jets = make_jets(btag_scores, year);
-      btag_scores_sorted = sortVector(btag_scores);
-      lead_photon = make_lead_photon();
-      sublead_photon = make_sublead_photon();
-      TLorentzVector diphoton = lead_photon + sublead_photon;
-
-      
 
       top_tag_score_ = topTag_score();
       /*
@@ -596,7 +601,7 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       dipho_delta_R = lead_photon.DeltaR(sublead_photon);
       ht_ = get_ht(jets);
       njets_ = n_jets();
-      nbjets_ = nb_medium();
+      nbjets_ = nb_medium;
 
       //jets{{{
       jet1_pt_   = njets_ >= 1 ? jets[0].Pt()   : -999;

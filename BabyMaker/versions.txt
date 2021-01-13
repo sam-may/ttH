@@ -430,3 +430,33 @@ Submitting ttH Babies version v5.4 using central microAOD and commit e5d1575ac59
 Date: 2020-09-17 12:32:19.024260 
 Submitting ttH Babies version v5.5 using central microAOD and commit dea399fa8bf36321b4a363584d395a2a8d0a5c59 of tth_dev_runII_v2 branch of flashgg
 
+Date: 2020-10-08 09:45:59.287180 
+Submitting ttH Babies version v5.6 using central microAOD and commit ca9c47b9e60543d85858afd53ee6b6ac7119b239 of tth_dev_runII_v2 branch of flashgg
+
+Date: 2020-10-09 11:13:43.334848 
+Submitting ttH Babies version v5.7 using central microAOD and commit 384837c377640db4c17213374ee2b76d9c6c05d2 of tth_dev_runII_v2 branch of flashgg
+
+Date: 2020-11-02 15:16:07.651158 
+Submitting ttH Babies version v5.8 using central microAOD and commit fa5042bd3a113329b031c461ac8cc90ba16420d6 of tth_dev_runII_v2 branch of flashgg
+
+Date: 2020-11-06 15:03:50.106155 
+Submitting ttH Babies version v5.9 using central microAOD and commit 17a48aa87c3475e535b071a6185dde1292e49bae of tth_dev_runII_v2 branch of flashgg
+
+Date: 2020-11-18 12:40:53.504510 
+Submitting ttH Babies version legacy_v1.0_ttH_vs_tH using central microAOD and commit 90e1ac87b0e77d4207a80881b6b2c15d63529709 of tth_dev_runII_legacy branch of flashgg
+
+Date: 2020-11-18 13:40:57.945568 
+Submitting ttH Babies version legacy_v1.1 using central microAOD and commit 9c79384d1216addd89493c64723135c26922422e of tth_dev_runII_legacy branch of flashgg
+
+Date: 2020-12-08 14:22:08.755110 
+Submitting ttH Babies version legacy_v1.2 using central microAOD and commit 20e6e3b29c540a259f9be153c95073e1d6aa2826 of tth_dev_runII_legacy branch of flashgg
+
+Date: 2020-12-31 12:09:22.981231 
+Submitting ttH Babies version legacy_v1.3 using central microAOD and commit 23829f0b6691425960e39c4afead160d8dfd9e07 of tth_dev_runII_legacy branch of flashgg
+
+Date: 2021-01-06 10:34:30.351710 
+Submitting ttH Babies version legacy_v1.4_ttZ using central microAOD and commit e0b209094c1ad1ac671e0ec423ed82014457abc9 of tth_dev_runII_legacy branch of flashgg
+
+Date: 2021-01-12 16:42:26.684349 
+Submitting ttH Babies version legacy_v1.5_ttZ using central microAOD and commit e0b209094c1ad1ac671e0ec423ed82014457abc9 of tth_dev_runII_legacy branch of flashgg
+

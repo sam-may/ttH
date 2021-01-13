@@ -1,7 +1,7 @@
 export SCRAM_ARCH=slc6_amd64_gcc530
 
 # Set up Shell Utilities
-source /home/users/sjmay/Utilities/ShellFunctions.sh
+source /home/users/smay/Utilities/ShellFunctions.sh
 export -f addHistos
 
 
@@ -205,8 +205,8 @@ if [ ! -d logs ]; then
   mkdir logs
 fi
 
-#pushd /home/users/sjmay/ttH/MC_Generation/ProjectMetis/
-pushd /home/users/sjmay/Librarian/ProjectMetis # or replace with your metis location
+#pushd /home/users/smay/ttH/MC_Generation/ProjectMetis/
+pushd /home/users/smay/Librarian/ProjectMetis # or replace with your metis location
 source setup.sh
 popd
 

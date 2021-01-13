@@ -2,8 +2,9 @@ try:
     import tensorflow.keras as keras
 except:
     import keras as keras
+
 keras.backend.set_learning_phase(0) # you *NEED* this line, otherwise your DNN will crash in CMSSW/tensorflow C++ API
-				    # this line tells tensorflow to save the graph in "prediction" mode rather than "learning" mode
+                    # this line tells tensorflow to save the graph in "prediction" mode rather than "learning" mode
 import tensorflow as tf
 
 def load_model(config, weights):
@@ -15,7 +16,6 @@ def load_model(config, weights):
 def freeze_session(session, keep_var_names=None, output_names=None, clear_devices=True):
     """
     Freezes the state of a session into a pruned computation graph.
-
     Creates a new computation graph where variable nodes are replaced by
     constants taking their current value in the session. The new graph will be
     pruned so subgraphs that are not necessary to compute the requested

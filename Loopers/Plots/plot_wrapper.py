@@ -25,4 +25,6 @@ else:
         args.signals = "TT_FCNC_hct|TT_FCNC_hut|ST_FCNC_hct|ST_FCNC_hut"
 
     full_bkgs = "DiPhoton|QCD_GammaJets_imputed|GammaJets|QCD|TTGG|TTGJets|TTJets|DY|VG|TGamma|TTZ|TTW|VV|tV|ggH|VBF|VH|THQ|THW|ttH"
+
     parallel_utils.run('./makeTables "%s" "%s" "%s" > tables_%s.txt' % (args.input_file, args.signals, full_bkgs, args.input_file.replace(".root", "").replace("../", "")))
+    #parallel_utils.run('./makeTables "%s" "%s" "%s" > tables_%s.txt' % (args.input_file, args.signals, args.backgrounds, args.input_file.replace(".root", "").replace("../", "")))

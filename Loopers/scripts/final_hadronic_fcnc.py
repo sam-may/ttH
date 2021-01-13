@@ -58,7 +58,7 @@ if do_diphoton_fits:
 
 
 # Run imputing with fit
-do_imputing = False
+do_imputing = True
 if do_imputing:
     parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
     os.chdir("Plots")
@@ -99,7 +99,7 @@ bdt_training_features_all = bdt_training_features_base + top_tagger_bdt + top_ch
 training_features_base = ",".join(bdt_training_features_base)
 training_features_all  = ",".join(bdt_training_features_all)
 
-do_prep = True
+do_prep = False
 if do_prep:
     os.chdir("../MVAs/")
     #os.system("source ~/ttH/MVAs/setup.sh")
@@ -128,7 +128,7 @@ if do_prep:
 
     parallel_utils.submit_jobs(command_list, 6)
 
-do_mvas = True
+do_mvas = False
 if do_mvas:
     os.chdir("../MVAs/")
     #os.system("source ~/ttH/MVAs/setup.sh")
@@ -153,7 +153,7 @@ if do_mvas:
 
     parallel_utils.submit_jobs(command_list, 1)
 
-do_merge = True
+do_merge = False
 if do_merge:
     os.chdir("../MVAs/")
     #os.system("source ~/ttH/MVAs/setup.sh")

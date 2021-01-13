@@ -16,15 +16,15 @@ os.chdir("../")
 #plot_types = ["std_linear"]
 plot_types = ["std"]
 
-do_syst = True
+do_syst = False
 if do_syst:
     syst = "--do_systematics"
 else:
     syst = ""
 
-do_looping = False
+do_looping = True
 if do_looping:
-    parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
+    #parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
     os.chdir("Plots")
     for plot_type in plot_types:
         #parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
@@ -55,7 +55,7 @@ non_resonant_bkg = "dy,dipho,ttgg,ttg,vgamma,tt,tgamma,ttz,vv,tv,ttw,gjets"
 sm_higgs = "tth,thq,thw,ggh,vbf,vh"
 
 
-do_prep = True
+do_prep = False
 if do_prep:
     os.chdir("../MVAs/")
     command_list = []
@@ -77,7 +77,7 @@ if do_prep:
 
     parallel_utils.submit_jobs(command_list, 6)
 
-do_mvas = True
+do_mvas = False
 if do_mvas:
     os.chdir("../MVAs/")
     command_list = []
@@ -96,7 +96,7 @@ if do_mvas:
 
     parallel_utils.submit_jobs(command_list, 1)
 
-do_merge = True
+do_merge = False
 if do_merge:
     os.chdir("../MVAs/")
     for coupling in ["Hut", "Hct"]:

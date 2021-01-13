@@ -89,7 +89,10 @@ class makeModel():
         self.norm = norm
         # pdf
         #w.factory("Gaussian:gaus_"+self.tag+"(" + rooVar + ", mean_gaus_"+self.tag+"[125,120,130], width_gaus_"+self.tag+"[2, 0.1, 10])")
-        w.factory("DoubleCB:"+self.tag+"(" + rooVar + ", mean_"+self.tag+"[125,123,127], sigma_"+self.tag+"[1,0,5], a1_"+self.tag+"[1,0,10], n1_"+self.tag+"[1,0,10], a2_"+self.tag+"[1,0,10], n2_"+self.tag+"[1,0,10])")
+        #if config["simple"]:
+        #    w.factory("Gaussian:gaus_"+self.tag+"(" + rooVar + ", mean_gaus_"+self.tag+"[125,120,130], width_gaus_"+self.tag+"[2, 0.1, 10])")
+        #else:
+        w.factory("DoubleCB:"+self.tag+"(" + rooVar + ", mean_"+self.tag+"[125,120,130], sigma_"+self.tag+"[1,0.5,5], a1_"+self.tag+"[1,0.1,10], n1_"+self.tag+"[1,0.1,10], a2_"+self.tag+"[1,0.1,10], n2_"+self.tag+"[1,0.1,10])")
         #w.factory("DoubleCB:dcb_"+self.tag+"(" + rooVar + ", mean_"+self.tag+"[125,120,130], sigma_"+self.tag+"[1,0,5], a1_"+self.tag+"[1,0,10], n1_"+self.tag+"[1,0,10], a2_"+self.tag+"[1,0,10], n2_"+self.tag+"[1,0,10])")
         #w.factory("SUM:" + self.tag + "(gaus_" + self.tag + ",dcb_" + self.tag + ")")
         #w.factory("SUM:"+self.tag + "(norm_gaus[1,0,999999]*gaus_" + self.tag + ",norm_dcb[1,0,999999]*dcb_" + self.tag + ")")
@@ -200,7 +203,7 @@ class makeModel():
         #print("[makeModels.py] Raw normalization in full range from sum entries: %.6f" % norm)
 
         frame = w.var(rooVar).frame()
-        d_mgg.plotOn(frame, ROOT.RooFit.Binning(80))
+        d_mgg.plotOn(frame, ROOT.RooFit.Binning(80), ROOT.RooFit.CutRange("SL,SU"))
         w.pdf(self.tag+"_ext").plotOn(frame)
 
         c1 = ROOT.TCanvas("c1", "c1", 800, 800)

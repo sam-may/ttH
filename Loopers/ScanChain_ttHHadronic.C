@@ -195,6 +195,11 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
 
   //gjet_mva->BookMVA("BDT", gjet_bdt_file); 
 
+  //MVAMap* m = new MVAMap("Utils/mva_map_hadronic.txt");
+  //MVAMap* m = new MVAMap("Utils/mva_map_hadronic_master.txt");
+
+  FCNC_MVAMap* m_hut = new FCNC_MVAMap("Utils/mva_map_hadronic_fcnc_hut.txt");
+  FCNC_MVAMap* m_hct = new FCNC_MVAMap("Utils/mva_map_hadronic_fcnc_hct.txt");
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
@@ -413,6 +418,8 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               if (currentFileTitle.Contains("FCNC"))
                 evt_weight *= scale_fcnc_to_atlas_limit(currentFileTitle);
 
+
+              //if (evt_weight > 1000.) continue; // FIXME
 
               // Modify weight for systematics affecting weights
               if (j >= 1) {
@@ -975,68 +982,97 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                 }
               } 
 
-              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ", -log(1-tthMVA_RunII()), evt_weight, vId);
-              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v2", -log(1-tthMVA_RunII()), evt_weight, vId);
-              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v3", -log(1-tthMVA_RunII()), evt_weight, vId);
-              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v4", -log(1-tthMVA_RunII()), evt_weight, vId);
-              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v5", -log(1-tthMVA_RunII()), evt_weight, vId);
+              bool fill_bdt_from_txt_file = false;
+              if (processId == 18)
+                  fill_bdt_from_txt_file = true;
+              double tthMVA_RunII_, fcnc_bdt_nrb_hut_score_, fcnc_bdt_smh_hut_score_, fcnc_bdt_nrb_hct_score_, fcnc_bdt_smh_hct_score_;
+              if (fill_bdt_from_txt_file) {
+                  //tthMVA_RunII_ = m->retrieve_mva(event(), run(), lumi(), mass());
+                  //cout << "Retrieved MVA score as: " << tthMVA_RunII_ << endl;
+                
+                  vector<double> mva_scores_hut = m_hut->retrieve_mva(event(), run(), lumi(), mass());
+                  vector<double> mva_scores_hct = m_hct->retrieve_mva(event(), run(), lumi(), mass());
+
+                  fcnc_bdt_nrb_hut_score_ = mva_scores_hut[0];
+                  fcnc_bdt_smh_hut_score_ = mva_scores_hut[1];
+
+                  fcnc_bdt_nrb_hct_score_ = mva_scores_hct[0];
+                  fcnc_bdt_smh_hct_score_ = mva_scores_hct[1];
+
+              }
+              else {
+                  //tthMVA_RunII_ = tthMVA_RunII();
+                  fcnc_bdt_nrb_hut_score_ = fcnc_bdt_nrb_hut_score();
+                  fcnc_bdt_smh_hut_score_ = fcnc_bdt_smh_hut_score();
+                  fcnc_bdt_nrb_hct_score_ = fcnc_bdt_nrb_hct_score();
+                  fcnc_bdt_smh_hct_score_ = fcnc_bdt_smh_hct_score();
+              }
+
+              //double tthMVA_RunII_;
+              tthMVA_RunII_ = tthMVA_RunII();
+
+              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ", -log(1-tthMVA_RunII_), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v2", -log(1-tthMVA_RunII_), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v3", -log(1-tthMVA_RunII_), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v4", -log(1-tthMVA_RunII_), evt_weight, vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_ttZ_v5", -log(1-tthMVA_RunII_), evt_weight, vId);
 
 
               if (!currentFileTitle.Contains("FCNC") && fill_bdt) {
                   vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA", tthMVA(), evt_weight*test_train_scale, vId);
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII", tthMVA_RunII(), evt_weight*test_train_scale, vId);
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf", -log(1-tthMVA_RunII()), evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII", tthMVA_RunII_, evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf", -log(1-tthMVA_RunII_), evt_weight*test_train_scale, vId);
 
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_bounded", -log(1-tthMVA_RunII())/8., evt_weight*test_train_scale, vId);
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_bounded_v2", -log(1-tthMVA_RunII())/8., evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_bounded", -log(1-tthMVA_RunII_)/8., evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_bounded_v2", -log(1-tthMVA_RunII_)/8., evt_weight*test_train_scale, vId);
 
                   if (diphoton.Pt() < 60.)
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_low_pT", -log(1-tthMVA_RunII()), evt_weight*test_train_scale, vId);
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_low_pT", -log(1-tthMVA_RunII_), evt_weight*test_train_scale, vId);
                   else if (diphoton.Pt() >= 60. && diphoton.Pt() < 120.)
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_med_pT", -log(1-tthMVA_RunII()), evt_weight*test_train_scale, vId);
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_med_pT", -log(1-tthMVA_RunII_), evt_weight*test_train_scale, vId);
                   else if (diphoton.Pt() >= 120. && diphoton.Pt() < 200.)
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_high_pT", -log(1-tthMVA_RunII()), evt_weight*test_train_scale, vId);
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_high_pT", -log(1-tthMVA_RunII_), evt_weight*test_train_scale, vId);
                   else if (diphoton.Pt() >= 200. && diphoton.Pt() < 300.)
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_Vhigh_pT", -log(1-tthMVA_RunII()), evt_weight*test_train_scale, vId);
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_Vhigh_pT", -log(1-tthMVA_RunII_), evt_weight*test_train_scale, vId);
                   else if (diphoton.Pt() >= 300.)
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_VVhigh_pT", -log(1-tthMVA_RunII()), evt_weight*test_train_scale, vId);
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "tthMVA_RunII_transf_VVhigh_pT", -log(1-tthMVA_RunII_), evt_weight*test_train_scale, vId);
 
               }
 
               if (fill_bdt) {
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_NRB", -log(1-fcnc_bdt_nrb_hut_score()), evt_weight*test_train_scale, vId);
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_NRB", -log(1-fcnc_bdt_nrb_hct_score()), evt_weight*test_train_scale, vId);
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_SMH", -log(1-fcnc_bdt_smh_hut_score()), evt_weight*test_train_scale, vId);
-                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_SMH", -log(1-fcnc_bdt_smh_hct_score()), evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_NRB", -log(1-fcnc_bdt_nrb_hut_score_), evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_NRB", -log(1-fcnc_bdt_nrb_hct_score_), evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_SMH", -log(1-fcnc_bdt_smh_hut_score_), evt_weight*test_train_scale, vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_SMH", -log(1-fcnc_bdt_smh_hct_score_), evt_weight*test_train_scale, vId);
 
-                  vector<double> FCNC_Hut_BDT_NRB_boundaries = { 0.883346, 0.898658, 0.953972, 0.9862 }; 
-                  vector<double> FCNC_Hct_BDT_NRB_boundaries = { 0.781122, 0.889369, 0.953621, 0.9817 }; 
-                  vector<double> FCNC_Hut_BDT_SMH_boundaries = { 0.486310, 0.631559, 0.698616, 0.797328 }; 
-                  vector<double> FCNC_Hct_BDT_SMH_boundaries = { 0.283623, 0.551443, 0.733333, 0.835061 }; 
+                  vector<double> FCNC_Hut_BDT_NRB_boundaries = { 0.782721, 0.945324, 0.978709, 0.9903 }; 
+                  vector<double> FCNC_Hct_BDT_NRB_boundaries = { 0.771449, 0.955809, 0.984245, 0.9910 }; 
+                  vector<double> FCNC_Hut_BDT_SMH_boundaries = { 0.001490, 0.556266, 0.759753, 0.913892 }; 
+                  vector<double> FCNC_Hct_BDT_SMH_boundaries = { 0.402495, 0.627701, 0.679707, 0.795901 }; 
 
 
                   for (int i = 0; i < FCNC_Hut_BDT_NRB_boundaries.size(); i++) {
                       int j = FCNC_Hut_BDT_NRB_boundaries.size() - (i+1);
-                      if (fcnc_bdt_nrb_hut_score() >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score() >= FCNC_Hut_BDT_SMH_boundaries[j])
+                      if (fcnc_bdt_nrb_hut_score_ >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score_ >= FCNC_Hut_BDT_SMH_boundaries[j])
                           vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_SRs", j, evt_weight*test_train_scale, vId);
-                      if (fcnc_bdt_nrb_hct_score() >= FCNC_Hct_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hct_score() >= FCNC_Hct_BDT_SMH_boundaries[j])
+                      if (fcnc_bdt_nrb_hct_score_ >= FCNC_Hct_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hct_score_ >= FCNC_Hct_BDT_SMH_boundaries[j])
                           vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_SRs", j, evt_weight*test_train_scale, vId);
                   }
 
                   for (int i = 0; i < FCNC_Hut_BDT_NRB_boundaries.size(); i++) {
                     int j = FCNC_Hut_BDT_NRB_boundaries.size() - (i+1);
-                    if (fcnc_bdt_nrb_hut_score() >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score() >= FCNC_Hut_BDT_SMH_boundaries[j]) {
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_NRB_SRs", -log(1-fcnc_bdt_nrb_hut_score()), evt_weight*test_train_scale, vId);
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_SMH_SRs", -log(1-fcnc_bdt_smh_hut_score()), evt_weight*test_train_scale, vId);
+                    if (fcnc_bdt_nrb_hut_score_ >= FCNC_Hut_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hut_score_ >= FCNC_Hut_BDT_SMH_boundaries[j]) {
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_NRB_SRs", -log(1-fcnc_bdt_nrb_hut_score_), evt_weight*test_train_scale, vId);
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_SMH_SRs", -log(1-fcnc_bdt_smh_hut_score_), evt_weight*test_train_scale, vId);
                       break;
                     }
                   }
 
                   for (int i = 0; i < FCNC_Hct_BDT_NRB_boundaries.size(); i++) {
                     int j = FCNC_Hct_BDT_NRB_boundaries.size() - (i+1);
-                    if (fcnc_bdt_nrb_hct_score() >= FCNC_Hct_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hct_score() >= FCNC_Hct_BDT_SMH_boundaries[j]) {
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_NRB_SRs", -log(1-fcnc_bdt_nrb_hct_score()), evt_weight*test_train_scale, vId);
-                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_SMH_SRs", -log(1-fcnc_bdt_smh_hct_score()), evt_weight*test_train_scale, vId);
+                    if (fcnc_bdt_nrb_hct_score_ >= FCNC_Hct_BDT_NRB_boundaries[j] && fcnc_bdt_smh_hct_score_ >= FCNC_Hct_BDT_SMH_boundaries[j]) {
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_NRB_SRs", -log(1-fcnc_bdt_nrb_hct_score_), evt_weight*test_train_scale, vId);
+                      vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_SMH_SRs", -log(1-fcnc_bdt_smh_hct_score_), evt_weight*test_train_scale, vId);
                       break;
                     }
                   }

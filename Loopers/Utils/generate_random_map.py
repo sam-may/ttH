@@ -26,6 +26,7 @@ with open("random_map_%s_%s.txt" % (args.channel, args.ext), "w") as fout:
     evt, run, lumi = info["event"], info["run"], info["lumi"]
 
     for i in range(tree.GetEntries()):
-      key = str(evt[i]) + "_" + str(run[i]) + "_" + str(lumi[i])
+      evt_s = f"{num:.1f}"
+      key = evt_s + "_" + str(run[i]) + "_" + str(lumi[i])
       rand = random.random()
       fout.write('%s %.10f\n' % (key, rand))

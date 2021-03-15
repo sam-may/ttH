@@ -170,7 +170,7 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_Vhigh_pT", 15, 0, 8);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_VVhigh_pT", 15, 0, 8);
 
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ", 25, 0, 12);
+        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ", 5, 0, 10);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v2", 18, 0, 10);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v3", 12, 0, 10);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v4", 10, 0, 10);
@@ -195,6 +195,9 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
 
         v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag", 50, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTag", 50, 0, 1);  
+
+        v[i]->add_histogram("h" + syst_labels[j] + "MaxCTag", 50, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxCTag", 50, 0, 1);
 
         v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA", 10, -1, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA", 10, -1, 1);
@@ -767,12 +770,12 @@ const double qcd_factor_hadronic_runII      = 1.8915467202831975;
 //const double diphoton_impute_factor_hadronic_runII  = 1.3852459996672792;
 
 //v4.11
-const double qcd_gjets_impute_factor_hadronic_runII = 1.0700730283379238;
-const double diphoton_impute_factor_hadronic_runII = 1.4176237374087783;
+//const double qcd_gjets_impute_factor_hadronic_runII = 1.0700730283379238;
+//const double diphoton_impute_factor_hadronic_runII = 1.4176237374087783;
 
 //v5.1
-//const double qcd_gjets_impute_factor_hadronic_runII = 1.039962906016564;
-//const double diphoton_impute_factor_hadronic_runII  = 1.2590383736548094;
+const double qcd_gjets_impute_factor_hadronic_runII = 1.039962906016564;
+const double diphoton_impute_factor_hadronic_runII  = 1.2590383736548094;
 
 const double diphoton_factor_leptonic_runII = 1.919798;
 const double gjets_factor_leptonic_runII    = 1.919798;

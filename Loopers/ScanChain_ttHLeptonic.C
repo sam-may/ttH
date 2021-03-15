@@ -527,6 +527,8 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
               if (currentFileTitle.Contains("FCNC"))
                 evt_weight *= scale_fcnc_to_atlas_limit(currentFileTitle);
 
+              //if (evt_weight > 1000.) continue; // FIXME
+
               // Blinded region 
               if (isData && processId != 18 && blind && mass() > 120 && mass() < 130)        continue;
 
@@ -732,10 +734,10 @@ int ScanChain(TChain* chain, TString tag, TString year, TString ext, TString xml
                   vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hut_BDT_SMH", -log(1-fcnc_bdt_smh_hut_score()), evt_weight*test_train_scale, vId);
                   vProcess[processId]->fill_histogram("h" + syst_ext + "FCNC_Hct_BDT_SMH", -log(1-fcnc_bdt_smh_hct_score()), evt_weight*test_train_scale, vId); 
 
-                  vector<double> FCNC_Hut_BDT_NRB_boundaries = { 0.003422, 0.855967, 0.9321 }; 
-                  vector<double> FCNC_Hct_BDT_NRB_boundaries = { 0.857175, 0.895939, 0.9383 }; 
-                  vector<double> FCNC_Hut_BDT_SMH_boundaries = { 0.001017, 0.495376, 0.791062 }; 
-                  vector<double> FCNC_Hct_BDT_SMH_boundaries = { 0.001145, 0.607858, 0.834917 }; 
+                  vector<double> FCNC_Hut_BDT_NRB_boundaries = { 0.760981, 0.880369, 0.9483 }; 
+                  vector<double> FCNC_Hct_BDT_NRB_boundaries = { 0.638741, 0.829832, 0.9478 }; 
+                  vector<double> FCNC_Hut_BDT_SMH_boundaries = { 0.002408, 0.527533, 0.823037 }; 
+                  vector<double> FCNC_Hct_BDT_SMH_boundaries = { 0.267616, 0.510590, 0.675592 }; 
 
                   for (int i = 0; i < FCNC_Hut_BDT_NRB_boundaries.size(); i++) {
                       int j = FCNC_Hut_BDT_NRB_boundaries.size() - (i+1);

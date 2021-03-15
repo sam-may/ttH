@@ -3,12 +3,15 @@ ROOTLIBS = $(shell root-config --libs) -lMinuit -lMLP -lXMLIO -lTMVA -lGenVector
 CC = g++
 CFLAGS = -g -std=c++1y
 
-TARGET = makePlots templatePlots makeTables fit_plots compare_shapes correlation_plots paperPlot makePlots_hig-19-015 
+TARGET = makePlots templatePlots makeTables fit_plots compare_shapes correlation_plots paperPlot makePlots_hig-19-015 makePlots_FCNC 
 
 all: $(TARGET)
 
 makePlots_hig-19-015: makePlots_hig-19-015.cpp PlotHelper.h
 	$(CC) $(CFLAGS) -I${ROOTSYS}/include -o makePlots_hig-19-015 makePlots_hig-19-015.cpp $(ROOTLIBS)
+
+makePlots_FCNC: makePlots_FCNC.cpp PlotHelper.h
+	$(CC) $(CFLAGS) -I${ROOTSYS}/include -o makePlots_FCNC makePlots_FCNC.cpp $(ROOTLIBS)
 
 makePlots: makePlots.cpp PlotHelper.h
 	$(CC) $(CFLAGS) -I${ROOTSYS}/include -o makePlots makePlots.cpp $(ROOTLIBS)

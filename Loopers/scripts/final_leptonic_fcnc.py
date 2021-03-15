@@ -16,7 +16,7 @@ os.chdir("../")
 #plot_types = ["std_linear"]
 plot_types = ["std"]
 
-do_syst = False
+do_syst = True
 if do_syst:
     syst = "--do_systematics"
 else:
@@ -27,12 +27,11 @@ if do_looping:
     #parallel_utils.run('python looper_wrapper.py --channel "Leptonic" --baby_version "%s" --tag "%s" --selection "ttHLeptonic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag, syst))
     os.chdir("Plots")
     for plot_type in plot_types:
-        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
-        os.system("mv ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd.pdf ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd_allsig.pdf" % (args.tag, args.tag))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut||ST_FCNC_hut|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_FCNC", plot_type))
+        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Leptonic Channel|Preselection"' % (args.tag + "_FCNC", plot_type))
+        #os.system("mv ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd.pdf ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd_allsig.pdf" % (args.tag, args.tag))
+        parallel_utils.run('python plot_wrapper.py --fcnc --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut||ST_FCNC_hut|TH|SMHiggs" --plot_type "%s" --plot_labels ""' % (args.tag + "_FCNC", plot_type))
         os.system("mv ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd.pdf ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd_Hut.pdf" % (args.tag, args.tag))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hct||ST_FCNC_hct|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_FCNC", plot_type))
+        parallel_utils.run('python plot_wrapper.py --fcnc --input_file "../ttHLeptonic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hct||ST_FCNC_hct|TH|SMHiggs" --plot_type "%s" --plot_labels ""' % (args.tag + "_FCNC", plot_type))
         os.system("mv ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd.pdf ttHLeptonic_RunII_MVA_Presel_%s_FCNC_histogramsRunIIstd_Hct.pdf" % (args.tag, args.tag))
     os.chdir("../")
 
@@ -46,9 +45,11 @@ bdt_training_features_base = ["helicity_angle_", "dipho_pt_over_mass_", "met_", 
 top_tagger_bdt = ["top_tag_score_"]
 top_chi2_leptonic = ["chi2_neutrino_pz_", "chi2_tbw_mass_", "chi2_tbw_pt_", "chi2_tbw_eta_", "chi2_tbw_deltaR_dipho_", "chi2_qjet_pt_", "chi2_qjet_eta_", "chi2_qjet_btag_", "chi2_qjet_deltaR_dipho_", "chi2_tqh_ptOverM_", "chi2_tqh_eta_", "chi2_tqh_deltaR_tbw_", "chi2_tqh_deltaR_dipho_"]
 top_dnn = ["dnn_score_fcnc_st_", "dnn_score_fcnc_tt_"]
+bdt_training_features_all_noTopBDT = bdt_training_features_base + top_chi2_leptonic + top_dnn
 bdt_training_features_all = bdt_training_features_base + top_tagger_bdt + top_chi2_leptonic + top_dnn
 
 training_features_base = ",".join(bdt_training_features_base)
+training_features_all_noTopBDT = ",".join(bdt_training_features_all_noTopBDT)
 training_features_all  = ",".join(bdt_training_features_all)
 
 non_resonant_bkg = "dy,dipho,ttgg,ttg,vgamma,tt,tgamma,ttz,vv,tv,ttw,gjets"
@@ -68,14 +69,23 @@ if do_prep:
         # SM Higgs
         command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_base, coupling.lower()))
 
+        # Add top taggers no Top BDT
+        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_noTopBDT_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg + "," + sm_higgs, training_features_all_noTopBDT, coupling.lower()))
+
         # Add top taggers
         command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg + "," + sm_higgs, training_features_all, coupling.lower()))
+
+        # Add top taggers Non-resonant no Top BDT
+        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_noTopBDT_nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg, training_features_all_noTopBDT, coupling.lower()))
+        # Add top taggers SM Higgs no Top BDT
+        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_noTopBDT_smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_all_noTopBDT, coupling.lower()))
+
         # Add top taggers Non-resonant
         command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg, training_features_all, coupling.lower()))
         # Add top taggers SM Higgs
         command_list.append('python prep.py --input "../Loopers/MVABaby_ttHLeptonic_%s_FCNC.root" --channel "Leptonic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_all, coupling.lower()))
 
-    parallel_utils.submit_jobs(command_list, 6)
+    parallel_utils.submit_jobs(command_list, 8)
 
 do_mvas = False
 if do_mvas:
@@ -89,18 +99,23 @@ if do_mvas:
         command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_nonres_%s.hdf5" --channel "Leptonic" --tag "nonres_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
         # SM Higgs
         command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_smhiggs_%s.hdf5" --channel "Leptonic" --tag "smhiggs_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
+        # Add top taggers Non-resonant no Top BDT
+        command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_noTopBDT_nonres_%s.hdf5" --channel "Leptonic" --tag "addTopTaggers_noTopBDT_nonres_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
+        # Add top taggers SM Higgs no Top BDT
+        command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_noTopBDT_smhiggs_%s.hdf5" --channel "Leptonic" --tag "addTopTaggers_noTopBDT_smhiggs_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower())) 
         # Add top taggers Non-resonant
         command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_nonres_%s.hdf5" --channel "Leptonic" --tag "addTopTaggers_nonres_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
         # Add top taggers SM Higgs
         command_list.append('python train_bdt.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_smhiggs_%s.hdf5" --channel "Leptonic" --tag "addTopTaggers_smhiggs_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
 
-    parallel_utils.submit_jobs(command_list, 1)
+    parallel_utils.submit_jobs(command_list, 4)
 
 do_merge = False
 if do_merge:
     os.chdir("../MVAs/")
     for coupling in ["Hut", "Hct"]:
         parallel_utils.run('python make_optimization_tree.py --input "ttHLeptonic_%s_FCNC_features_baseline_%s.hdf5" --channel "Leptonic" --tag "%s_merge1d_%s" --mvas "Leptonic_baseline_%s_%s_bdt.xgb,Leptonic_nonres_%s_%s_bdt.xgb,Leptonic_smhiggs_%s_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower())) 
+        parallel_utils.run('python make_optimization_tree.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_noTopBDT_%s.hdf5" --channel "Leptonic" --tag "%s_merge2d_noTopBDT%s" --mvas "Leptonic_addTopTaggers_noTopBDT_nonres_%s_%s_bdt.xgb,Leptonic_addTopTaggers_noTopBDT_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
         parallel_utils.run('python make_optimization_tree.py --input "ttHLeptonic_%s_FCNC_features_addTopTaggers_%s.hdf5" --channel "Leptonic" --tag "%s_merge2d_%s" --mvas "Leptonic_addTopTaggers_nonres_%s_%s_bdt.xgb,Leptonic_addTopTaggers_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
 
 do_limits = False
@@ -108,6 +123,7 @@ if do_limits:
     os.chdir("../Binning/")
 
     for coupling in ["Hut", "Hct"]:
-        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "1d_baseline_%s" --mvas "mva_score"' % (coupling.lower(), args.tag, coupling, args.tag))
-        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_baseline_%s" --mvas "mva_nonres_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling, args.tag))
-        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_%s" --mvas "mva_smhiggs_score,mva_nonres_score"' % (coupling.lower(), args.tag, coupling, args.tag))
+        #parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "1d_baseline_%s" --mvas "mva_score" --bins "3"' % (coupling.lower(), args.tag, coupling, args.tag))
+        #parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_baseline_%s" --mvas "mva_nonres_score,mva_smhiggs_score" --bins "3"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge2d_noTopBDT%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_noTopBDT_%s" --mvas "mva_smhiggs_score,mva_nonres_score" --bins "3"' % (coupling.lower(), args.tag, coupling, args.tag))
+        #parallel_utils.run('python optimize_srs.py --channel "Leptonic" --file "../MVAs/Leptonic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_%s" --mvas "mva_smhiggs_score,mva_nonres_score" --bins "3"' % (coupling.lower(), args.tag, coupling, args.tag))

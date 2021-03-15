@@ -70,7 +70,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int n_lep_m
   }  
 
   else if (tag == "ttHLeptonic_RunII_ttZ_Tight_CR") {
-    cout << abs(mass() - m_Z) << " " << n_jets() << " " << nb_medium << " " << minIDMVA_ << " " << n_lep_medium << endl;
+    //cout << abs(mass() - m_Z) << " " << n_jets() << " " << nb_medium << " " << minIDMVA_ << " " << n_lep_medium << endl;
   
     if (abs(mass() - m_Z) > 10.)         return false;
     if (n_jets() < 3)                   return false;

@@ -52,8 +52,17 @@ for dir in dirs:
   if not os.path.isdir(destination + name):
     os.system("mkdir %s" % destination + name)
 
-  command = "addHistos %s %s %d %d" % (destination + name + "/merged_ntuple", dir + "/merged_ntuple", len(files), nPar)
+  if len(files) < 100.:
+      master = destination + name + "/merged_ntuple_1.root"
+      file_list = ""
+      for file in files:
+          file_list += "%s " % file
+      command = "hadd -f -k %s %s" % (master, file_list)
+
+  else:
+      command = "addHistos %s %s %d %d" % (destination + name + "/merged_ntuple", dir + "/merged_ntuple", len(files), nPar)
   print(command)
+
   command_list.append(command)
 
   #print("addHistos %s %s %d %d" % (destination + name + "/merged_ntuple", dir + "/merged_ntuple", len(files), nPar))

@@ -137,7 +137,10 @@ if args.z_score:
 
 f_out = h5py.File(output_file, "w")
 f_out.create_dataset("feature_names", data = training_features)
-training_features = [feat for feat in training_features if "dnn_score" not in feat]
+if fcnc:
+    training_features = [feat for feat in training_features]
+else:
+    training_features = [feat for feat in training_features if "dnn_score" not in feat]
 
 for set in features.keys():
     j = feature_idx_map[set]

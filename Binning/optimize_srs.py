@@ -13,7 +13,7 @@ parser.add_argument("--file", help = "path to final fit tree", type=str)
 parser.add_argument("--coupling", help = "coupling (Hut or Hct)", type=str)
 parser.add_argument("--mvas", help = "list of mva branches to perform Nd optimization with", type=str, default = "mva_score")
 parser.add_argument("--sm_higgs_unc", help = "value of unc on sm higgs processes", type=float, default = 0.1)
-parser.add_argument("--nCores", help = "number of cores to use", type=int, default = 12)
+parser.add_argument("--nCores", help = "number of cores to use", type=int, default = 18)
 parser.add_argument("--bins", help = "csv list of number of bins", type=str, default = "1,2,3,4,5")
 parser.add_argument("--metric", help = "optimize upper limit or significance", type=str, default = "limit")
 parser.add_argument("--pt_selection", help = "cut on dipho_pt", type=str, default="")
@@ -27,6 +27,8 @@ bins = [int(a) for a in args.bins.split(",")]
 
 if args.metric == "limit":
     combineOption = 'AsymptoticLimits -m 125 --expectSignal=0'
+elif args.metric == "upper limit":
+    combineOption = 'AsymptoticLimits -m 125 --expectSignal=1'
 elif args.metric == "significance":
     combineOption = 'Significance --expectSignal=1 '
 elif args.metric == "cl":

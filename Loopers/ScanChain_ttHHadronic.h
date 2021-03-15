@@ -26,6 +26,8 @@
 #include "scale1fb/scale1fb_2018_RunII_legacy.h"
 #include "MakeMVAOptimizationBabies.h"
 #include "Utils/RandomMap.h"
+#include "Utils/MVAMap.h"
+#include "Utils/FCNC_MVAMap.h"
 #include "GJetReweight/ProbMap.h"
 #include "covMatrix.C"
 
@@ -67,12 +69,12 @@ bool passes_btag_rescale_selection() {
     return true;
 }
 
-bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loose, int nb_medium, int nb_tight, float mva_value = -1) {
+bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loose_, int nb_medium_, int nb_tight_, float mva_value = -1) {
 
   if (tag == "ttHHadronic_RunII_ttZ_CR") {
     if (abs(mass() - m_Z) > 10.)         return false;
     if (n_jets() < 3)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     return true;
   }
@@ -80,7 +82,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "ttHHadronic_RunII_ttZ_Tight_CR") {
     if (abs(mass() - m_Z) > 10.)         return false;
     if (n_jets() < 5)                   return false;
-    if (nb_tight < 2)                 return false;
+    if (nb_tight_ < 2)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     return true;
   } 
@@ -92,21 +94,21 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   if (tag == "ttHHadronic_RunII_MVA_Presel_veryLoose") {
     if (mass() < 100) 					return false;
     if (n_jets() < 2)					return false;
-    if (nb_loose < 1)					return false;
+    if (nb_loose_ < 1)					return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)		return false;
     return true;
   }
 
   else if (tag == "HHbb_Presel") {
     if (mass() < 100 || mass() > 180)   return false;
-    if (nb_loose < 2)                 return false;
+    if (nb_loose_ < 2)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     return true;
   }
 
   else if (tag == "HHWW_Hadronic_Presel") {
     if (mass() < 100 || mass() > 180)   return false;
-    if (nb_loose >= 2)                return false;
+    if (nb_loose_ >= 2)                return false;
     if (n_jets() < 3)                   return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     return true;
@@ -115,7 +117,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "FCNC_Hadronic_Hut_RunII_SR_Inclusive") {
     if (mass() < 100)                   return false;
     if (n_jets() < 2)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     if (mva_value < 0.9457)             return false;
     return true;
@@ -124,7 +126,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "FCNC_Hadronic_Hct_RunII_SR_Inclusive") {
     if (mass() < 100)                   return false;
     if (n_jets() < 2)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     if (mva_value < 0.9458)             return false;
     return true;
@@ -133,7 +135,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "ttHHadronic_RunII_MVA_Presel") {
     if (mass() < 100 || mass() > 180) 	return false;
     if (n_jets() < 3)					return false;
-    if (nb_loose < 1)					return false;
+    if (nb_loose_ < 1)					return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)		return false;
     return true;
   }
@@ -141,16 +143,16 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "ttHHadronic_RunII_SR_Inclusive") {
     if (mass() < 100)                   return false;
     if (n_jets() < 3)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
-    if (tthMVA_RunII() < 0.986025)        return false;
+    if (tthMVA_RunII() <  0.953620)        return false;
     return true;
   }    
 
   else if (tag == "ttHHadronic_RunII_SR_Tight") {
     if (mass() < 100)                   return false;
     if (n_jets() < 3)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     if (tthMVA_RunII() < 0.9971)        return false;
     return true;
@@ -159,7 +161,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "ttHHadronic_RunII_SR_3") {
     if (mass() < 100 || mass() > 180)   return false;
     if (n_jets() < 3)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     if (tthMVA_RunII() < 0.986025 || tthMVA_RunII() > 0.9948537)        return false;
     return true;
@@ -168,7 +170,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "ttHHadronic_RunII_SR_2") {
     if (mass() < 100 || mass() > 180)   return false;
     if (n_jets() < 3)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     if (tthMVA_RunII() < 0.9948537 || tthMVA_RunII() > 0.9983046)        return false;
     return true;
@@ -177,7 +179,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "ttHHadronic_RunII_SR_1") {
     if (mass() < 100 || mass() > 180)   return false;
     if (n_jets() < 3)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     if (tthMVA_RunII() < 0.9983046 || tthMVA_RunII() > 0.9990729)        return false;
     return true;
@@ -186,7 +188,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
   else if (tag == "ttHHadronic_RunII_SR_0") {
     if (mass() < 100 || mass() > 180)   return false;
     if (n_jets() < 3)                   return false;
-    if (nb_loose < 1)                 return false;
+    if (nb_loose_ < 1)                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)       return false;
     if (tthMVA_RunII() < 0.9990729)        return false;
     return true;
@@ -196,7 +198,7 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
     if (mass() < 100)                                   return false;
     if (lead_ptoM() < 0.2 || sublead_ptoM() < 0.2)      return false;
     if (n_jets() < 3)                                   return false;
-    if (nb_loose < 1)                                 return false;
+    if (nb_loose_ < 1)                                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)           return false;
     return true;
   }
@@ -205,15 +207,15 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, int nb_loos
     if (mass() < 100)                                   return false;
     if (lead_ptoM() < 0.333 || sublead_ptoM() < 0.25)	return false;
     if (n_jets() < 3)                                   return false;
-    if (nb_loose < 1)                                 return false;
+    if (nb_loose_ < 1)                                 return false;
     if (minIDMVA_ < min_photon_ID_presel_cut)           return false;
     return true;
   }
 
   else if (tag == "ttHHadronic_RunII_MVA_Presel_lowGammaIDSideband") {
-    if (mass() < 100)                                   return false;
+    if (mass() < 100 || mass() > 180)                                   return false;
     if (n_jets() < 3)                                   return false;
-    if (nb_loose < 1)                                 return false;
+    if (nb_loose_ < 1)                                 return false;
     if (maxIDMVA_ < min_photon_ID_presel_cut)		return false;
     if (minIDMVA_ > min_photon_ID_presel_cut)		return false;
     return true; 

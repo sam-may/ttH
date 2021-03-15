@@ -42,33 +42,33 @@ do_diphoton_fits = False
 if do_diphoton_fits:
     # Run imputing with no fit
     parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "none" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_no_scale", syst))
-    parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute_no_scale" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute_no_scale", syst))
+    #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute_no_scale" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute_no_scale", syst))
     os.chdir("Plots")
     for plot_type in plot_types:
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_no_scale_FCNC", plot_type))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_no_scale_FCNC", plot_type))
+        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute_no_scale_FCNC", plot_type))
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels ""' % (args.tag + "_no_scale_FCNC", plot_type))
 
     # Do fit
     os.chdir("../tt_template_fit/")
-    parallel_utils.run('python do_fits_impute.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --jet_bin "2+"' % (args.tag + "_impute_no_scale_FCNC"))
-    parallel_utils.run('python do_fits_qcd.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --jet_bin "2+"' % (args.tag + "_no_scale_FCNC"))
+    #parallel_utils.run('python do_fits_impute.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --jet_bin "2+"' % (args.tag + "_impute_no_scale_FCNC"))
+    #parallel_utils.run('python do_fits_qcd.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --jet_bin "2+"' % (args.tag + "_no_scale_FCNC"))
 
     os.chdir("../")
-    dummy_input = raw_input("You probably want to update ttHLooper.h with results of DiPhoton Fits. Press any key to continue")
+    #dummy_input = raw_input("You probably want to update ttHLooper.h with results of DiPhoton Fits. Press any key to continue")
 
 
 # Run imputing with fit
 do_imputing = True
 if do_imputing:
-    parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
+    #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel" --bkg_options "impute" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_impute", syst))
     os.chdir("Plots")
     for plot_type in plot_types:
         #parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
-        os.system("mv ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd.pdf ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd_allsig.pdf" % (args.tag, args.tag))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|ST_FCNC_hut|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute_FCNC", plot_type))
+        #parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|TT_FCNC_hct|ST_FCNC_hut|ST_FCNC_hct" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_impute_FCNC", plot_type))
+        #os.system("mv ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd.pdf ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd_allsig.pdf" % (args.tag, args.tag))
+        parallel_utils.run('python plot_wrapper.py --fcnc --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut|ST_FCNC_hut|TH|SMHiggs" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute_FCNC", plot_type))
         os.system("mv ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd.pdf ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd_Hut.pdf" % (args.tag, args.tag))
-        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hct|ST_FCNC_hct|ttH" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute_FCNC", plot_type))
+        parallel_utils.run('python plot_wrapper.py --fcnc --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hct|ST_FCNC_hct|TH|SMHiggs" --plot_type "%s" --plot_labels ""' % (args.tag + "_impute_FCNC", plot_type))
         os.system("mv ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd.pdf ttHHadronic_RunII_MVA_Presel_%s_impute_FCNC_histogramsRunIIstd_Hct.pdf" % (args.tag, args.tag))
 
     # Run QCD + X with fit
@@ -78,6 +78,13 @@ if do_imputing:
     #for plot_type in plot_types:
     #    parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|TTJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Preselection"' % (args.tag + "_scale_diphoton_FCNC", plot_type))
     os.chdir("../")
+
+do_low_photon_id_sideband = False
+if do_low_photon_id_sideband:
+    #parallel_utils.run('python looper_wrapper.py --channel "Hadronic" --baby_version "%s" --tag "%s" --selection "ttHHadronic_RunII_MVA_Presel_lowGammaIDSideband" --bkg_options "scale_diphoton" --bdt "none" --fcnc %s' % (args.baby_version, args.tag + "_scale_diphoton", syst))
+    os.chdir("Plots")
+    for plot_type in plot_types:
+        parallel_utils.run('python plot_wrapper.py --input_file "../ttHHadronic_RunII_MVA_Presel_lowGammaIDSideband_%s_histogramsRunII.root" --backgrounds "DiPhoton|GammaJets|QCD|TTGG|TTGJets|VG|Other" --signals "TT_FCNC_hut" --plot_type "%s" --plot_labels "Hadronic Channel|Low #gamma ID Sideband"' % (args.tag + "_scale_diphoton_FCNC", plot_type))
 
 do_babies = False
 if do_babies:
@@ -94,9 +101,11 @@ bdt_training_features_base = ["helicity_angle_", "dipho_pt_over_mass_", "met_", 
 top_tagger_bdt = ["top_tag_score_"]
 top_chi2_hadronic = ["chi2_tbw_mass_", "chi2_tbw_pt_", "chi2_tbw_eta_", "chi2_tbw_deltaR_dipho_", "chi2_qjet_pt_", "chi2_qjet_eta_", "chi2_qjet_btag_", "chi2_qjet_deltaR_dipho_", "chi2_tqh_ptOverM_", "chi2_tqh_eta_", "chi2_tqh_deltaR_tbw_", "chi2_tqh_deltaR_dipho_", "chi2_3x3_tbw_mass_", "chi2_3x3_tbw_pt_", "chi2_3x3_tbw_eta_", "chi2_3x3_tbw_deltaR_dipho_", "chi2_3x3_qjet_pt_", "chi2_3x3_qjet_eta_", "chi2_3x3_qjet_btag_", "chi2_3x3_qjet_deltaR_dipho_", "chi2_3x3_tqh_ptOverM_", "chi2_3x3_tqh_eta_", "chi2_3x3_tqh_deltaR_tbw_", "chi2_3x3_tqh_deltaR_dipho_"]
 top_dnn = ["dnn_score_fcnc_st_", "dnn_score_fcnc_tt_"]
+bdt_training_features_all_noTopBDT = bdt_training_features_base + top_chi2_hadronic + top_dnn
 bdt_training_features_all = bdt_training_features_base + top_tagger_bdt + top_chi2_hadronic + top_dnn
 
 training_features_base = ",".join(bdt_training_features_base)
+training_features_all_noTopBDT  = ",".join(bdt_training_features_all_noTopBDT)
 training_features_all  = ",".join(bdt_training_features_all)
 
 do_prep = False
@@ -107,26 +116,33 @@ if do_prep:
 
     for coupling in ["Hut", "Hct"]:
         # Baseline
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_scale_diphoton_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "baseline_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg_mc + "," + sm_higgs, training_features_base, coupling.lower()))
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_scale_diphoton_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "baseline_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg_mc + "," + sm_higgs, training_features_base, coupling.lower()))
 
         # Non-resonant
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_scale_diphoton_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg_mc, training_features_base, coupling.lower())) 
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_scale_diphoton_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg_mc, training_features_base, coupling.lower())) 
         # SM Higgs
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_base, coupling.lower()))
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_base, coupling.lower()))
 
         # Impute
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "impute_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg + "," + sm_higgs, training_features_base, coupling.lower()))
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "impute_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg + "," + sm_higgs, training_features_base, coupling.lower()))
         # Impute non-resonant
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "impute_nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg, training_features_base, coupling.lower()))
-        
-        # Add top taggers
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg + "," + sm_higgs, training_features_all, coupling.lower()))
-        # Add top taggers non-resonant
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg, training_features_all, coupling.lower()))
-        # Add top taggers sm higgs
-        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_all, coupling.lower()))
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "impute_nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg, training_features_base, coupling.lower()))
+       # Add top taggers no Top BDT
+        command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_noTopBDT_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg + "," + sm_higgs, training_features_all_noTopBDT, coupling.lower())) 
 
-    parallel_utils.submit_jobs(command_list, 6)
+        # Add top taggers
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg + "," + sm_higgs, training_features_all, coupling.lower()))
+        # Add top taggers non-resonant no Top BDT
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_noTopBDT_nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg, training_features_all_noTopBDT, coupling.lower()))
+        # Add top taggers sm higgs no Top BDT
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_noTopBDT_smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_all_noTopBDT, coupling.lower()))
+
+        # Add top taggers non-resonant
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_nonres_%s"' % (args.tag, coupling.lower(), coupling.lower(), non_resonant_bkg, training_features_all, coupling.lower()))
+        # Add top taggers sm higgs
+        #command_list.append('python prep.py --input "../Loopers/MVABaby_ttHHadronic_%s_impute_FCNC.root" --channel "Hadronic" --signal "tt_fcnc_%s,st_fcnc_%s" --bkg "%s" --features "%s" --tag "addTopTaggers_smhiggs_%s"' % (args.tag, coupling.lower(), coupling.lower(), sm_higgs, training_features_all, coupling.lower()))
+
+    parallel_utils.submit_jobs(command_list, 2)
 
 do_mvas = False
 if do_mvas:
@@ -146,27 +162,35 @@ if do_mvas:
         # Impute non-resonant
         command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_impute_nonres_%s.hdf5" --channel "Hadronic" --tag "impute_nonres_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
 
+
+        # Add top taggers non-resonant
+        command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_noTopBDT_nonres_%s.hdf5" --channel "Hadronic" --tag "addTopTaggers_noTopBDT_nonres_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
+        # Add top taggers sm higgs
+        command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_noTopBDT_smhiggs_%s.hdf5" --channel "Hadronic" --tag "addTopTaggers_noTopBDT_smhiggs_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
+    
         # Add top taggers non-resonant
         command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_nonres_%s.hdf5" --channel "Hadronic" --tag "addTopTaggers_nonres_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
         # Add top taggers sm higgs
         command_list.append('python train_bdt.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_smhiggs_%s.hdf5" --channel "Hadronic" --tag "addTopTaggers_smhiggs_%s_%s"' % (args.tag, coupling.lower(), args.tag, coupling.lower()))
 
-    parallel_utils.submit_jobs(command_list, 1)
+    parallel_utils.submit_jobs(command_list, 4)
 
 do_merge = False
 if do_merge:
     os.chdir("../MVAs/")
     #os.system("source ~/ttH/MVAs/setup.sh")
     for coupling in ["Hut", "Hct"]:
-        parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_impute_%s.hdf5" --channel "Hadronic" --tag "%s_baseline_merge1d_%s" --mvas "Hadronic_baseline_%s_%s_bdt.xgb,Hadronic_nonres_%s_%s_bdt.xgb,Hadronic_smhiggs_%s_%s_bdt.xgb,Hadronic_impute_nonres_%s_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score,mva_nonres_impute_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower()))
-        parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_%s.hdf5" --channel "Hadronic" --tag "%s_merge2d_%s" --mvas "Hadronic_addTopTaggers_nonres_%s_%s_bdt.xgb,Hadronic_addTopTaggers_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
+        #parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_impute_%s.hdf5" --channel "Hadronic" --tag "%s_baseline_merge1d_%s" --mvas "Hadronic_baseline_%s_%s_bdt.xgb,Hadronic_nonres_%s_%s_bdt.xgb,Hadronic_smhiggs_%s_%s_bdt.xgb,Hadronic_impute_nonres_%s_%s_bdt.xgb" --names "mva_score,mva_nonres_score,mva_smhiggs_score,mva_nonres_impute_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower(), args.tag, coupling.lower()))
+        parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_noTopBDT_%s.hdf5" --channel "Hadronic" --tag "%s_merge2d_noTopBDT_%s" --mvas "Hadronic_addTopTaggers_noTopBDT_nonres_%s_%s_bdt.xgb,Hadronic_addTopTaggers_noTopBDT_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
+        #parallel_utils.run('python make_optimization_tree.py --input "ttHHadronic_%s_impute_FCNC_features_addTopTaggers_%s.hdf5" --channel "Hadronic" --tag "%s_merge2d_%s" --mvas "Hadronic_addTopTaggers_nonres_%s_%s_bdt.xgb,Hadronic_addTopTaggers_smhiggs_%s_%s_bdt.xgb" --names "mva_nonres_score,mva_smhiggs_score"' % (args.tag, coupling.lower(), coupling.lower(), args.tag, args.tag, coupling.lower(), args.tag, coupling.lower()))
 
 do_limits = False
 if do_limits:
     os.chdir("../Binning/")
 
     for coupling in ["Hut", "Hct"]:
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "1d_baseline_%s" --mvas "mva_score"' % (coupling.lower(), args.tag, coupling, args.tag))
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_baseline_%s" --mvas "mva_nonres_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling, args.tag))
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_impute_%s" --mvas "mva_nonres_impute_score,mva_smhiggs_score"' % (coupling.lower(), args.tag, coupling, args.tag))
-        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_%s" --mvas "mva_smhiggs_score,mva_nonres_score"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "1d_baseline_%s" --mvas "mva_score" --bins "4"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_baseline_%s" --mvas "mva_nonres_score,mva_smhiggs_score" --bins "4"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_baseline_merge1d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_impute_%s" --mvas "mva_nonres_impute_score,mva_smhiggs_score" --bins "4"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_merge2d_noTopBDT_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_noTopBDT_%s" --mvas "mva_smhiggs_score,mva_nonres_score" --bins "4"' % (coupling.lower(), args.tag, coupling, args.tag))
+        parallel_utils.run('python optimize_srs.py --channel "Hadronic" --file "../MVAs/Hadronic_%s_merge2d_%s.root" --coupling "%s" --sm_higgs_unc 0.4 --nCores 24 --tag "2d_addTopTaggers_%s" --mvas "mva_smhiggs_score,mva_nonres_score" --bins "4"' % (coupling.lower(), args.tag, coupling, args.tag))

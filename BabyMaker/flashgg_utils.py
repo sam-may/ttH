@@ -78,10 +78,10 @@ def get_samples_from_catalogs(catalogs, legacy=False):
     samples = {}
     for catalog in catalogs:
         if legacy:
-            datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/legacy_stxs/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
+            datasets = glob.glob("/home/users/smay/ttH/BabyMaker/legacy_stxs/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
         else:
-            datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
-        #datasets = glob.glob("/home/users/sjmay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/%s/*.json" % catalog)
+            datasets = glob.glob("/home/users/smay/ttH/BabyMaker/CMSSW_10_6_8/src/flashgg/MetaData/data/%s/*.json" % catalog)
+        #datasets = glob.glob("/home/users/smay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/%s/*.json" % catalog)
         for dataset in datasets:
             with open(dataset, "r") as f_in:
                 info = json.load(f_in)
@@ -111,9 +111,9 @@ def get_samples_from_catalogs(catalogs, legacy=False):
                             samples[sample_name][year][production]["weights"] += file["weights"]
     # Get XS's
     if legacy:
-        xs_files = ["/home/users/sjmay/ttH/BabyMaker/legacy_stxs/CMSSW_10_6_8/src/flashgg/MetaData/data/cross_sections.json", "/home/users/sjmay/ttH/Loopers/scale1fb/cross_sections_flashgg.json"]
+        xs_files = ["/home/users/smay/ttH/BabyMaker/legacy_stxs/CMSSW_10_6_8/src/flashgg/MetaData/data/cross_sections.json", "/home/users/smay/ttH/Loopers/scale1fb/cross_sections_flashgg.json"]
     else:
-        xs_files = ["/home/users/sjmay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/cross_sections.json", "/home/users/sjmay/ttH/Loopers/scale1fb/cross_sections_flashgg.json"]
+        xs_files = ["/home/users/smay/ttH/BabyMaker/CMSSW_10_5_0/src/flashgg/MetaData/data/cross_sections.json", "/home/users/smay/ttH/Loopers/scale1fb/cross_sections_flashgg.json"]
     for file in xs_files:
         with open(file, "r") as f_in:
             cross_sections = json.load(f_in)
@@ -155,7 +155,7 @@ def get_samples_from_catalogs(catalogs, legacy=False):
             samples[sample][year]["scale1fb"] = scale1fb
 
     # Hack to include FCNC
-    with open("/home/users/sjmay/ttH/Loopers/scale1fb/scale1fb.json", "r") as f_in:
+    with open("/home/users/smay/ttH/Loopers/scale1fb/scale1fb.json", "r") as f_in:
         fcnc_samples = json.load(f_in)
         for sample in fcnc_samples.keys():
             entry = {}

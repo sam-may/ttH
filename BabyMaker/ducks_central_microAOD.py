@@ -123,16 +123,9 @@ def fpo(sample):
         return 10
 
 blacklist = ["SingleElectron", "Box1BJet", "Box2BJets", "GJet_Pt", "ZH_HtoGG", "bbHToGG", "JHU", "ZNuNuGJets", "VBFHiggs", "VBFHH", "GluGluToHH"]
-choose_ttZ = ["DoubleEG", "EGamma", "TTGG", "TTGJets", "TTJets", "TTToSemi", "TTTo2L2Nu", "TTW", "TTZ", "WW", "WZ", "ZZ", "DYJetsToLL", "ST_tW", "tZq"]
+choose_ttZ = ["DoubleEG", "EGamma", "TTGG", "TTGJets", "TTJets", "TTToSemi", "TTTo2L2Nu", "TTW", "TTZ", "WW", "WZ", "ZZ", "DYJetsToLL", "ST_tW", "tZq", "ttHJetToGG_M125"]
+choose_ttH_legacy = ["DoubleEG", "EGamma", "TTGG", "TTGJets", "TTJets", "TTToSemi", "TTTo2L2Nu", "TTW", "TTZ", "WW", "WZ", "ZZ", "DYJetsToLL", "ST_tW", "tZq", "WG", "ZG", "DiPhotonJetsBox", "GJets", "TGJets", "ttHJetToGG_M125"]
 def skip(sample):
-    if "ttZ" in args.tag:
-        if any([x in sample for x in choose_ttZ]):
-            return False
-        else:
-            return True
-    
-    if any([x in sample for x in blacklist]):
-        return True
     if args.ttH_and_tH_only:
         if not ("ttHJetToGG" in sample or "ttHToGG" in sample or "THQ" in sample or "THW" in sample):
             return True
@@ -141,7 +134,19 @@ def skip(sample):
             return True
     if args.data_only:
         if not ("DoubleEG" in sample or "EGamma" in sample):
+            return True 
+    if "ttZ" in args.tag:
+        if any([x in sample for x in choose_ttZ]):
+            return False
+        else:
             return True
+    if args.legacy:
+        if any([x in sample for x in choose_ttH_legacy]):
+            return False
+        else:
+            return True
+    if any([x in sample for x in blacklist]):
+        return True
     return False
 
 class file:
@@ -214,7 +219,7 @@ while True:
                 special_dir = hadoop_path,
                 arguments = conds_dict[year]
         )
-        #task.process()
+        task.process()
         if not task.complete():
             allcomplete = False
         total_summary[dataset] = task.get_task_summary()
@@ -264,7 +269,7 @@ while True:
                     if first_run:
                         print "Sleeping 30s to space out jobs"
                         os.system("sleep 30s")
-    StatsParser(data=total_summary, webdir="~/public_html/dump/ttH_BabyMaker_v2_%s/" % job_tag).do()
+    StatsParser(data=total_summary, summary_fname = "summary_%s.json" % job_tag, webdir="~/public_html/dump/ttH_BabyMaker_v2_%s/" % job_tag).do()
     os.system("chmod -R 755 ~/public_html/dump/ttH_BabyMaker_v2_%s" % job_tag)
     if allcomplete:
         print("")

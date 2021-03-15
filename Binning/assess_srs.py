@@ -12,10 +12,10 @@ parser.add_argument("--nrb_choice", help = "data or bkg (for MC)", type=str, def
 args = parser.parse_args()
 
 tree_map = {
-        "Hadronic (Hct)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hct_merge2d_v5.7_19Oct2020.root",
-        "Hadronic (Hut)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hut_merge2d_v5.7_19Oct2020.root",
-        "Leptonic (Hct)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hct_merge2d_v5.7_19Oct2020.root",
-        "Leptonic (Hut)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hut_merge2d_v5.7_19Oct2020.root"
+        "Hadronic (Hct)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hct_merge2d_noTopBDT_v5.10_22Jan2021.root",
+        "Hadronic (Hut)" : "/home/users/sjmay/ttH/MVAs/Hadronic_hut_merge2d_noTopBDT_v5.10_22Jan2021.root",
+        "Leptonic (Hct)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hct_merge2d_noTopBDT_v5.10_22Jan2021.root",
+        "Leptonic (Hut)" : "/home/users/sjmay/ttH/MVAs/Leptonic_hut_merge2d_noTopBDT_v5.10_22Jan2021.root"
 }
 
 with open(args.input, "r") as f_in:

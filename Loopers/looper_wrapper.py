@@ -612,7 +612,7 @@ else:
   #}}}
 #}}}
 print "------------------------------------------------------------"
-nPar = 36
+nPar = 18
 parallel_utils.submit_jobs(command_list, nPar)
 print "------------------------------------------------------------"
 # histograms, hadd, cleanup{{{
@@ -639,8 +639,11 @@ if args.babymaker:
 else:
   master = "%s_%s_histogramsRunII%s.root" % (args.selection, args.tag, "_legacy" if args.legacy else "")
 
+if os.path.exists(master):
+    os.system("rm %s" % master)
+
 #while not os.path.exists(master):
-os.system('/usr/bin/ionice -c2 -n7 hadd -f -k -j 8 %s %s' % (master, target))
+os.system('/usr/bin/ionice -c2 -n7 hadd -f -k -j 16 %s %s' % (master, target))
 
 # Cleanup
 for hist in histos:

@@ -95,6 +95,8 @@ class Comparison
     void skip_cp() { mSkipCP = true; }
     void skipCatLabels() { mSkipCatLabels = true; }
 
+    void scale_signal(double scale) { mScaleSignal = scale; }
+
   private:
     void default_options(TCanvas* c1);
     void set_main_pad(TPad* mainPad, bool log, bool rat = true);
@@ -232,6 +234,7 @@ class Comparison
     bool mSkipCP;
 
     bool mSkipCatLabels;
+    double mScaleSignal;
 };
 
 
@@ -569,6 +572,7 @@ void Comparison::default_options(TCanvas* c1)
   mIndentCms = false;
 
   mSkipCatLabels = false;
+  mScaleSignal = 1.0;
 }
 
 inline
@@ -810,6 +814,9 @@ void Comparison::compute_flow(vector<int> xBinRange)
       mVHSignal[i]->AddBinContent(mXBinRange[0], underflowSignal);
     }
 
+    if (mScaleSignal != 1.0)
+        mVHSignal[0]->Scale(mScaleSignal);
+
     if (mVHMC.size() > 0) {
       double overflowMC = mHMC->Integral(mXBinRange[1]+1, nBins+1);
       mHMC->AddBinContent(mXBinRange[1], overflowMC);
@@ -929,7 +936,7 @@ void Comparison::set_histogram_options(int color1, int color2)
   }
 
 
-  vector<int> vColorsSignal = {kBlack, kRed, kOrange, kMagenta, kMagenta+10}; 
+  vector<int> vColorsSignal = {kBlack, kRed, kOrange, kCyan, kAzure+1}; 
   for (int i=0; i<mVHSignal.size(); i++) {
     //mVHSignal[i]->SetFillColor(kBlack);
     mVHSignal[i]->SetLineColor(vColorsSignal[i]);
@@ -1047,13 +1054,13 @@ void Comparison::draw_main_histograms()
   if (mDoSystBand) {
     if (mVHMCSyst_up.size() >= 1) {
         hMC_TotalSyst_up->SetFillStyle(3144);
-        hMC_TotalSyst_up->SetFillColorAlpha(mSystColor, 0.75);
+        hMC_TotalSyst_up->SetFillColorAlpha(mSystColor, 0.25);
         hMC_TotalSyst_up->SetMarkerColor(mSystColor);
         hMC_TotalSyst_up->SetMarkerSize(0.);
         hMC_TotalSyst_up->SetLineColor(mSystColor);
         hMC_TotalSyst_up->Draw("E2, SAME");
         hMC_TotalSyst_down->SetFillStyle(3144);
-        hMC_TotalSyst_down->SetFillColorAlpha(mSystColor, 0.75);
+        hMC_TotalSyst_down->SetFillColorAlpha(mSystColor, 0.25);
         hMC_TotalSyst_down->SetMarkerColor(mSystColor);
         hMC_TotalSyst_down->SetMarkerSize(0.);
         hMC_TotalSyst_down->SetLineColor(mSystColor);
@@ -1061,13 +1068,13 @@ void Comparison::draw_main_histograms()
     }
 
     hMC_StatUnc_up->SetFillStyle(3144);
-    hMC_StatUnc_up->SetFillColorAlpha(mStatColor, 0.5);
+    hMC_StatUnc_up->SetFillColorAlpha(mStatColor, 0.25);
     hMC_StatUnc_up->SetMarkerColor(mStatColor);
     hMC_StatUnc_up->SetMarkerSize(0.);
     hMC_StatUnc_up->SetLineColor(mStatColor);
     hMC_StatUnc_up->Draw("E2, SAME");
     hMC_StatUnc_down->SetFillStyle(3144);
-    hMC_StatUnc_down->SetFillColorAlpha(mStatColor, 0.5);
+    hMC_StatUnc_down->SetFillColorAlpha(mStatColor, 0.25);
     hMC_StatUnc_down->SetMarkerColor(mStatColor);
     hMC_StatUnc_down->SetMarkerSize(0.);
     hMC_StatUnc_down->SetLineColor(mStatColor);
@@ -1259,9 +1266,9 @@ void Comparison::annotate_plot()
     cms->SetTextSize(0.05);
   }
   else {
-    cms  = new TLatex(0.12, 0.935, "CMS");
+    //cms  = new TLatex(0.12, 0.935, "CMS");
     //cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Supplementary}}");
-    //cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Preliminary}}");
+    cms = new TLatex(0.12, 0.935, "CMS #bf{#it{Preliminary}}");
     //cms = new TLatex(0.12, 0.935, "CMS");
     cms->SetTextSize(0.05);
   }
@@ -1317,7 +1324,7 @@ void Comparison::annotate_plot()
     else 
       l1 = new TLegend(0.6, 0.75-j, 0.92, 0.89);
     for (int i=0; i<mVHData.size(); i++)
-      l1->AddEntry(mVHData[i], mVLegendLabels[i], "lex0p");
+      l1->AddEntry(mVHData[i], mVLegendLabels[i], "ex0p");
     if (!mSkipSignal) {
       for (int i=0; i<mVHSignal.size(); i++)
         l1->AddEntry(mVHSignal[i], mVLegendLabels[i+mVHData.size()], "f");
@@ -1539,25 +1546,25 @@ void Comparison::make_rat_histogram(TH1D* hData, TH1D* hMC)
 
 
     //TLegend* legend = new TLegend(0.14, 0.37, 0.44, 0.49);
-    TLegend* legend = new TLegend(0.14, 0.37, 0.64, 0.49);
+    TLegend* legend = new TLegend(0.24, 0.37, 0.74, 0.49);
     //legend->AddEntry(hRat_TotalSyst_up, "Syst. Unc.", "f");
-    legend->AddEntry(hRat_StatUnc_up, "Stat. Unc.", "f");
+    legend->AddEntry(hRat_StatUnc_up, "Stat. unc.", "f");
     if (mVHMCSyst_up.size() >= 1)
-        legend->AddEntry(hRat_TotalSyst_up, "Stat. #oplus Syst. Unc.", "f");
+        legend->AddEntry(hRat_TotalSyst_up, "Stat. #oplus syst. unc.", "f");
     legend->SetNColumns(2);
     legend->SetBorderSize(0);
     legend->Draw("SAME"); 
 
     if (mVHMCSyst_up.size() >= 1) {
         hRat_TotalSyst_up->SetFillStyle(3144);
-        hRat_TotalSyst_up->SetFillColorAlpha(mSystColor, 0.5);
+        hRat_TotalSyst_up->SetFillColorAlpha(mSystColor, 0.25);
         hRat_TotalSyst_up->SetMarkerColor(mSystColor);
         hRat_TotalSyst_up->SetMarkerSize(0.);
         hRat_TotalSyst_up->SetLineColor(mSystColor);
         hRat_TotalSyst_up->Draw("E2, SAME");
 
         hRat_TotalSyst_down->SetFillStyle(3144);
-        hRat_TotalSyst_down->SetFillColorAlpha(mSystColor, 0.5);
+        hRat_TotalSyst_down->SetFillColorAlpha(mSystColor, 0.25);
         hRat_TotalSyst_down->SetMarkerColor(mSystColor);
         hRat_TotalSyst_down->SetMarkerSize(0.);
         hRat_TotalSyst_down->SetLineColor(mSystColor);
@@ -1565,14 +1572,14 @@ void Comparison::make_rat_histogram(TH1D* hData, TH1D* hMC)
     }
 
     hRat_StatUnc_up->SetFillStyle(3144);
-    hRat_StatUnc_up->SetFillColorAlpha(mStatColor, 0.5);
+    hRat_StatUnc_up->SetFillColorAlpha(mStatColor, 0.25);
     hRat_StatUnc_up->SetMarkerColor(mStatColor);
     hRat_StatUnc_up->SetMarkerSize(0.);
     hRat_StatUnc_up->SetLineColor(mStatColor);
     hRat_StatUnc_up->Draw("E2, SAME");
 
     hRat_StatUnc_down->SetFillStyle(3144);
-    hRat_StatUnc_down->SetFillColorAlpha(mStatColor, 0.5);
+    hRat_StatUnc_down->SetFillColorAlpha(mStatColor, 0.25);
     hRat_StatUnc_down->SetMarkerColor(mStatColor);
     hRat_StatUnc_down->SetMarkerSize(0.);
     hRat_StatUnc_down->SetLineColor(mStatColor);

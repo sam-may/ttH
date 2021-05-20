@@ -58,7 +58,7 @@ def loop(nano, ff, proc_id, out_name):
     for i in range(len(events)):
         print("%d/%d" % (i, len(events)))
 
-        if i > 100000:
+        if i > 300000:
             break
 
         run = events[i].run
